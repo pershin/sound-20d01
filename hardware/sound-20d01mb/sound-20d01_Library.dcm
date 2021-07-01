@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP TPA3122D2
+D 15-W stereo Class-D audio power amplifier
+K amplifier
+F https://www.ti.com/lit/ds/symlink/tpa3122d2.pdf
+$ENDCMP
+#
+#End Doc Library
