@@ -1,5 +1,11 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP PGA2311P
+D Stereo Audio Volume Control
+K volume
+F https://www.ti.com/lit/ds/symlink/pga2311.pdf
+$ENDCMP
+#
 $CMP TPA3122D2
 D 15-W stereo Class-D audio power amplifier
 K amplifier
