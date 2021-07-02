@@ -164,4 +164,47 @@ U 61033008
 F0 "Power Supply Unit" 50
 F1 "psu.sch" 50
 $EndSheet
+$Comp
+L Connector_Generic:Conn_01x02 J?
+U 1 1 60E0FD2A
+P 6150 3400
+F 0 "J?" H 6230 3392 50  0000 L CNN
+F 1 "Conn_01x02" H 6230 3301 50  0000 L CNN
+F 2 "Connector_JST:JST_VH_B2P-VH_1x02_P3.96mm_Vertical" H 6150 3400 50  0001 C CNN
+F 3 "~" H 6150 3400 50  0001 C CNN
+	1    6150 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDA #PWR?
+U 1 1 60E0FF3C
+P 5850 3600
+F 0 "#PWR?" H 5850 3350 50  0001 C CNN
+F 1 "GNDA" H 5855 3427 50  0000 C CNN
+F 2 "" H 5850 3600 50  0001 C CNN
+F 3 "" H 5850 3600 50  0001 C CNN
+	1    5850 3600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5950 3500 5850 3500
+Wire Wire Line
+	5850 3500 5850 3600
+$Comp
+L power:VCC #PWR?
+U 1 1 60E100F5
+P 5850 3300
+F 0 "#PWR?" H 5850 3150 50  0001 C CNN
+F 1 "VCC" H 5867 3473 50  0000 C CNN
+F 2 "" H 5850 3300 50  0001 C CNN
+F 3 "" H 5850 3300 50  0001 C CNN
+	1    5850 3300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5950 3400 5850 3400
+Wire Wire Line
+	5850 3400 5850 3300
+Text Notes 6100 3300 0    50   ~ 0
+Supply voltage range: 12V to 30V
 $EndSCHEMATC
