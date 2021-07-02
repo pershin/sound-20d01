@@ -12,6 +12,12 @@ K volume
 F https://www.ti.com/lit/ds/symlink/pga2311.pdf
 $ENDCMP
 #
+$CMP STM32F446RCTx
+D ARM Cortex-M4 MCU, 256KB flash, 128KB RAM, 180MHz, 1.8-3.6V, 50 GPIO, LQFP-64
+K ARM Cortex-M4 STM32F4 STM32F446
+F https://www.st.com/resource/en/datasheet/stm32f446rc.pdf
+$ENDCMP
+#
 $CMP TPA3122D2
 D 15-W stereo Class-D audio power amplifier
 K amplifier
