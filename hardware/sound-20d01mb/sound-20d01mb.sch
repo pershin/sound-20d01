@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 4
+Sheet 1 5
 Title "Sound-20D01MB"
 Date "2021-07-01"
 Rev "0"
@@ -158,4 +158,10 @@ Wire Wire Line
 	4350 1800 4450 1800
 Wire Wire Line
 	4350 1900 4450 1900
+$Sheet
+S 1850 3250 1200 1250
+U 61033008
+F0 "Power Supply Unit" 50
+F1 "psu.sch" 50
+$EndSheet
 $EndSCHEMATC
