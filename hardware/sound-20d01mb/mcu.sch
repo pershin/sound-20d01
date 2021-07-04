@@ -637,4 +637,20 @@ Wire Wire Line
 	6550 5400 6550 5500
 Wire Wire Line
 	5850 4800 5850 5400
+Text HLabel 4750 2400 1    50   Output ~ 0
+SAI1_FS_B
+Wire Wire Line
+	4750 2500 4750 2400
+Text HLabel 6550 3500 2    50   Output ~ 0
+SAI1_SD_B
+Wire Wire Line
+	6450 3500 6550 3500
+Text HLabel 6550 4400 2    50   Output ~ 0
+SAI1_SCK_B
+Wire Wire Line
+	6450 4400 6550 4400
+Text HLabel 4050 3600 0    50   Output ~ 0
+SAI1_MCLK_B
+Wire Wire Line
+	4150 3600 4050 3600
 $EndSCHEMATC
