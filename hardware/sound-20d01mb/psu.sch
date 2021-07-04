@@ -140,17 +140,6 @@ F 3 "~" H 3650 2700 50  0001 C CNN
 	1    3650 2700
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:GNDA #PWR?
-U 1 1 60E0E9CD
-P 4450 3050
-F 0 "#PWR?" H 4450 2800 50  0001 C CNN
-F 1 "GNDA" H 4455 2877 50  0000 C CNN
-F 2 "" H 4450 3050 50  0001 C CNN
-F 3 "" H 4450 3050 50  0001 C CNN
-	1    4450 3050
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	4450 2750 4450 2950
 Wire Wire Line
@@ -202,4 +191,29 @@ Wire Wire Line
 Connection ~ 3650 2450
 Text Notes 5150 2100 0    50   ~ 0
 Digital power supply 3.3V
+$Comp
+L power:GNDD #PWR?
+U 1 1 60E17887
+P 4450 3050
+F 0 "#PWR?" H 4450 2800 50  0001 C CNN
+F 1 "GNDD" H 4454 2895 50  0000 C CNN
+F 2 "" H 4450 3050 50  0001 C CNN
+F 3 "" H 4450 3050 50  0001 C CNN
+	1    4450 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 60E17DB7
+P 3650 3950
+F 0 "#PWR?" H 3650 3800 50  0001 C CNN
+F 1 "+5V" H 3665 4123 50  0000 C CNN
+F 2 "" H 3650 3950 50  0001 C CNN
+F 3 "" H 3650 3950 50  0001 C CNN
+	1    3650 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3650 3950 3650 4050
+Connection ~ 3650 4050
 $EndSCHEMATC

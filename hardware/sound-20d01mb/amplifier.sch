@@ -311,10 +311,6 @@ Wire Wire Line
 	8650 2000 8650 1900
 Connection ~ 8650 2000
 Wire Wire Line
-	7450 3700 7650 3700
-Wire Wire Line
-	7450 3800 7650 3800
-Wire Wire Line
 	7450 3300 7900 3300
 Wire Wire Line
 	7450 4000 7900 4000
@@ -595,10 +591,6 @@ Wire Wire Line
 	6450 3300 6350 3300
 Wire Wire Line
 	6450 3400 6350 3400
-Text HLabel 7650 3700 2    50   Input ~ 0
-GAIN0
-Text HLabel 7650 3800 2    50   Input ~ 0
-GAIN1
 $Comp
 L sound-20d01_Library:PGA2311P U?
 U 1 1 60DFD3CA
@@ -909,4 +901,119 @@ Wire Wire Line
 	4600 3700 3250 3700
 Text Notes 1150 1100 0    50   ~ 0
 Place power-supply bypass capacitors as\nclose to the PGA2311 package as physically possible.
+$Comp
+L Switch:SW_DIP_x02 SW?
+U 1 1 60E21294
+P 9700 5300
+F 0 "SW?" H 9700 5667 50  0000 C CNN
+F 1 "SW_DIP_x02" H 9700 5576 50  0000 C CNN
+F 2 "Button_Switch_THT:SW_DIP_SPSTx02_Slide_9.78x7.26mm_W7.62mm_P2.54mm" H 9700 5300 50  0001 C CNN
+F 3 "" H 9700 5300 50  0001 C CNN
+	1    9700 5300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDA #PWR?
+U 1 1 60E2143D
+P 10100 5400
+F 0 "#PWR?" H 10100 5150 50  0001 C CNN
+F 1 "GNDA" H 10105 5227 50  0000 C CNN
+F 2 "" H 10100 5400 50  0001 C CNN
+F 3 "" H 10100 5400 50  0001 C CNN
+	1    10100 5400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10000 5300 10100 5300
+Wire Wire Line
+	10100 5300 10100 5400
+Wire Wire Line
+	10000 5200 10100 5200
+Wire Wire Line
+	10100 5200 10100 5300
+Connection ~ 10100 5300
+$Comp
+L Device:R R?
+U 1 1 60E3F5FC
+P 8400 4950
+F 0 "R?" H 8470 4996 50  0000 L CNN
+F 1 "10K" H 8470 4905 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 8330 4950 50  0001 C CNN
+F 3 "~" H 8400 4950 50  0001 C CNN
+	1    8400 4950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 60E56A6D
+P 8900 4950
+F 0 "R?" H 8970 4996 50  0000 L CNN
+F 1 "10K" H 8970 4905 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 8830 4950 50  0001 C CNN
+F 3 "~" H 8900 4950 50  0001 C CNN
+	1    8900 4950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:VCC #PWR?
+U 1 1 60E7D456
+P 8400 4700
+F 0 "#PWR?" H 8400 4550 50  0001 C CNN
+F 1 "VCC" H 8417 4873 50  0000 C CNN
+F 2 "" H 8400 4700 50  0001 C CNN
+F 3 "" H 8400 4700 50  0001 C CNN
+	1    8400 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8400 4800 8400 4700
+$Comp
+L power:VCC #PWR?
+U 1 1 60E84FC2
+P 8900 4700
+F 0 "#PWR?" H 8900 4550 50  0001 C CNN
+F 1 "VCC" H 8917 4873 50  0000 C CNN
+F 2 "" H 8900 4700 50  0001 C CNN
+F 3 "" H 8900 4700 50  0001 C CNN
+	1    8900 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8900 4800 8900 4700
+Wire Wire Line
+	9400 5200 8400 5200
+Wire Wire Line
+	8400 5200 8400 5100
+Wire Wire Line
+	9400 5300 8900 5300
+Wire Wire Line
+	8900 5300 8900 5100
+Wire Notes Line
+	9300 4800 10300 4800
+Wire Notes Line
+	10300 4800 10300 5700
+Wire Notes Line
+	10300 5700 9300 5700
+Wire Notes Line
+	9300 5700 9300 4800
+Text Notes 9300 4750 0    50   ~ 0
+Gain Settings (Optional)
+Wire Wire Line
+	7450 3700 7650 3700
+Wire Wire Line
+	7450 3800 7650 3800
+Wire Wire Line
+	8400 5200 7900 5200
+Connection ~ 8400 5200
+Wire Wire Line
+	8900 5300 7900 5300
+Connection ~ 8900 5300
+Text GLabel 7900 5200 0    50   Output ~ 0
+GAIN0
+Text GLabel 7650 3700 2    50   Input ~ 0
+GAIN0
+Text GLabel 7900 5300 0    50   Output ~ 0
+GAIN1
+Text GLabel 7650 3800 2    50   Input ~ 0
+GAIN1
 $EndSCHEMATC
