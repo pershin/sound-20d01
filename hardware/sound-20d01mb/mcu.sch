@@ -653,4 +653,8 @@ Text HLabel 4050 3600 0    50   Output ~ 0
 SAI1_MCLK_B
 Wire Wire Line
 	4150 3600 4050 3600
+Text HLabel 5450 2400 1    50   Output ~ 0
+SWO
+Wire Wire Line
+	5450 2500 5450 2400
 $EndSCHEMATC

@@ -29,6 +29,7 @@ F8 "SAI1_FS_B" O R 3650 1800 50
 F9 "SAI1_SD_B" O R 3650 1900 50 
 F10 "SAI1_SCK_B" O R 3650 2000 50 
 F11 "SAI1_MCLK_B" O R 3650 2100 50 
+F12 "SWO" O L 2450 3450 50 
 $EndSheet
 $Sheet
 S 3750 1700 1200 500 
@@ -266,7 +267,6 @@ F 3 "~" H 1650 4150 50  0001 C CNN
 	1    1650 4150
 	1    0    0    -1  
 $EndComp
-NoConn ~ 1700 3450
 NoConn ~ 1400 4150
 Wire Wire Line
 	1700 3050 2450 3050
@@ -323,4 +323,6 @@ Text Notes 1350 3200 2    50   ~ 0
 Debug connector
 Text Notes 1350 1800 2    50   ~ 0
 USB 2.0
+Wire Wire Line
+	1700 3450 2450 3450
 $EndSCHEMATC
