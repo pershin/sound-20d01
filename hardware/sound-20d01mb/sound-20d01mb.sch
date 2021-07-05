@@ -56,12 +56,12 @@ $EndSheet
 $Comp
 L Mechanical:MountingHole H?
 U 1 1 60DF6F4D
-P 8700 6350
-F 0 "H?" H 8800 6396 50  0000 L CNN
-F 1 "MountingHole" H 8800 6305 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.2mm_M3" H 8700 6350 50  0001 C CNN
-F 3 "~" H 8700 6350 50  0001 C CNN
-	1    8700 6350
+P 8100 6350
+F 0 "H?" H 8200 6396 50  0000 L CNN
+F 1 "MountingHole" H 8200 6305 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 8100 6350 50  0001 C CNN
+F 3 "~" H 8100 6350 50  0001 C CNN
+	1    8100 6350
 	1    0    0    -1  
 $EndComp
 $Comp
