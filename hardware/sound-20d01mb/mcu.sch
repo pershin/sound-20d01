@@ -657,4 +657,81 @@ Text HLabel 5450 2400 1    50   Output ~ 0
 SWO
 Wire Wire Line
 	5450 2500 5450 2400
+$Comp
+L Device:Crystal Y?
+U 1 1 60E3EBB3
+P 1150 3900
+F 0 "Y?" H 1150 4168 50  0000 C CNN
+F 1 "32.768kHz" H 1150 4077 50  0000 C CNN
+F 2 "Crystal:Crystal_SMD_3215-2Pin_3.2x1.5mm" H 1150 3900 50  0001 C CNN
+F 3 "~" H 1150 3900 50  0001 C CNN
+	1    1150 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 60E3ED93
+P 1150 4500
+F 0 "#PWR?" H 1150 4250 50  0001 C CNN
+F 1 "GNDD" H 1154 4345 50  0000 C CNN
+F 2 "" H 1150 4500 50  0001 C CNN
+F 3 "" H 1150 4500 50  0001 C CNN
+	1    1150 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	900  4300 900  4400
+Wire Wire Line
+	900  4400 1150 4400
+Wire Wire Line
+	1150 4400 1150 4500
+Wire Wire Line
+	1400 4300 1400 4400
+Wire Wire Line
+	1400 4400 1150 4400
+Connection ~ 1150 4400
+Wire Wire Line
+	4150 3200 1400 3200
+Wire Wire Line
+	1400 3200 1400 3900
+Wire Wire Line
+	1400 3900 1300 3900
+Wire Wire Line
+	1400 3900 1400 4000
+Connection ~ 1400 3900
+Wire Wire Line
+	4150 3100 900  3100
+Wire Wire Line
+	900  3100 900  3900
+Wire Wire Line
+	900  3900 1000 3900
+Wire Wire Line
+	900  3900 900  4000
+Connection ~ 900  3900
+Text Label 4050 3100 2    50   ~ 0
+RCC_OSC32_IN
+Text Label 4050 3200 2    50   ~ 0
+RCC_OSC32_OUT
+$Comp
+L Device:C C?
+U 1 1 60E6BE1E
+P 900 4150
+F 0 "C?" H 1015 4196 50  0000 L CNN
+F 1 "C" H 1015 4105 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 938 4000 50  0001 C CNN
+F 3 "~" H 900 4150 50  0001 C CNN
+	1    900  4150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 60E6F7A2
+P 1400 4150
+F 0 "C?" H 1515 4196 50  0000 L CNN
+F 1 "C" H 1515 4105 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 1438 4000 50  0001 C CNN
+F 3 "~" H 1400 4150 50  0001 C CNN
+	1    1400 4150
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
