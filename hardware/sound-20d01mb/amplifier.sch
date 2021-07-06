@@ -1016,4 +1016,254 @@ Text GLabel 7900 5300 0    50   Output ~ 0
 GAIN1
 Text GLabel 7650 3800 2    50   Input ~ 0
 GAIN1
+$Comp
+L sound-20d01_Library:ADG3304BRUZ U?
+U 1 1 60E6CDE4
+P 2750 6000
+F 0 "U?" H 2750 6567 50  0000 C CNN
+F 1 "ADG3304BRUZ" H 2750 6476 50  0000 C CNN
+F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 2750 5550 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/ADG3304.pdf" H 2750 5450 50  0001 C CNN
+	1    2750 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 60E6CFFD
+P 1650 4900
+F 0 "#PWR?" H 1650 4750 50  0001 C CNN
+F 1 "+3.3V" H 1665 5073 50  0000 C CNN
+F 2 "" H 1650 4900 50  0001 C CNN
+F 3 "" H 1650 4900 50  0001 C CNN
+	1    1650 4900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 60E6D115
+P 3850 4900
+F 0 "#PWR?" H 3850 4750 50  0001 C CNN
+F 1 "+5V" H 3865 5073 50  0000 C CNN
+F 2 "" H 3850 4900 50  0001 C CNN
+F 3 "" H 3850 4900 50  0001 C CNN
+	1    3850 4900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 60E75582
+P 3850 5250
+F 0 "C?" H 3965 5296 50  0000 L CNN
+F 1 "0.1uF" H 3965 5205 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 3888 5100 50  0001 C CNN
+F 3 "~" H 3850 5250 50  0001 C CNN
+	1    3850 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 60E857F4
+P 1650 5250
+F 0 "C?" H 1765 5296 50  0000 L CNN
+F 1 "0.1uF" H 1765 5205 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 1688 5100 50  0001 C CNN
+F 3 "~" H 1650 5250 50  0001 C CNN
+	1    1650 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 60EDF0E8
+P 1650 5500
+F 0 "#PWR?" H 1650 5250 50  0001 C CNN
+F 1 "GNDD" H 1654 5345 50  0000 C CNN
+F 2 "" H 1650 5500 50  0001 C CNN
+F 3 "" H 1650 5500 50  0001 C CNN
+	1    1650 5500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1650 5400 1650 5500
+$Comp
+L power:GNDD #PWR?
+U 1 1 60F016AF
+P 3850 5500
+F 0 "#PWR?" H 3850 5250 50  0001 C CNN
+F 1 "GNDD" H 3854 5345 50  0000 C CNN
+F 2 "" H 3850 5500 50  0001 C CNN
+F 3 "" H 3850 5500 50  0001 C CNN
+	1    3850 5500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3850 5400 3850 5500
+Wire Wire Line
+	2250 5700 2150 5700
+Wire Wire Line
+	2150 5700 2150 5000
+Wire Wire Line
+	2150 5000 1650 5000
+Connection ~ 1650 5000
+Wire Wire Line
+	1650 5000 1650 4900
+Wire Wire Line
+	1650 5100 1650 5000
+Wire Wire Line
+	3850 5100 3850 5000
+Wire Wire Line
+	3250 5700 3350 5700
+Wire Wire Line
+	3350 5700 3350 5000
+Wire Wire Line
+	3350 5000 3850 5000
+Connection ~ 3850 5000
+Wire Wire Line
+	3850 5000 3850 4900
+$Comp
+L power:GNDD #PWR?
+U 1 1 60FBACEF
+P 2150 6400
+F 0 "#PWR?" H 2150 6150 50  0001 C CNN
+F 1 "GNDD" H 2154 6245 50  0000 C CNN
+F 2 "" H 2150 6400 50  0001 C CNN
+F 3 "" H 2150 6400 50  0001 C CNN
+	1    2150 6400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2250 6300 2150 6300
+Wire Wire Line
+	2150 6300 2150 6400
+Text GLabel 2050 3200 0    50   Input ~ 0
+PGA_ZCEN
+Wire Wire Line
+	2250 3200 2050 3200
+Text GLabel 3350 5800 2    50   Output ~ 0
+PGA_ZCEN
+Wire Wire Line
+	3250 5800 3350 5800
+Text HLabel 2150 5800 0    50   Input ~ 0
+VOL_ZCEN
+Wire Wire Line
+	2250 5800 2150 5800
+Text GLabel 1600 3300 0    50   Input ~ 0
+~PGA_CS
+Wire Wire Line
+	2250 3300 1600 3300
+Text GLabel 3800 5900 2    50   Output ~ 0
+~PGA_CS
+Wire Wire Line
+	3250 5900 3800 5900
+Text GLabel 2050 3400 0    50   Input ~ 0
+PGA_SDI
+Wire Wire Line
+	2250 3400 2050 3400
+Text GLabel 2050 3700 0    50   Input ~ 0
+PGA_SCLK
+Wire Wire Line
+	2250 3700 2050 3700
+Text GLabel 3350 6000 2    50   Output ~ 0
+PGA_SDI
+Text GLabel 3350 6100 2    50   Output ~ 0
+PGA_SCLK
+Wire Wire Line
+	3250 6000 3350 6000
+Wire Wire Line
+	3250 6100 3350 6100
+Text HLabel 2150 5900 0    50   Input ~ 0
+~VOL_CS
+Wire Wire Line
+	2250 5900 2150 5900
+Text HLabel 2150 6000 0    50   Input ~ 0
+VOL_SDI
+Wire Wire Line
+	2250 6000 2150 6000
+Text HLabel 2150 6100 0    50   Input ~ 0
+VOL_SCLK
+Wire Wire Line
+	2250 6100 2150 6100
+$Comp
+L Device:R R?
+U 1 1 610CBBFA
+P 1300 4300
+F 0 "R?" H 1370 4346 50  0000 L CNN
+F 1 "100K" H 1370 4255 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 1230 4300 50  0001 C CNN
+F 3 "~" H 1300 4300 50  0001 C CNN
+	1    1300 4300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 610E229F
+P 1300 4550
+F 0 "#PWR?" H 1300 4300 50  0001 C CNN
+F 1 "GNDD" H 1304 4395 50  0000 C CNN
+F 2 "" H 1300 4550 50  0001 C CNN
+F 3 "" H 1300 4550 50  0001 C CNN
+	1    1300 4550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2250 3800 1300 3800
+Wire Wire Line
+	1300 3800 1300 4150
+Wire Wire Line
+	1300 4450 1300 4550
+$Comp
+L power:+5V #PWR?
+U 1 1 611264F2
+P 1000 3400
+F 0 "#PWR?" H 1000 3250 50  0001 C CNN
+F 1 "+5V" H 1015 3573 50  0000 C CNN
+F 2 "" H 1000 3400 50  0001 C CNN
+F 3 "" H 1000 3400 50  0001 C CNN
+	1    1000 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6113FC35
+P 4300 6050
+F 0 "R?" H 4370 6096 50  0000 L CNN
+F 1 "10K" H 4370 6005 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4230 6050 50  0001 C CNN
+F 3 "~" H 4300 6050 50  0001 C CNN
+	1    4300 6050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6113FF59
+P 4300 5800
+F 0 "#PWR?" H 4300 5650 50  0001 C CNN
+F 1 "+5V" H 4315 5973 50  0000 C CNN
+F 2 "" H 4300 5800 50  0001 C CNN
+F 3 "" H 4300 5800 50  0001 C CNN
+	1    4300 5800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4300 5900 4300 5800
+Wire Wire Line
+	3250 6300 4300 6300
+Wire Wire Line
+	4300 6300 4300 6200
+$Comp
+L Device:R R?
+U 1 1 61165792
+P 1000 3650
+F 0 "R?" H 1070 3696 50  0000 L CNN
+F 1 "10K" H 1070 3605 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 930 3650 50  0001 C CNN
+F 3 "~" H 1000 3650 50  0001 C CNN
+	1    1000 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1000 3500 1000 3400
+Wire Wire Line
+	2250 3900 1000 3900
+Wire Wire Line
+	1000 3900 1000 3800
 $EndSCHEMATC
