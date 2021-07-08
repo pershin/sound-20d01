@@ -540,40 +540,28 @@ Wire Wire Line
 $Comp
 L Device:C C?
 U 1 1 60E76A1B
-P 4850 3300
-F 0 "C?" V 5102 3300 50  0000 C CNN
-F 1 "2.2uF" V 5011 3300 50  0000 C CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 4888 3150 50  0001 C CNN
-F 3 "~" H 4850 3300 50  0001 C CNN
-	1    4850 3300
+P 4850 3100
+F 0 "C?" V 5102 3100 50  0000 C CNN
+F 1 "2.2uF" V 5011 3100 50  0000 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 4888 2950 50  0001 C CNN
+F 3 "~" H 4850 3100 50  0001 C CNN
+	1    4850 3100
 	0    -1   -1   0   
 $EndComp
 $Comp
 L Device:C C?
 U 1 1 60E79504
-P 4850 3800
-F 0 "C?" V 5102 3800 50  0000 C CNN
-F 1 "2.2uF" V 5011 3800 50  0000 C CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 4888 3650 50  0001 C CNN
-F 3 "~" H 4850 3800 50  0001 C CNN
-	1    4850 3800
+P 4850 4000
+F 0 "C?" V 5102 4000 50  0000 C CNN
+F 1 "2.2uF" V 5011 4000 50  0000 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 4888 3850 50  0001 C CNN
+F 3 "~" H 4850 4000 50  0001 C CNN
+	1    4850 4000
 	0    -1   -1   0   
 $EndComp
-Wire Wire Line
-	6450 3600 5100 3600
-Wire Wire Line
-	6450 3500 5100 3500
-Wire Wire Line
-	5100 3500 5100 3300
-Wire Wire Line
-	5100 3300 5000 3300
-Wire Wire Line
-	5100 3600 5100 3800
-Wire Wire Line
-	5100 3800 5000 3800
-Text HLabel 4150 3000 2    50   Input ~ 0
+Text HLabel 4150 2700 2    50   Input ~ 0
 LIN
-Text HLabel 4150 4100 2    50   Input ~ 0
+Text HLabel 4150 4400 2    50   Input ~ 0
 RIN
 Text HLabel 10350 3000 2    50   Output ~ 0
 LOUT
@@ -848,57 +836,29 @@ F 3 "" H 3450 3500 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	4600 3400 4600 3300
-Wire Wire Line
-	4600 3300 4700 3300
-Wire Wire Line
-	4600 3700 4600 3800
-Wire Wire Line
-	4600 3800 4700 3800
-Wire Wire Line
 	2150 3500 2150 2000
 $Comp
 L Device:C C?
 U 1 1 610438D7
-P 3900 4100
-F 0 "C?" V 4152 4100 50  0000 C CNN
-F 1 "2.2uF" V 4061 4100 50  0000 C CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 3938 3950 50  0001 C CNN
-F 3 "~" H 3900 4100 50  0001 C CNN
-	1    3900 4100
+P 3900 4400
+F 0 "C?" V 4152 4400 50  0000 C CNN
+F 1 "2.2uF" V 4061 4400 50  0000 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 3938 4250 50  0001 C CNN
+F 3 "~" H 3900 4400 50  0001 C CNN
+	1    3900 4400
 	0    -1   -1   0   
 $EndComp
-Wire Wire Line
-	4150 4100 4050 4100
-Wire Wire Line
-	3750 4100 3650 4100
-Wire Wire Line
-	3650 4100 3650 3900
-Wire Wire Line
-	3250 3900 3650 3900
-Wire Wire Line
-	3250 3200 3650 3200
-Wire Wire Line
-	3650 3200 3650 3000
 $Comp
 L Device:C C?
 U 1 1 610670CA
-P 3900 3000
-F 0 "C?" V 4152 3000 50  0000 C CNN
-F 1 "2.2uF" V 4061 3000 50  0000 C CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 3938 2850 50  0001 C CNN
-F 3 "~" H 3900 3000 50  0001 C CNN
-	1    3900 3000
+P 3900 2700
+F 0 "C?" V 4152 2700 50  0000 C CNN
+F 1 "2.2uF" V 4061 2700 50  0000 C CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 3938 2550 50  0001 C CNN
+F 3 "~" H 3900 2700 50  0001 C CNN
+	1    3900 2700
 	0    -1   -1   0   
 $EndComp
-Wire Wire Line
-	4150 3000 4050 3000
-Wire Wire Line
-	3750 3000 3650 3000
-Wire Wire Line
-	4600 3400 3250 3400
-Wire Wire Line
-	4600 3700 3250 3700
 Text Notes 1150 1100 0    50   ~ 0
 Place power-supply bypass capacitors as\nclose to the PGA2311 package as physically possible.
 $Comp
@@ -1266,4 +1226,128 @@ Wire Wire Line
 	2250 3900 1000 3900
 Wire Wire Line
 	1000 3900 1000 3800
+$Comp
+L Device:R R?
+U 1 1 60E774AC
+P 4350 3100
+F 0 "R?" V 4557 3100 50  0000 C CNN
+F 1 "100R" V 4466 3100 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4280 3100 50  0001 C CNN
+F 3 "~" H 4350 3100 50  0001 C CNN
+	1    4350 3100
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 60E83DCC
+P 4350 4000
+F 0 "R?" V 4557 4000 50  0000 C CNN
+F 1 "100R" V 4466 4000 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4280 4000 50  0001 C CNN
+F 3 "~" H 4350 4000 50  0001 C CNN
+	1    4350 4000
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 60EBA10D
+P 4600 4250
+F 0 "R?" H 4670 4296 50  0000 L CNN
+F 1 "1M" H 4670 4205 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4530 4250 50  0001 C CNN
+F 3 "~" H 4600 4250 50  0001 C CNN
+	1    4600 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDA #PWR?
+U 1 1 60EDFC4C
+P 4600 4500
+F 0 "#PWR?" H 4600 4250 50  0001 C CNN
+F 1 "GNDA" H 4605 4327 50  0000 C CNN
+F 2 "" H 4600 4500 50  0001 C CNN
+F 3 "" H 4600 4500 50  0001 C CNN
+	1    4600 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4600 4400 4600 4500
+$Comp
+L Device:R R?
+U 1 1 60F53986
+P 4600 3350
+F 0 "R?" H 4670 3396 50  0000 L CNN
+F 1 "1M" H 4670 3305 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4530 3350 50  0001 C CNN
+F 3 "~" H 4600 3350 50  0001 C CNN
+	1    4600 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDA #PWR?
+U 1 1 60F5398D
+P 4600 3600
+F 0 "#PWR?" H 4600 3350 50  0001 C CNN
+F 1 "GNDA" H 4605 3427 50  0000 C CNN
+F 2 "" H 4600 3600 50  0001 C CNN
+F 3 "" H 4600 3600 50  0001 C CNN
+	1    4600 3600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4600 3500 4600 3600
+Wire Wire Line
+	3250 3200 3650 3200
+Wire Wire Line
+	3650 3200 3650 2700
+Wire Wire Line
+	3650 2700 3750 2700
+Wire Wire Line
+	3250 3900 3650 3900
+Wire Wire Line
+	3650 3900 3650 4400
+Wire Wire Line
+	3650 4400 3750 4400
+Wire Wire Line
+	4150 2700 4050 2700
+Wire Wire Line
+	4150 4400 4050 4400
+Wire Wire Line
+	3250 3400 4100 3400
+Wire Wire Line
+	4100 3400 4100 3100
+Wire Wire Line
+	4100 3100 4200 3100
+Wire Wire Line
+	4500 3100 4600 3100
+Wire Wire Line
+	4600 3100 4600 3200
+Connection ~ 4600 3100
+Wire Wire Line
+	4600 3100 4700 3100
+Wire Wire Line
+	5000 3100 5100 3100
+Wire Wire Line
+	5100 3100 5100 3500
+Wire Wire Line
+	5100 3500 6450 3500
+Wire Wire Line
+	3250 3700 4100 3700
+Wire Wire Line
+	4100 3700 4100 4000
+Wire Wire Line
+	4100 4000 4200 4000
+Wire Wire Line
+	4500 4000 4600 4000
+Wire Wire Line
+	4600 4000 4600 4100
+Connection ~ 4600 4000
+Wire Wire Line
+	4600 4000 4700 4000
+Wire Wire Line
+	5000 4000 5100 4000
+Wire Wire Line
+	5100 4000 5100 3600
+Wire Wire Line
+	5100 3600 6450 3600
 $EndSCHEMATC
