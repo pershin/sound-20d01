@@ -559,9 +559,9 @@ F 3 "~" H 4850 4000 50  0001 C CNN
 	1    4850 4000
 	0    -1   -1   0   
 $EndComp
-Text HLabel 4150 2700 2    50   Input ~ 0
+Text HLabel 4150 2200 1    50   Input ~ 0
 LIN
-Text HLabel 4150 4400 2    50   Input ~ 0
+Text HLabel 4150 4900 3    50   Input ~ 0
 RIN
 Text HLabel 10350 3000 2    50   Output ~ 0
 LOUT
@@ -1309,10 +1309,6 @@ Wire Wire Line
 Wire Wire Line
 	3650 4400 3750 4400
 Wire Wire Line
-	4150 2700 4050 2700
-Wire Wire Line
-	4150 4400 4050 4400
-Wire Wire Line
 	3250 3400 4100 3400
 Wire Wire Line
 	4100 3400 4100 3100
@@ -1350,4 +1346,38 @@ Wire Wire Line
 	5100 4000 5100 3600
 Wire Wire Line
 	5100 3600 6450 3600
+$Comp
+L Device:R R?
+U 1 1 60E82F70
+P 4150 2450
+F 0 "R?" H 4220 2496 50  0000 L CNN
+F 1 "100R" H 4220 2405 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4080 2450 50  0001 C CNN
+F 3 "~" H 4150 2450 50  0001 C CNN
+	1    4150 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4150 2200 4150 2300
+Wire Wire Line
+	4150 2600 4150 2700
+Wire Wire Line
+	4150 2700 4050 2700
+$Comp
+L Device:R R?
+U 1 1 60E9DE19
+P 4150 4650
+F 0 "R?" H 4220 4696 50  0000 L CNN
+F 1 "100R" H 4220 4605 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4080 4650 50  0001 C CNN
+F 3 "~" H 4150 4650 50  0001 C CNN
+	1    4150 4650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4150 4900 4150 4800
+Wire Wire Line
+	4150 4500 4150 4400
+Wire Wire Line
+	4150 4400 4050 4400
 $EndSCHEMATC
