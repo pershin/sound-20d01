@@ -174,6 +174,7 @@ S 2450 4500 1200 1250
 U 61033008
 F0 "Power Supply Unit" 50
 F1 "psu.sch" 50
+F2 "EXT_5V" I R 3650 4600 50 
 $EndSheet
 $Comp
 L Connector_Generic:Conn_01x02 J?
@@ -325,4 +326,32 @@ Text Notes 1350 1800 2    50   ~ 0
 USB 2.0
 Wire Wire Line
 	1700 3450 2450 3450
+$Comp
+L Connector_Generic:Conn_01x02 J?
+U 1 1 60EA1B68
+P 4200 4600
+F 0 "J?" H 4280 4592 50  0000 L CNN
+F 1 "Conn_01x02" H 4280 4501 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B02B-XH-A_1x02_P2.50mm_Vertical" H 4200 4600 50  0001 C CNN
+F 3 "~" H 4200 4600 50  0001 C CNN
+	1    4200 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 60EA1BF4
+P 3900 4800
+F 0 "#PWR?" H 3900 4550 50  0001 C CNN
+F 1 "GNDD" H 3904 4645 50  0000 C CNN
+F 2 "" H 3900 4800 50  0001 C CNN
+F 3 "" H 3900 4800 50  0001 C CNN
+	1    3900 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4000 4700 3900 4700
+Wire Wire Line
+	3900 4700 3900 4800
+Wire Wire Line
+	4000 4600 3650 4600
 $EndSCHEMATC
