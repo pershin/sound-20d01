@@ -218,7 +218,7 @@ Wire Wire Line
 Wire Wire Line
 	6450 3400 6450 3300
 Text Notes 6700 3300 0    50   ~ 0
-Supply voltage range: 12V to 30V
+Supply voltage range: 12V to 30V (analog)
 $Comp
 L power:VBUS #PWR?
 U 1 1 60E0D7F5
@@ -354,4 +354,6 @@ Wire Wire Line
 	3900 4700 3900 4800
 Wire Wire Line
 	4000 4600 3650 4600
+Text Notes 4150 4500 0    50   ~ 0
+External 5V Power supply (digital)
 $EndSCHEMATC
