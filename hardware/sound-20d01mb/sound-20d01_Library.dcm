@@ -5,6 +5,12 @@ D Low Voltage, 1.15 V to 5.5 V, 4-Channel, Bidirectional Logic Level Translator
 F https://www.analog.com/media/en/technical-documentation/data-sheets/ADG3304.pdf
 $ENDCMP
 #
+$CMP LM27762
+D Low-Noise Positive and Negative Output Integrated Charge Pump Plus LDO
+K inverting charge pump
+F https://www.ti.com/lit/ds/symlink/lm27762.pdf
+$ENDCMP
+#
 $CMP PCM5102A
 D 2.1 VRMS, 112/106/100 dB Audio Stereo DAC with PLL and 32-bit, 384 kHz PCM Interface
 K audio dac 2ch 32bit 384kHz
