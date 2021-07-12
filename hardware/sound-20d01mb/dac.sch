@@ -70,7 +70,7 @@ AR Path="/60DE2DF4/60E4331F" Ref="C?"  Part="1"
 AR Path="/60DE2DF1/60E4331F" Ref="C?"  Part="1" 
 F 0 "C?" H 3468 4846 50  0000 L CNN
 F 1 "10uF" H 3468 4755 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 3388 4650 50  0001 C CNN
+F 2 "Capacitor_SMD:CP_Elec_4x5.4" H 3388 4650 50  0001 C CNN
 F 3 "~" H 3350 4800 50  0001 C CNN
 	1    3350 4800
 	1    0    0    -1  
