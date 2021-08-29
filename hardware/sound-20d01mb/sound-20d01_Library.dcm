@@ -1,5 +1,11 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP AD1938
+D 4 ADC/8 DAC with PLL, 192 kHz, 24-Bit Codec
+K ADC, DAC, volume
+F https://www.analog.com/media/en/technical-documentation/data-sheets/AD1938.pdf
+$ENDCMP
+#
 $CMP ADG3304BRUZ
 D Low Voltage, 1.15 V to 5.5 V, 4-Channel, Bidirectional Logic Level Translator
 F https://www.analog.com/media/en/technical-documentation/data-sheets/ADG3304.pdf
