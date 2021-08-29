@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 4 5
+Sheet 5 6
 Title "Sound-20D01MB"
 Date "2021-07-01"
 Rev "0"
@@ -218,18 +218,16 @@ Wire Wire Line
 $Comp
 L power:GNDA #PWR?
 U 1 1 60E18B79
-P 7600 4800
-F 0 "#PWR?" H 7600 4550 50  0001 C CNN
-F 1 "GNDA" H 7605 4627 50  0000 C CNN
-F 2 "" H 7600 4800 50  0001 C CNN
-F 3 "" H 7600 4800 50  0001 C CNN
-	1    7600 4800
+P 7000 5000
+F 0 "#PWR?" H 7000 4750 50  0001 C CNN
+F 1 "GNDA" H 7005 4827 50  0000 C CNN
+F 2 "" H 7000 5000 50  0001 C CNN
+F 3 "" H 7000 5000 50  0001 C CNN
+	1    7000 5000
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	7500 4700 7600 4700
-Wire Wire Line
-	7600 4700 7600 4800
 Wire Wire Line
 	7500 3800 7600 3800
 Wire Wire Line
@@ -514,20 +512,8 @@ Wire Wire Line
 	5750 4600 5750 4700
 Wire Wire Line
 	5250 4300 5250 4700
-Connection ~ 7600 4700
 Wire Wire Line
 	6500 4300 5250 4300
-$Comp
-L power:GNDA #PWR?
-U 1 1 60E61F4D
-P 6400 4800
-F 0 "#PWR?" H 6400 4550 50  0001 C CNN
-F 1 "GNDA" H 6405 4627 50  0000 C CNN
-F 2 "" H 6400 4800 50  0001 C CNN
-F 3 "" H 6400 4800 50  0001 C CNN
-	1    6400 4800
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	6500 4400 6400 4400
 Wire Wire Line
@@ -535,8 +521,6 @@ Wire Wire Line
 Wire Wire Line
 	6500 4500 6400 4500
 Connection ~ 6400 4500
-Wire Wire Line
-	6400 4500 6400 4800
 $Comp
 L Device:C C?
 U 1 1 60E76A1B
@@ -1528,4 +1512,16 @@ Wire Wire Line
 	3700 5000 3800 5000
 Wire Wire Line
 	4200 5000 4100 5000
+Connection ~ 7600 4700
+Wire Wire Line
+	7600 4900 7000 4900
+Wire Wire Line
+	7000 4900 7000 5000
+Wire Wire Line
+	7600 4700 7600 4900
+Wire Wire Line
+	6400 4900 7000 4900
+Wire Wire Line
+	6400 4500 6400 4900
+Connection ~ 7000 4900
 $EndSCHEMATC

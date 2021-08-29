@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 5
+Sheet 2 6
 Title "Sound-20D01MB"
 Date "2021-07-01"
 Rev "0"
@@ -734,4 +734,20 @@ F 3 "~" H 1400 4150 50  0001 C CNN
 	1    1400 4150
 	1    0    0    -1  
 $EndComp
+$Sheet
+S 8550 4450 1000 1000
+U 612AF97F
+F0 "Oscillators" 50
+F1 "oscillators.sch" 50
+F2 "OSC_OUTPUT" O L 8550 4550 50 
+F3 "OSC_SEL" I L 8550 4650 50 
+$EndSheet
+Wire Wire Line
+	8550 4550 8050 4550
+Wire Wire Line
+	8050 4550 8050 3700
+Wire Wire Line
+	8050 3700 6450 3700
+Text Label 6550 3700 0    50   ~ 0
+I2S_CKIN
 $EndSCHEMATC
