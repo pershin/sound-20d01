@@ -233,17 +233,6 @@ Wire Wire Line
 Wire Wire Line
 	5750 3800 5750 4700
 $Comp
-L Device:CP C?
-U 1 1 60E1A09F
-P 6850 2850
-F 0 "C?" H 6968 2896 50  0000 L CNN
-F 1 "10uF" H 6968 2805 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 6888 2700 50  0001 C CNN
-F 3 "~" H 6850 2850 50  0001 C CNN
-	1    6850 2850
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:C C?
 U 1 1 60E1A10C
 P 6350 2850
@@ -456,8 +445,6 @@ F 3 "~" H 5400 5650 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	4400 4700 4650 4700
-Wire Wire Line
-	4400 5400 4400 4700
 $Comp
 L Device:C C?
 U 1 1 60E4E927
@@ -474,7 +461,7 @@ L Device:C C?
 U 1 1 60E4EBF1
 P 3400 4850
 F 0 "C?" H 3515 4896 50  0000 L CNN
-F 1 "1uF" H 3515 4805 50  0000 L CNN
+F 1 "2.2uF" H 3515 4805 50  0000 L CNN
 F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 3438 4700 50  0001 C CNN
 F 3 "~" H 3400 4850 50  0001 C CNN
 	1    3400 4850
@@ -543,9 +530,9 @@ F 3 "~" H 3050 4600 50  0001 C CNN
 	1    3050 4600
 	0    -1   -1   0   
 $EndComp
-Text HLabel 2300 3700 0    50   Input ~ 0
+Text HLabel 2800 3700 0    50   Input ~ 0
 LIN
-Text HLabel 2300 4600 0    50   Input ~ 0
+Text HLabel 2800 4600 0    50   Input ~ 0
 RIN
 Text HLabel 8550 3600 2    50   Output ~ 0
 LOUT
@@ -674,72 +661,6 @@ Text GLabel 6100 5900 0    50   Output ~ 0
 GAIN1
 Text GLabel 5850 4400 2    50   Input ~ 0
 GAIN1
-$Comp
-L Device:R R?
-U 1 1 60E774AC
-P 2550 3700
-F 0 "R?" V 2757 3700 50  0000 C CNN
-F 1 "100R" V 2666 3700 50  0000 C CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 2480 3700 50  0001 C CNN
-F 3 "~" H 2550 3700 50  0001 C CNN
-	1    2550 3700
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 60E83DCC
-P 2550 4600
-F 0 "R?" V 2757 4600 50  0000 C CNN
-F 1 "100R" V 2666 4600 50  0000 C CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 2480 4600 50  0001 C CNN
-F 3 "~" H 2550 4600 50  0001 C CNN
-	1    2550 4600
-	0    -1   -1   0   
-$EndComp
-$Comp
-L power:GNDA #PWR?
-U 1 1 60EDFC4C
-P 2800 5100
-F 0 "#PWR?" H 2800 4850 50  0001 C CNN
-F 1 "GNDA" H 2805 4927 50  0000 C CNN
-F 2 "" H 2800 5100 50  0001 C CNN
-F 3 "" H 2800 5100 50  0001 C CNN
-	1    2800 5100
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2800 5000 2800 5100
-$Comp
-L Device:R R?
-U 1 1 60F53986
-P 2800 3950
-F 0 "R?" H 2870 3996 50  0000 L CNN
-F 1 "1M" H 2870 3905 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 2730 3950 50  0001 C CNN
-F 3 "~" H 2800 3950 50  0001 C CNN
-	1    2800 3950
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GNDA #PWR?
-U 1 1 60F5398D
-P 2800 4200
-F 0 "#PWR?" H 2800 3950 50  0001 C CNN
-F 1 "GNDA" H 2805 4027 50  0000 C CNN
-F 2 "" H 2800 4200 50  0001 C CNN
-F 3 "" H 2800 4200 50  0001 C CNN
-	1    2800 4200
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2800 4100 2800 4200
-Wire Wire Line
-	2300 3700 2400 3700
-Wire Wire Line
-	2700 3700 2800 3700
-Wire Wire Line
-	2800 3700 2800 3800
-Connection ~ 2800 3700
 Wire Wire Line
 	2800 3700 2900 3700
 Wire Wire Line
@@ -748,13 +669,6 @@ Wire Wire Line
 	3300 3700 3300 4100
 Wire Wire Line
 	3300 4100 4650 4100
-Wire Wire Line
-	2300 4600 2400 4600
-Wire Wire Line
-	2700 4600 2800 4600
-Wire Wire Line
-	2800 4600 2800 4700
-Connection ~ 2800 4600
 Wire Wire Line
 	2800 4600 2900 4600
 Wire Wire Line
@@ -957,15 +871,17 @@ Wire Wire Line
 Wire Wire Line
 	4550 4500 4550 4900
 Connection ~ 5150 4900
+Wire Wire Line
+	4400 5400 4400 4700
 $Comp
-L Device:R R?
-U 1 1 60EBA10D
-P 2800 4850
-F 0 "R?" H 2870 4896 50  0000 L CNN
-F 1 "1M" H 2870 4805 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 2730 4850 50  0001 C CNN
-F 3 "~" H 2800 4850 50  0001 C CNN
-	1    2800 4850
+L Device:C C?
+U 1 1 613EF0A5
+P 6850 2850
+F 0 "C?" H 6965 2896 50  0000 L CNN
+F 1 "10uF" H 6965 2805 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1210_3225Metric_Pad1.42x2.65mm_HandSolder" H 6888 2700 50  0001 C CNN
+F 3 "~" H 6850 2850 50  0001 C CNN
+	1    6850 2850
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC

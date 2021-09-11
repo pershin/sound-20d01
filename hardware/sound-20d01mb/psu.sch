@@ -188,7 +188,6 @@ F 3 "" H 5950 2350 50  0001 C CNN
 	1    5950 2350
 	1    0    0    -1  
 $EndComp
-Connection ~ 5650 3300
 $Comp
 L power:VBUS #PWR?
 U 1 1 60E9D839
@@ -307,133 +306,38 @@ Wire Wire Line
 Text Notes 5150 1400 0    50   ~ 0
 Place U? as close to the MCU as possible.
 $Comp
-L Regulator_Linear:L7805 U?
-U 1 1 60EFE20B
-P 3550 3300
-F 0 "U?" H 3550 3542 50  0000 C CNN
-F 1 "L7805" H 3550 3451 50  0000 C CNN
-F 2 "" H 3575 3150 50  0001 L CIN
-F 3 "http://www.st.com/content/ccc/resource/technical/document/datasheet/41/4f/b3/b0/12/d4/47/88/CD00000444.pdf/files/CD00000444.pdf/jcr:content/translations/en.CD00000444.pdf" H 3550 3250 50  0001 C CNN
-	1    3550 3300
+L power:+5V #PWR?
+U 1 1 613DA71E
+P 5150 3200
+F 0 "#PWR?" H 5150 3050 50  0001 C CNN
+F 1 "+5V" H 5165 3373 50  0000 C CNN
+F 2 "" H 5150 3200 50  0001 C CNN
+F 3 "" H 5150 3200 50  0001 C CNN
+	1    5150 3200
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:VCC #PWR?
-U 1 1 60EFE34E
-P 2250 3200
-F 0 "#PWR?" H 2250 3050 50  0001 C CNN
-F 1 "VCC" H 2267 3373 50  0000 C CNN
-F 2 "" H 2250 3200 50  0001 C CNN
-F 3 "" H 2250 3200 50  0001 C CNN
-	1    2250 3200
-	1    0    0    -1  
-$EndComp
+Wire Wire Line
+	5150 3300 5150 3200
+Connection ~ 5650 3300
 $Comp
 L Device:CP C?
-U 1 1 60EFECE5
-P 2250 3550
-F 0 "C?" H 2368 3596 50  0000 L CNN
-F 1 "470uF" H 2368 3505 50  0000 L CNN
-F 2 "" H 2288 3400 50  0001 C CNN
-F 3 "~" H 2250 3550 50  0001 C CNN
-	1    2250 3550
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:C C?
-U 1 1 60EFED6F
-P 2750 3550
-AR Path="/60DE2DF4/60EFED6F" Ref="C?"  Part="1" 
-AR Path="/60DE2DF1/60EFED6F" Ref="C?"  Part="1" 
-AR Path="/61033008/60EFED6F" Ref="C?"  Part="1" 
-F 0 "C?" H 2865 3596 50  0000 L CNN
-F 1 "0.1uF" H 2865 3505 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 2788 3400 50  0001 C CNN
-F 3 "~" H 2750 3550 50  0001 C CNN
-	1    2750 3550
+U 1 1 613DBAC3
+P 5150 3550
+F 0 "C?" H 5268 3596 50  0000 L CNN
+F 1 "10uF" H 5268 3505 50  0000 L CNN
+F 2 "" H 5188 3400 50  0001 C CNN
+F 3 "~" H 5150 3550 50  0001 C CNN
+	1    5150 3550
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2250 3300 2750 3300
+	5150 3300 5650 3300
 Wire Wire Line
-	2250 3300 2250 3400
+	5150 3300 5150 3400
+Connection ~ 5150 3300
 Wire Wire Line
-	2750 3400 2750 3300
+	5150 3700 5150 3800
 Wire Wire Line
-	2750 3300 3250 3300
-Connection ~ 2750 3300
-Wire Wire Line
-	2250 3200 2250 3300
-Connection ~ 2250 3300
-Wire Wire Line
-	3850 3300 4350 3300
-$Comp
-L Device:C C?
-U 1 1 60F07D83
-P 4350 3550
-AR Path="/60DE2DF4/60F07D83" Ref="C?"  Part="1" 
-AR Path="/60DE2DF1/60F07D83" Ref="C?"  Part="1" 
-AR Path="/61033008/60F07D83" Ref="C?"  Part="1" 
-F 0 "C?" H 4465 3596 50  0000 L CNN
-F 1 "0.1uF" H 4465 3505 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 4388 3400 50  0001 C CNN
-F 3 "~" H 4350 3550 50  0001 C CNN
-	1    4350 3550
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4350 3400 4350 3300
-$Comp
-L Device:CP C?
-U 1 1 60F08839
-P 4850 3550
-F 0 "C?" H 4968 3596 50  0000 L CNN
-F 1 "470uF" H 4968 3505 50  0000 L CNN
-F 2 "" H 4888 3400 50  0001 C CNN
-F 3 "~" H 4850 3550 50  0001 C CNN
-	1    4850 3550
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4350 3300 4850 3300
-Connection ~ 4350 3300
-Wire Wire Line
-	4850 3400 4850 3300
-Connection ~ 4850 3300
-$Comp
-L power:GNDA #PWR?
-U 1 1 60F0C362
-P 3550 3900
-F 0 "#PWR?" H 3550 3650 50  0001 C CNN
-F 1 "GNDA" H 3555 3727 50  0000 C CNN
-F 2 "" H 3550 3900 50  0001 C CNN
-F 3 "" H 3550 3900 50  0001 C CNN
-	1    3550 3900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3550 3600 3550 3800
-Wire Wire Line
-	2250 3700 2250 3800
-Wire Wire Line
-	2250 3800 2750 3800
-Connection ~ 3550 3800
-Wire Wire Line
-	3550 3800 3550 3900
-Wire Wire Line
-	2750 3700 2750 3800
-Connection ~ 2750 3800
-Wire Wire Line
-	2750 3800 3550 3800
-Wire Wire Line
-	4350 3700 4350 3800
-Wire Wire Line
-	4350 3800 3550 3800
-Wire Wire Line
-	4850 3700 4850 3800
-Wire Wire Line
-	4850 3800 4350 3800
-Connection ~ 4350 3800
-Wire Wire Line
-	4850 3300 5650 3300
+	5150 3800 5650 3800
+Connection ~ 5650 3800
 $EndSCHEMATC
