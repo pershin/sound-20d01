@@ -750,4 +750,12 @@ Wire Wire Line
 	8050 3700 6450 3700
 Text Label 6550 3700 0    50   ~ 0
 I2S_CKIN
+Text GLabel 4050 3800 0    50   Output ~ 0
+OSC_SEL
+Wire Wire Line
+	4150 3800 4050 3800
+Text GLabel 8450 4650 0    50   Input ~ 0
+OSC_SEL
+Wire Wire Line
+	8450 4650 8550 4650
 $EndSCHEMATC

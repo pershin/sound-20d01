@@ -43,8 +43,20 @@ void AD1938_SPI_Write(uint8_t address, uint8_t data) {
 	HAL_GPIO_WritePin(AD1938_CLATCH_GPIO_Port, AD1938_CLATCH_Pin, GPIO_PIN_SET);
 }
 
+void BSP_AUDIO_OSC_Select(BSP_AUDIO_OSC sel) {
+	switch (sel) {
+	case BSP_AUDIO_OSC_44K1:
+		HAL_GPIO_WritePin(OSC_SEL_GPIO_Port, OSC_SEL_Pin, GPIO_PIN_SET);
+		break;
+	case BSP_AUDIO_OSC_48K:
+		HAL_GPIO_WritePin(OSC_SEL_GPIO_Port, OSC_SEL_Pin, GPIO_PIN_RESET);
+		break;
+	}
+}
+
 void BSP_AUDIO_Init() {
-	BSP_AUDIO_OUT_SetVolume(180);
+	BSP_AUDIO_OSC_Select(BSP_AUDIO_OSC_48K);
+	BSP_AUDIO_OUT_SetVolume(50);
 
 	/* PLL and Clock Control 0 */
 	AD1938_SPI_Write(0x0, (1 << 7)); /* Enable: ADC and DAC active */
