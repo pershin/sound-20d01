@@ -12,5 +12,6 @@ void BSP_AUDIO_Init();
 uint8_t BSP_AUDIO_OUT_Play(uint8_t *pbuf, uint32_t size);
 void BSP_AUDIO_OUT_ChangeBuffer(uint8_t *pbuf, uint32_t size);
 void BSP_AUDIO_OUT_SetVolume(uint8_t vol);
+void BSP_AUDIO_OUT_Mute(uint8_t cmd);
 
 #endif /* BSP_SOUND_20D01_INC_AUDIO_H_ */

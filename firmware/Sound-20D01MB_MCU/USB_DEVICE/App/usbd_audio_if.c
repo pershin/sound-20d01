@@ -222,7 +222,8 @@ static int8_t AUDIO_VolumeCtl_FS(uint8_t vol)
 static int8_t AUDIO_MuteCtl_FS(uint8_t cmd)
 {
   /* USER CODE BEGIN 4 */
-  UNUSED(cmd);
+  //UNUSED(cmd);
+  BSP_AUDIO_OUT_Mute(cmd);
   return (USBD_OK);
   /* USER CODE END 4 */
 }

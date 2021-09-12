@@ -61,7 +61,15 @@ static void MX_SPI1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+#ifdef DEBUG
+int _write(int32_t file, uint8_t *ptr, int32_t len) {
+	/* Implement your write code here, this is used by puts and printf for example */
+	int i = 0;
+	for (i = 0; i < len; i++)
+		ITM_SendChar((*ptr++));
+	return len;
+}
+#endif
 /* USER CODE END 0 */
 
 /**

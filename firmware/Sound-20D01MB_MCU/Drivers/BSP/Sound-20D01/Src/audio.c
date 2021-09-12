@@ -8,6 +8,10 @@
 #include "main.h"
 #include "audio.h"
 
+#ifdef DEBUG
+#include <stdio.h>
+#endif
+
 #define AUDIODATA_SIZE 2 /* 16-bits audio data size */
 #define DMA_MAX_SZE    0xFFFF
 #define DMA_MAX(x)     (((x) <= DMA_MAX_SZE)? (x):DMA_MAX_SZE)
@@ -59,5 +63,16 @@ void BSP_AUDIO_OUT_ChangeBuffer(uint8_t *pbuf, uint32_t size) {
 void BSP_AUDIO_OUT_SetVolume(uint8_t vol) {
 	AD1938_SPI_Write(0x6, vol); /* DAC L1 volume control */
 	AD1938_SPI_Write(0x7, vol); /* DAC R1 volume control */
+
+#ifdef DEBUG
+	printf("SetVolume: %d\n", vol);
+#endif
+}
+
+void BSP_AUDIO_OUT_Mute(uint8_t cmd) {
+
+#ifdef DEBUG
+	printf("Mute: %d\n", cmd);
+#endif
 }
 
