@@ -1,7 +1,0 @@
-audio.c:22:6:HAL_SAI_TxCpltCallback	16	static
-audio.c:26:6:HAL_SAI_TxHalfCpltCallback	16	static
-audio.c:30:6:AD1938_SPI_Write	24	static
-audio.c:42:6:BSP_AUDIO_Init	8	static
-audio.c:49:9:BSP_AUDIO_OUT_Play	16	static
-audio.c:55:6:BSP_AUDIO_OUT_ChangeBuffer	16	static
-audio.c:59:6:BSP_AUDIO_OUT_SetVolume	16	static
