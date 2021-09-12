@@ -8,7 +8,9 @@
 #ifndef BSP_SOUND_20D01_INC_AUDIO_H_
 #define BSP_SOUND_20D01_INC_AUDIO_H_
 
+void BSP_AUDIO_Init();
 uint8_t BSP_AUDIO_OUT_Play(uint8_t *pbuf, uint32_t size);
 void BSP_AUDIO_OUT_ChangeBuffer(uint8_t *pbuf, uint32_t size);
+void BSP_AUDIO_OUT_SetVolume(uint8_t vol);
 
 #endif /* BSP_SOUND_20D01_INC_AUDIO_H_ */

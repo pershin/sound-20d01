@@ -157,6 +157,7 @@ static int8_t AUDIO_Init_FS(uint32_t AudioFreq, uint32_t Volume, uint32_t option
   UNUSED(AudioFreq);
   UNUSED(Volume);
   UNUSED(options);
+  BSP_AUDIO_Init();
   return (USBD_OK);
   /* USER CODE END 0 */
 }
