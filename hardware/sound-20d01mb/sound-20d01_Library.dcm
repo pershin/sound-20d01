@@ -23,6 +23,12 @@ K audio dac 2ch 32bit 384kHz
 F https://www.ti.com/lit/ds/symlink/pcm5102a.pdf
 $ENDCMP
 #
+$CMP PCM5142
+D 2V RMS DIRECTPATH 112dB Audio Stereo DAC with PCM interface and fully programmable miniDSP
+K DAC, Audio
+F https://www.ti.com/lit/ds/symlink/pcm5142.pdf
+$ENDCMP
+#
 $CMP PGA2311P
 D Stereo Audio Volume Control
 K volume
