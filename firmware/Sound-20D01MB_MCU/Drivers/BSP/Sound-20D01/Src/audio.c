@@ -16,8 +16,14 @@
 #define DMA_MAX_SZE    0xFFFF
 #define DMA_MAX(x)     (((x) <= DMA_MAX_SZE)? (x):DMA_MAX_SZE)
 
+#define PCM5142_ADDRESS 0x98
+
+/* Page 0 */
+#define PCM5142_VOLL 61 /* Left Digital Volume */
+#define PCM5142_VOLR 62 /* Right Digital Volume */
+
 extern SAI_HandleTypeDef hsai_BlockB1;
-extern SPI_HandleTypeDef hspi1;
+extern I2C_HandleTypeDef hi2c1;
 
 void TransferComplete_CallBack_FS(void);
 void HalfTransfer_CallBack_FS(void);
@@ -29,18 +35,6 @@ void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
 
 void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai) {
 	HalfTransfer_CallBack_FS();
-}
-
-void AD1938_SPI_Write(uint8_t address, uint8_t data) {
-	uint8_t spi1_data[3];
-
-	spi1_data[0] = (0x04 << 1);
-	spi1_data[1] = address;
-	spi1_data[2] = data;
-
-	HAL_GPIO_WritePin(AD1938_CLATCH_GPIO_Port, AD1938_CLATCH_Pin, GPIO_PIN_RESET);
-	HAL_SPI_Transmit(&hspi1, (uint8_t*) &spi1_data, 3, 5000);
-	HAL_GPIO_WritePin(AD1938_CLATCH_GPIO_Port, AD1938_CLATCH_Pin, GPIO_PIN_SET);
 }
 
 void BSP_AUDIO_OSC_Select(BSP_AUDIO_OSC sel) {
@@ -56,10 +50,7 @@ void BSP_AUDIO_OSC_Select(BSP_AUDIO_OSC sel) {
 
 void BSP_AUDIO_Init() {
 	BSP_AUDIO_OSC_Select(BSP_AUDIO_OSC_48K);
-	BSP_AUDIO_OUT_SetVolume(50);
-
-	/* PLL and Clock Control 0 */
-	AD1938_SPI_Write(0x0, (1 << 7)); /* Enable: ADC and DAC active */
+	BSP_AUDIO_OUT_SetVolume(150);
 }
 
 uint8_t BSP_AUDIO_OUT_Play(uint8_t *pbuf, uint32_t size) {
@@ -72,12 +63,31 @@ void BSP_AUDIO_OUT_ChangeBuffer(uint8_t *pbuf, uint32_t size) {
 	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) pbuf, size);
 }
 
-void BSP_AUDIO_OUT_SetVolume(uint8_t vol) {
-	AD1938_SPI_Write(0x6, vol); /* DAC L1 volume control */
-	AD1938_SPI_Write(0x7, vol); /* DAC R1 volume control */
+void PCM5142_SetPageSelectRegister(uint8_t page) {
+	uint8_t data[2];
+
+	data[0] = 0; /* Page select register */
+	data[1] = page;
+	HAL_I2C_Master_Transmit(&hi2c1, PCM5142_ADDRESS, data, 2, HAL_MAX_DELAY);
 
 #ifdef DEBUG
-	printf("SetVolume: %d\n", vol);
+	printf("Page select register: %d\n", page);
+#endif
+}
+
+void BSP_AUDIO_OUT_SetVolume(uint8_t vol) {
+	uint8_t data[2];
+
+	PCM5142_SetPageSelectRegister(0);
+
+	data[1] = vol;
+	data[0] = PCM5142_VOLL;
+	HAL_I2C_Master_Transmit(&hi2c1, PCM5142_ADDRESS, data, 2, HAL_MAX_DELAY);
+	data[0] = PCM5142_VOLR;
+	HAL_I2C_Master_Transmit(&hi2c1, PCM5142_ADDRESS, data, 2, HAL_MAX_DELAY);
+
+#ifdef DEBUG
+	printf("Set volume: %d\n", vol);
 #endif
 }
 

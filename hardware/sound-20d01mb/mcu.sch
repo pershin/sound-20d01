@@ -758,4 +758,68 @@ Text GLabel 8450 4650 0    50   Input ~ 0
 OSC_SEL
 Wire Wire Line
 	8450 4650 8550 4650
+Wire Wire Line
+	5150 2500 5150 2400
+Wire Wire Line
+	5050 2500 5050 2400
+Text GLabel 5050 2400 1    50   BiDi ~ 0
+I2C1_SDA
+Text GLabel 5150 2400 1    50   Output ~ 0
+I2C1_SCL
+Text GLabel 5950 1400 3    50   BiDi ~ 0
+I2C1_SDA
+Text GLabel 6450 1400 3    50   Output ~ 0
+I2C1_SCL
+$Comp
+L Device:R R?
+U 1 1 6147BEB3
+P 5950 1150
+F 0 "R?" H 6020 1196 50  0000 L CNN
+F 1 "4.7K" H 6020 1105 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 5880 1150 50  0001 C CNN
+F 3 "~" H 5950 1150 50  0001 C CNN
+	1    5950 1150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5950 1300 5950 1400
+Wire Wire Line
+	5950 900  5950 1000
+$Comp
+L power:+3.3V #PWR?
+U 1 1 6147FF35
+P 5950 900
+F 0 "#PWR?" H 5950 750 50  0001 C CNN
+F 1 "+3.3V" H 5965 1073 50  0000 C CNN
+F 2 "" H 5950 900 50  0001 C CNN
+F 3 "" H 5950 900 50  0001 C CNN
+	1    5950 900 
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6148000C
+P 6450 1150
+F 0 "R?" H 6520 1196 50  0000 L CNN
+F 1 "4.7K" H 6520 1105 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 6380 1150 50  0001 C CNN
+F 3 "~" H 6450 1150 50  0001 C CNN
+	1    6450 1150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6450 1300 6450 1400
+Wire Wire Line
+	6450 900  6450 1000
+$Comp
+L power:+3.3V #PWR?
+U 1 1 61480014
+P 6450 900
+F 0 "#PWR?" H 6450 750 50  0001 C CNN
+F 1 "+3.3V" H 6465 1073 50  0000 C CNN
+F 2 "" H 6450 900 50  0001 C CNN
+F 3 "" H 6450 900 50  0001 C CNN
+	1    6450 900 
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
