@@ -354,14 +354,14 @@ Wire Wire Line
 $Comp
 L Device:C C?
 U 1 1 6142C574
-P 7300 3950
+P 7200 3950
 AR Path="/60DE2DF4/6142C574" Ref="C?"  Part="1" 
 AR Path="/60DE2DF1/6142C574" Ref="C?"  Part="1" 
-F 0 "C?" H 7415 3996 50  0000 L CNN
-F 1 "2.2uF" H 7415 3905 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 7338 3800 50  0001 C CNN
-F 3 "~" H 7300 3950 50  0001 C CNN
-	1    7300 3950
+F 0 "C?" H 7315 3996 50  0000 L CNN
+F 1 "2.2uF" H 7315 3905 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 7238 3800 50  0001 C CNN
+F 3 "~" H 7200 3950 50  0001 C CNN
+	1    7200 3950
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -369,11 +369,11 @@ Wire Wire Line
 Wire Wire Line
 	6800 4200 6800 3900
 Wire Wire Line
-	6800 4200 7300 4200
+	6800 4200 7200 4200
 Wire Wire Line
-	7300 3800 7300 3700
+	7200 3800 7200 3700
 Wire Wire Line
-	7300 4100 7300 4200
+	7200 4100 7200 4200
 Wire Wire Line
 	6300 3800 6400 3800
 Wire Wire Line
@@ -397,14 +397,14 @@ Connection ~ 6400 3800
 $Comp
 L Device:C C?
 U 1 1 614356A2
-P 7800 3950
+P 7700 3950
 AR Path="/60DE2DF4/614356A2" Ref="C?"  Part="1" 
 AR Path="/60DE2DF1/614356A2" Ref="C?"  Part="1" 
-F 0 "C?" H 7915 3996 50  0000 L CNN
-F 1 "2.2uF" H 7915 3905 50  0000 L CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 7838 3800 50  0001 C CNN
-F 3 "~" H 7800 3950 50  0001 C CNN
-	1    7800 3950
+F 0 "C?" H 7815 3996 50  0000 L CNN
+F 1 "2.2uF" H 7815 3905 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 7738 3800 50  0001 C CNN
+F 3 "~" H 7700 3950 50  0001 C CNN
+	1    7700 3950
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -412,7 +412,7 @@ Wire Wire Line
 Wire Wire Line
 	6700 4000 6700 4750
 Wire Wire Line
-	7800 4100 7800 4200
+	7700 4100 7700 4200
 $Comp
 L Device:CP C?
 U 1 1 6143EA01
@@ -450,21 +450,16 @@ Wire Wire Line
 Wire Wire Line
 	7700 1950 7700 1850
 Wire Wire Line
-	7450 2450 7700 2450
-Wire Wire Line
-	7200 2450 7450 2450
-Connection ~ 7450 2450
-Wire Wire Line
-	7450 2450 7450 2550
+	7700 2450 7700 2550
 $Comp
 L power:GNDA #PWR?
 U 1 1 6143EA16
-P 7450 2550
-F 0 "#PWR?" H 7450 2300 50  0001 C CNN
-F 1 "GNDA" H 7455 2377 50  0000 C CNN
-F 2 "" H 7450 2550 50  0001 C CNN
-F 3 "" H 7450 2550 50  0001 C CNN
-	1    7450 2550
+P 7700 2550
+F 0 "#PWR?" H 7700 2300 50  0001 C CNN
+F 1 "GNDA" H 7705 2377 50  0000 C CNN
+F 2 "" H 7700 2550 50  0001 C CNN
+F 3 "" H 7700 2550 50  0001 C CNN
+	1    7700 2550
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -489,12 +484,12 @@ Wire Wire Line
 $Comp
 L power:GNDA #PWR?
 U 1 1 6143D42A
-P 7800 4200
-F 0 "#PWR?" H 7800 3950 50  0001 C CNN
-F 1 "GNDA" H 7805 4027 50  0000 C CNN
-F 2 "" H 7800 4200 50  0001 C CNN
-F 3 "" H 7800 4200 50  0001 C CNN
-	1    7800 4200
+P 7700 4200
+F 0 "#PWR?" H 7700 3950 50  0001 C CNN
+F 1 "GNDA" H 7705 4027 50  0000 C CNN
+F 2 "" H 7700 4200 50  0001 C CNN
+F 3 "" H 7700 4200 50  0001 C CNN
+	1    7700 4200
 	1    0    0    -1  
 $EndComp
 Connection ~ 6950 5250
@@ -505,11 +500,9 @@ Wire Wire Line
 Wire Wire Line
 	4300 4000 4300 4750
 Wire Wire Line
-	6300 3700 7300 3700
+	6300 3700 7200 3700
 Wire Wire Line
-	6300 3600 7800 3600
-Wire Wire Line
-	7800 3600 7800 3800
+	7700 3600 7700 3800
 Connection ~ 6700 4750
 Connection ~ 4300 4750
 Wire Wire Line
@@ -577,25 +570,21 @@ Wire Wire Line
 	4700 3800 3800 3800
 Wire Wire Line
 	6300 3300 6700 3300
-Text GLabel 6700 1600 2    50   BiDi ~ 0
+Text GLabel 6600 1850 1    50   BiDi ~ 0
 I2C1_SDA
-Text GLabel 6700 1500 2    50   Input ~ 0
+Text GLabel 6500 1850 1    50   Input ~ 0
 I2C1_SCL
 Wire Wire Line
 	6300 2900 6500 2900
 Text Notes 1250 3350 0    50   ~ 0
 Audio Source
 Wire Wire Line
-	6600 3000 6600 1600
+	6600 3000 6600 1850
 Wire Wire Line
 	6300 3000 6600 3000
 Wire Wire Line
-	6500 1500 6500 2900
-Wire Wire Line
-	6600 1600 6700 1600
-Wire Wire Line
-	6500 1500 6700 1500
-Text Notes 6500 1400 0    50   ~ 0
+	6500 1850 6500 2900
+Text Notes 6300 1350 0    50   ~ 0
 I2C Interface
 Wire Wire Line
 	4700 2900 4600 2900
@@ -629,4 +618,42 @@ Wire Wire Line
 Connection ~ 4600 3600
 Wire Wire Line
 	4600 3600 4600 3900
+$Comp
+L Device:R R?
+U 1 1 6147608B
+P 6950 3100
+F 0 "R?" V 7157 3100 50  0000 C CNN
+F 1 "10K" V 7066 3100 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 6880 3100 50  0001 C CNN
+F 3 "~" H 6950 3100 50  0001 C CNN
+	1    6950 3100
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	6300 3100 6800 3100
+Wire Wire Line
+	7100 3100 7200 3100
+Wire Wire Line
+	7200 3100 7200 2450
+Connection ~ 7200 2450
+$Comp
+L power:+3.3VA #PWR?
+U 1 1 61486380
+P 4000 2600
+F 0 "#PWR?" H 4000 2450 50  0001 C CNN
+F 1 "+3.3VA" H 4015 2773 50  0000 C CNN
+F 2 "" H 4000 2600 50  0001 C CNN
+F 3 "" H 4000 2600 50  0001 C CNN
+	1    4000 2600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4700 3700 4000 3700
+Wire Wire Line
+	4000 3700 4000 2600
+Wire Wire Line
+	6300 3600 7700 3600
+Connection ~ 7700 2450
+Wire Wire Line
+	7200 2450 7700 2450
 $EndSCHEMATC
