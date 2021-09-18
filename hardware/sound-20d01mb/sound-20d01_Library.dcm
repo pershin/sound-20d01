@@ -47,4 +47,10 @@ K amplifier
 F https://www.ti.com/lit/ds/symlink/tpa3122d2.pdf
 $ENDCMP
 #
+$CMP TPA3123D2
+D 25-W stereo, 10- to 30-V supply, analog input Class-D audio amplifier w/ SE outputs
+K amplifier, Class-D
+F https://www.ti.com/lit/ds/symlink/tpa3123d2.pdf
+$ENDCMP
+#
 #End Doc Library
