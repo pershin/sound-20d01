@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name sound-20d01mb)(type KiCad)(uri ${KIPRJMOD}/sound-20d01mb.pretty)(options "")(descr ""))
+)
