@@ -730,4 +730,8 @@ F 3 "https://www.ti.com/lit/ds/symlink/tpa3123d2.pdf" H 5150 2400 50  0001 C CNN
 	1    5150 3600
 	1    0    0    -1  
 $EndComp
+Text HLabel 2800 1700 0    50   Input ~ 0
+~SHUTDOWN
+Text HLabel 2800 1800 0    50   Input ~ 0
+MUTE
 $EndSCHEMATC
