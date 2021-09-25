@@ -142,7 +142,7 @@ P 9050 3400
 F 0 "U?" H 9450 3900 50  0000 C CNN
 F 1 "USBLC6-2SC6" H 9450 3800 50  0000 C CNN
 F 2 "Package_TO_SOT_SMD:SOT-23-6" H 8300 3800 50  0001 C CNN
-F 3 "http://www2.st.com/resource/en/datasheet/CD00050750.pdf" H 9250 3750 50  0001 C CNN
+F 3 "https://www.st.com/resource/en/datasheet/usblc6-2.pdf" H 9250 3750 50  0001 C CNN
 	1    9050 3400
 	1    0    0    -1  
 $EndComp
