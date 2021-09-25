@@ -167,17 +167,6 @@ F 3 "" H 5650 3400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:VBUS #PWR?
-U 1 1 60E9D839
-P 2800 2450
-F 0 "#PWR?" H 2800 2300 50  0001 C CNN
-F 1 "VBUS" H 2815 2623 50  0000 C CNN
-F 2 "" H 2800 2450 50  0001 C CNN
-F 3 "" H 2800 2450 50  0001 C CNN
-	1    2800 2450
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:+5V #PWR?
 U 1 1 60E9D889
 P 3450 2700
@@ -188,21 +177,6 @@ F 3 "" H 3450 2700 50  0001 C CNN
 	1    3450 2700
 	1    0    0    -1  
 $EndComp
-Text HLabel 2800 3300 3    50   Input ~ 0
-EXT_5V
-$Comp
-L Jumper:Jumper_3_Bridged12 JP?
-U 1 1 60E9DBAE
-P 2800 2800
-F 0 "JP?" V 2754 2866 50  0000 L CNN
-F 1 "Jumper_3_Bridged12" V 2845 2866 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 2800 2800 50  0001 C CNN
-F 3 "~" H 2800 2800 50  0001 C CNN
-	1    2800 2800
-	0    -1   1    0   
-$EndComp
-Wire Wire Line
-	2800 2550 2800 2450
 $Comp
 L Device:CP C?
 U 1 1 60EB6668
@@ -214,10 +188,6 @@ F 3 "~" H 3450 3050 50  0001 C CNN
 	1    3450 3050
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	2950 2800 3450 2800
-Wire Wire Line
-	3450 2800 3450 2900
 $Comp
 L power:GNDD #PWR?
 U 1 1 60EB678E
@@ -270,8 +240,6 @@ Wire Wire Line
 	6850 3200 6850 3300
 Wire Wire Line
 	6850 3300 6350 3300
-Wire Wire Line
-	2800 3050 2800 3300
 Text Notes 5200 2450 0    50   ~ 0
 Place U? as close\nto the MCU as possible.
 $Comp
@@ -314,7 +282,7 @@ L Device:LED D?
 U 1 1 61475539
 P 7850 3350
 F 0 "D?" V 7888 3233 50  0000 R CNN
-F 1 "LED" V 7797 3233 50  0000 R CNN
+F 1 "D_PWR_LED" V 7797 3233 50  0000 R CNN
 F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 7850 3350 50  0001 C CNN
 F 3 "~" H 7850 3350 50  0001 C CNN
 	1    7850 3350
@@ -340,7 +308,7 @@ L Device:R R?
 U 1 1 61476045
 P 7850 2950
 F 0 "R?" H 7920 2996 50  0000 L CNN
-F 1 "R" H 7920 2905 50  0000 L CNN
+F 1 "330R" H 7920 2905 50  0000 L CNN
 F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 7780 2950 50  0001 C CNN
 F 3 "~" H 7850 2950 50  0001 C CNN
 	1    7850 2950
@@ -400,7 +368,50 @@ $EndComp
 Wire Wire Line
 	4450 2800 4450 2700
 Connection ~ 4450 2800
+$Comp
+L Device:D_Schottky D?
+U 1 1 615390F1
+P 3050 2800
+F 0 "D?" H 3050 2584 50  0000 C CNN
+F 1 "CRS04" H 3050 2675 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-123F" H 3050 2800 50  0001 C CNN
+F 3 "~" H 3050 2800 50  0001 C CNN
+	1    3050 2800
+	-1   0    0    1   
+$EndComp
+Text Notes 7350 3400 0    50   ~ 0
+Green LED
+$Comp
+L power:VBUS #PWR?
+U 1 1 6156F801
+P 2100 2800
+F 0 "#PWR?" H 2100 2650 50  0001 C CNN
+F 1 "VBUS" V 2115 2927 50  0000 L CNN
+F 2 "" H 2100 2800 50  0001 C CNN
+F 3 "" H 2100 2800 50  0001 C CNN
+	1    2100 2800
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:Fuse F?
+U 1 1 6157C2E8
+P 2500 2800
+F 0 "F?" V 2697 2800 50  0000 C CNN
+F 1 "MF-MSMF050-2" V 2606 2800 50  0000 C CNN
+F 2 "" V 2430 2800 50  0001 C CNN
+F 3 "~" H 2500 2800 50  0001 C CNN
+	1    2500 2800
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3450 2800 3200 2800
 Wire Wire Line
 	3450 2700 3450 2800
 Connection ~ 3450 2800
+Wire Wire Line
+	3450 2800 3450 2900
+Wire Wire Line
+	2900 2800 2650 2800
+Wire Wire Line
+	2350 2800 2100 2800
 $EndSCHEMATC

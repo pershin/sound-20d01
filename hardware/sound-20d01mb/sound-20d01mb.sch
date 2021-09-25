@@ -188,7 +188,6 @@ S 2450 4500 1200 1250
 U 61033008
 F0 "Power Supply Unit" 50
 F1 "psu.sch" 50
-F2 "EXT_5V" I R 3650 4600 50 
 $EndSheet
 $Comp
 L Connector_Generic:Conn_01x02 J?
@@ -244,10 +243,6 @@ F 3 "" H 2050 1500 50  0001 C CNN
 	1    2050 1500
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	1950 1600 2050 1600
-Wire Wire Line
-	2050 1600 2050 1500
 Wire Wire Line
 	1950 1800 2450 1800
 Wire Wire Line
@@ -366,12 +361,29 @@ Wire Wire Line
 	4000 4700 3900 4700
 Wire Wire Line
 	3900 4700 3900 4800
-Wire Wire Line
-	4000 4600 3650 4600
 Text Notes 4150 4500 0    50   ~ 0
-External 5V Power supply (digital)
+External 5V (digital)
 Wire Wire Line
 	3650 2350 5050 2350
 Wire Wire Line
 	3650 2450 5050 2450
+$Comp
+L power:+5V #PWR?
+U 1 1 6153EEDC
+P 3900 4500
+F 0 "#PWR?" H 3900 4350 50  0001 C CNN
+F 1 "+5V" H 3915 4673 50  0000 C CNN
+F 2 "" H 3900 4500 50  0001 C CNN
+F 3 "" H 3900 4500 50  0001 C CNN
+	1    3900 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4000 4600 3900 4600
+Wire Wire Line
+	3900 4600 3900 4500
+Wire Wire Line
+	1950 1600 2050 1600
+Wire Wire Line
+	2050 1600 2050 1500
 $EndSCHEMATC
