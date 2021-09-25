@@ -68,50 +68,6 @@ F6 "~SHUTDOWN" I L 5050 2350 50
 F7 "MUTE" I L 5050 2450 50 
 $EndSheet
 $Comp
-L Mechanical:MountingHole H?
-U 1 1 60DF6F4D
-P 8100 6350
-F 0 "H?" H 8200 6396 50  0000 L CNN
-F 1 "MountingHole" H 8200 6305 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.2mm_M3" H 8100 6350 50  0001 C CNN
-F 3 "~" H 8100 6350 50  0001 C CNN
-	1    8100 6350
-	1    0    0    -1  
-$EndComp
-$Comp
-L Mechanical:MountingHole H?
-U 1 1 60DF9883
-P 8900 6350
-F 0 "H?" H 9000 6396 50  0000 L CNN
-F 1 "MountingHole" H 9000 6305 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.2mm_M3" H 8900 6350 50  0001 C CNN
-F 3 "~" H 8900 6350 50  0001 C CNN
-	1    8900 6350
-	1    0    0    -1  
-$EndComp
-$Comp
-L Mechanical:MountingHole H?
-U 1 1 60DF98C1
-P 9700 6350
-F 0 "H?" H 9800 6396 50  0000 L CNN
-F 1 "MountingHole" H 9800 6305 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.2mm_M3" H 9700 6350 50  0001 C CNN
-F 3 "~" H 9700 6350 50  0001 C CNN
-	1    9700 6350
-	1    0    0    -1  
-$EndComp
-$Comp
-L Mechanical:MountingHole H?
-U 1 1 60DF9924
-P 10500 6350
-F 0 "H?" H 10600 6396 50  0000 L CNN
-F 1 "MountingHole" H 10600 6305 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.2mm_M3" H 10500 6350 50  0001 C CNN
-F 3 "~" H 10500 6350 50  0001 C CNN
-	1    10500 6350
-	1    0    0    -1  
-$EndComp
-$Comp
 L Connector:USB_B J?
 U 1 1 60E01FED
 P 1650 1800
@@ -192,46 +148,46 @@ $EndSheet
 $Comp
 L Connector_Generic:Conn_01x02 J?
 U 1 1 60E0FD2A
-P 6750 3400
-F 0 "J?" H 6830 3392 50  0000 L CNN
-F 1 "Conn_01x02" H 6830 3301 50  0000 L CNN
-F 2 "Connector_JST:JST_VH_B2P-VH_1x02_P3.96mm_Vertical" H 6750 3400 50  0001 C CNN
-F 3 "~" H 6750 3400 50  0001 C CNN
-	1    6750 3400
+P 8600 5350
+F 0 "J?" H 8680 5342 50  0000 L CNN
+F 1 "Conn_01x02" H 8680 5251 50  0000 L CNN
+F 2 "Connector_JST:JST_VH_B2P-VH_1x02_P3.96mm_Vertical" H 8600 5350 50  0001 C CNN
+F 3 "~" H 8600 5350 50  0001 C CNN
+	1    8600 5350
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GNDA #PWR?
 U 1 1 60E0FF3C
-P 6450 3600
-F 0 "#PWR?" H 6450 3350 50  0001 C CNN
-F 1 "GNDA" H 6455 3427 50  0000 C CNN
-F 2 "" H 6450 3600 50  0001 C CNN
-F 3 "" H 6450 3600 50  0001 C CNN
-	1    6450 3600
+P 8300 5550
+F 0 "#PWR?" H 8300 5300 50  0001 C CNN
+F 1 "GNDA" H 8305 5377 50  0000 C CNN
+F 2 "" H 8300 5550 50  0001 C CNN
+F 3 "" H 8300 5550 50  0001 C CNN
+	1    8300 5550
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6550 3500 6450 3500
+	8400 5450 8300 5450
 Wire Wire Line
-	6450 3500 6450 3600
+	8300 5450 8300 5550
 $Comp
 L power:VCC #PWR?
 U 1 1 60E100F5
-P 6450 3300
-F 0 "#PWR?" H 6450 3150 50  0001 C CNN
-F 1 "VCC" H 6467 3473 50  0000 C CNN
-F 2 "" H 6450 3300 50  0001 C CNN
-F 3 "" H 6450 3300 50  0001 C CNN
-	1    6450 3300
+P 8300 5250
+F 0 "#PWR?" H 8300 5100 50  0001 C CNN
+F 1 "VCC" H 8317 5423 50  0000 C CNN
+F 2 "" H 8300 5250 50  0001 C CNN
+F 3 "" H 8300 5250 50  0001 C CNN
+	1    8300 5250
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6550 3400 6450 3400
+	8400 5350 8300 5350
 Wire Wire Line
-	6450 3400 6450 3300
-Text Notes 6700 3300 0    50   ~ 0
-Supply voltage range: 12V to 30V (analog)
+	8300 5350 8300 5250
+Text Notes 8550 5250 0    50   ~ 0
+Supply voltage range:\n12V to 30V (analog)
 $Comp
 L power:VBUS #PWR?
 U 1 1 60E0D7F5
@@ -338,31 +294,31 @@ Wire Wire Line
 $Comp
 L Connector_Generic:Conn_01x02 J?
 U 1 1 60EA1B68
-P 4200 4600
-F 0 "J?" H 4280 4592 50  0000 L CNN
-F 1 "Conn_01x02" H 4280 4501 50  0000 L CNN
-F 2 "Connector_JST:JST_XH_B02B-XH-A_1x02_P2.50mm_Vertical" H 4200 4600 50  0001 C CNN
-F 3 "~" H 4200 4600 50  0001 C CNN
-	1    4200 4600
+P 7600 5350
+F 0 "J?" H 7680 5342 50  0000 L CNN
+F 1 "Conn_01x02" H 7680 5251 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B02B-XH-A_1x02_P2.50mm_Vertical" H 7600 5350 50  0001 C CNN
+F 3 "~" H 7600 5350 50  0001 C CNN
+	1    7600 5350
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GNDD #PWR?
 U 1 1 60EA1BF4
-P 3900 4800
-F 0 "#PWR?" H 3900 4550 50  0001 C CNN
-F 1 "GNDD" H 3904 4645 50  0000 C CNN
-F 2 "" H 3900 4800 50  0001 C CNN
-F 3 "" H 3900 4800 50  0001 C CNN
-	1    3900 4800
+P 7300 5550
+F 0 "#PWR?" H 7300 5300 50  0001 C CNN
+F 1 "GNDD" H 7304 5395 50  0000 C CNN
+F 2 "" H 7300 5550 50  0001 C CNN
+F 3 "" H 7300 5550 50  0001 C CNN
+	1    7300 5550
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4000 4700 3900 4700
+	7400 5450 7300 5450
 Wire Wire Line
-	3900 4700 3900 4800
-Text Notes 4150 4500 0    50   ~ 0
-External 5V (digital)
+	7300 5450 7300 5550
+Text Notes 7550 5250 0    50   ~ 0
+External 5V\n(digital)
 Wire Wire Line
 	3650 2350 5050 2350
 Wire Wire Line
@@ -370,20 +326,116 @@ Wire Wire Line
 $Comp
 L power:+5V #PWR?
 U 1 1 6153EEDC
-P 3900 4500
-F 0 "#PWR?" H 3900 4350 50  0001 C CNN
-F 1 "+5V" H 3915 4673 50  0000 C CNN
-F 2 "" H 3900 4500 50  0001 C CNN
-F 3 "" H 3900 4500 50  0001 C CNN
-	1    3900 4500
+P 7300 5250
+F 0 "#PWR?" H 7300 5100 50  0001 C CNN
+F 1 "+5V" H 7315 5423 50  0000 C CNN
+F 2 "" H 7300 5250 50  0001 C CNN
+F 3 "" H 7300 5250 50  0001 C CNN
+	1    7300 5250
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4000 4600 3900 4600
+	7400 5350 7300 5350
 Wire Wire Line
-	3900 4600 3900 4500
+	7300 5350 7300 5250
 Wire Wire Line
 	1950 1600 2050 1600
 Wire Wire Line
 	2050 1600 2050 1500
+$Comp
+L Mechanical:MountingHole_Pad H?
+U 1 1 615D7541
+P 7300 6000
+F 0 "H?" H 7400 6051 50  0000 L CNN
+F 1 "MountingHole_Pad" H 7400 5960 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3_Pad_Via" H 7300 6000 50  0001 C CNN
+F 3 "~" H 7300 6000 50  0001 C CNN
+	1    7300 6000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7300 6100 7300 6200
+$Comp
+L Mechanical:MountingHole_Pad H?
+U 1 1 615D7F85
+P 8300 6000
+F 0 "H?" H 8400 6051 50  0000 L CNN
+F 1 "MountingHole_Pad" H 8400 5960 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3_Pad_Via" H 8300 6000 50  0001 C CNN
+F 3 "~" H 8300 6000 50  0001 C CNN
+	1    8300 6000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8300 6100 8300 6200
+$Comp
+L Mechanical:MountingHole_Pad H?
+U 1 1 615DA23B
+P 9300 6000
+F 0 "H?" H 9400 6051 50  0000 L CNN
+F 1 "MountingHole_Pad" H 9400 5960 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3_Pad_Via" H 9300 6000 50  0001 C CNN
+F 3 "~" H 9300 6000 50  0001 C CNN
+	1    9300 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDA #PWR?
+U 1 1 615DA241
+P 7300 6200
+F 0 "#PWR?" H 7300 5950 50  0001 C CNN
+F 1 "GNDA" H 7305 6027 50  0000 C CNN
+F 2 "" H 7300 6200 50  0001 C CNN
+F 3 "" H 7300 6200 50  0001 C CNN
+	1    7300 6200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9300 6100 9300 6200
+$Comp
+L Mechanical:MountingHole_Pad H?
+U 1 1 615DA248
+P 10300 6000
+F 0 "H?" H 10400 6051 50  0000 L CNN
+F 1 "MountingHole_Pad" H 10400 5960 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3_Pad_Via" H 10300 6000 50  0001 C CNN
+F 3 "~" H 10300 6000 50  0001 C CNN
+	1    10300 6000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10300 6100 10300 6200
+$Comp
+L power:GNDA #PWR?
+U 1 1 615EC7C2
+P 8300 6200
+F 0 "#PWR?" H 8300 5950 50  0001 C CNN
+F 1 "GNDA" H 8305 6027 50  0000 C CNN
+F 2 "" H 8300 6200 50  0001 C CNN
+F 3 "" H 8300 6200 50  0001 C CNN
+	1    8300 6200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDA #PWR?
+U 1 1 615EC7EB
+P 9300 6200
+F 0 "#PWR?" H 9300 5950 50  0001 C CNN
+F 1 "GNDA" H 9305 6027 50  0000 C CNN
+F 2 "" H 9300 6200 50  0001 C CNN
+F 3 "" H 9300 6200 50  0001 C CNN
+	1    9300 6200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDA #PWR?
+U 1 1 615EC814
+P 10300 6200
+F 0 "#PWR?" H 10300 5950 50  0001 C CNN
+F 1 "GNDA" H 10305 6027 50  0000 C CNN
+F 2 "" H 10300 6200 50  0001 C CNN
+F 3 "" H 10300 6200 50  0001 C CNN
+	1    10300 6200
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
