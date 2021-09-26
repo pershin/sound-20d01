@@ -1,4 +1,4 @@
-update=Sat 25 Sep 2021 09:50:46 PM MSK
+update=Sun 26 Sep 2021 05:24:08 AM MSK
 version=1
 last_client=kicad
 [general]

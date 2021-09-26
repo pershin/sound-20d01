@@ -30,18 +30,8 @@ F9 "SAI1_SD_B" O R 3650 1900 50
 F10 "SAI1_SCK_B" O R 3650 2000 50 
 F11 "SAI1_MCLK_B" O R 3650 2100 50 
 F12 "SWO" O L 2450 3450 50 
-F13 "PA4_NSS" B R 3650 2600 50 
-F14 "PA5_SCK" B R 3650 2700 50 
-F15 "PA6_MISO" B R 3650 2800 50 
-F16 "PA7_MOSI" B R 3650 2900 50 
-F17 "PB0_SDIO_D1" B R 3650 3350 50 
-F18 "PB1_SDIO_D2" B R 3650 3450 50 
-F19 "PB2_SDIO_CK" B R 3650 3150 50 
-F20 "PC8_SDIO_D0" B R 3650 3250 50 
-F21 "PD2_SDIO_CMD" B R 3650 3050 50 
-F22 "PC11_SDIO_D3" B R 3650 3550 50 
-F23 "~SHUTDOWN" O R 3650 2350 50 
-F24 "MUTE" O R 3650 2450 50 
+F13 "~SHUTDOWN" O R 3650 2350 50 
+F14 "MUTE" O R 3650 2450 50 
 $EndSheet
 $Sheet
 S 3750 1700 1200 500 
@@ -438,4 +428,388 @@ F 3 "" H 10300 6200 50  0001 C CNN
 	1    10300 6200
 	1    0    0    -1  
 $EndComp
+$Comp
+L Connector_Generic:Conn_02x10_Odd_Even J?
+U 1 1 61503120
+P 8000 3950
+F 0 "J?" H 8050 4567 50  0000 C CNN
+F 1 "Conn_02x10_Odd_Even" H 8050 4476 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x10_P2.54mm_Vertical" H 8000 3950 50  0001 C CNN
+F 3 "~" H 8000 3950 50  0001 C CNN
+	1    8000 3950
+	1    0    0    -1  
+$EndComp
+Text GLabel 7700 3750 0    50   BiDi ~ 0
+PC13
+Text GLabel 8400 3750 2    50   BiDi ~ 0
+PC1
+Text GLabel 7700 3850 0    50   BiDi ~ 0
+PC3
+Text GLabel 8400 3850 2    50   BiDi ~ 0
+PA0
+Text GLabel 7700 3950 0    50   BiDi ~ 0
+PA1
+Text GLabel 8400 3950 2    50   BiDi ~ 0
+PA2
+Text GLabel 7700 4050 0    50   BiDi ~ 0
+PA3
+Text GLabel 8400 4050 2    50   BiDi ~ 0
+PA4
+Text GLabel 7700 4150 0    50   BiDi ~ 0
+PA5
+Text GLabel 8400 4150 2    50   BiDi ~ 0
+PA6
+Text GLabel 7700 4250 0    50   BiDi ~ 0
+PA7
+Text GLabel 8400 4250 2    50   BiDi ~ 0
+PB0
+Text GLabel 7700 4350 0    50   BiDi ~ 0
+PB1
+Text GLabel 8400 4350 2    50   BiDi ~ 0
+PB2
+Text GLabel 7700 4450 0    50   BiDi ~ 0
+PB10
+$Comp
+L power:+3.3V #PWR?
+U 1 1 61579800
+P 7300 3450
+F 0 "#PWR?" H 7300 3300 50  0001 C CNN
+F 1 "+3.3V" H 7315 3623 50  0000 C CNN
+F 2 "" H 7300 3450 50  0001 C CNN
+F 3 "" H 7300 3450 50  0001 C CNN
+	1    7300 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7300 3550 7300 3450
+Wire Wire Line
+	7300 3550 7700 3550
+Wire Wire Line
+	8300 3650 8400 3650
+Wire Wire Line
+	7800 3650 7700 3650
+Wire Wire Line
+	7700 3650 7700 3550
+Connection ~ 7700 3550
+Wire Wire Line
+	7700 3550 7800 3550
+Wire Wire Line
+	7800 3750 7700 3750
+Wire Wire Line
+	8300 3750 8400 3750
+Wire Wire Line
+	7800 3850 7700 3850
+Wire Wire Line
+	8300 3850 8400 3850
+Wire Wire Line
+	7800 3950 7700 3950
+Wire Wire Line
+	8300 3950 8400 3950
+Wire Wire Line
+	7800 4050 7700 4050
+Wire Wire Line
+	8300 4050 8400 4050
+Wire Wire Line
+	7800 4150 7700 4150
+Wire Wire Line
+	8300 4150 8400 4150
+Wire Wire Line
+	7800 4250 7700 4250
+Wire Wire Line
+	8300 4250 8400 4250
+Wire Wire Line
+	7800 4350 7700 4350
+Wire Wire Line
+	8300 4350 8400 4350
+Wire Wire Line
+	7800 4450 7700 4450
+Wire Wire Line
+	8300 3550 8400 3550
+Wire Wire Line
+	8400 3550 8400 3650
+Connection ~ 8400 3650
+Wire Wire Line
+	8400 3650 8800 3650
+Wire Wire Line
+	8800 3650 8800 3750
+$Comp
+L power:GNDD #PWR?
+U 1 1 6157BE2E
+P 8800 3750
+F 0 "#PWR?" H 8800 3500 50  0001 C CNN
+F 1 "GNDD" H 8804 3595 50  0000 C CNN
+F 2 "" H 8800 3750 50  0001 C CNN
+F 3 "" H 8800 3750 50  0001 C CNN
+	1    8800 3750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_02x10_Odd_Even J?
+U 1 1 6159732C
+P 9700 3950
+F 0 "J?" H 9750 4567 50  0000 C CNN
+F 1 "Conn_02x10_Odd_Even" H 9750 4476 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x10_P2.54mm_Vertical" H 9700 3950 50  0001 C CNN
+F 3 "~" H 9700 3950 50  0001 C CNN
+	1    9700 3950
+	1    0    0    -1  
+$EndComp
+Text GLabel 10100 4450 2    50   BiDi ~ 0
+PB13
+Text GLabel 9400 4450 0    50   BiDi ~ 0
+PB14
+Text GLabel 10100 4350 2    50   BiDi ~ 0
+PB15
+Text GLabel 9400 4350 0    50   BiDi ~ 0
+PC6
+Text GLabel 10100 4250 2    50   BiDi ~ 0
+PC7
+Text GLabel 9400 4250 0    50   BiDi ~ 0
+PC8
+Text GLabel 10100 4150 2    50   BiDi ~ 0
+PA8
+Text GLabel 9400 4150 0    50   BiDi ~ 0
+PA10
+Text GLabel 10100 4050 2    50   BiDi ~ 0
+PA15
+Text GLabel 9400 4050 0    50   BiDi ~ 0
+PC10
+Text GLabel 10100 3950 2    50   BiDi ~ 0
+PC11
+Text GLabel 9400 3950 0    50   BiDi ~ 0
+PC12
+Text GLabel 10100 3850 2    50   BiDi ~ 0
+PD2
+Text GLabel 9400 3850 0    50   BiDi ~ 0
+PB4
+Text GLabel 10100 3750 2    50   BiDi ~ 0
+PB5
+Text GLabel 9400 3750 0    50   BiDi ~ 0
+PB8
+Wire Wire Line
+	9000 3550 9400 3550
+$Comp
+L power:+3.3V #PWR?
+U 1 1 61612CDC
+P 9000 3450
+F 0 "#PWR?" H 9000 3300 50  0001 C CNN
+F 1 "+3.3V" H 9015 3623 50  0000 C CNN
+F 2 "" H 9000 3450 50  0001 C CNN
+F 3 "" H 9000 3450 50  0001 C CNN
+	1    9000 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9000 3550 9000 3450
+Wire Wire Line
+	10000 3650 10100 3650
+Wire Wire Line
+	10500 3650 10500 3750
+$Comp
+L power:GNDD #PWR?
+U 1 1 616156C2
+P 10500 3750
+F 0 "#PWR?" H 10500 3500 50  0001 C CNN
+F 1 "GNDD" H 10504 3595 50  0000 C CNN
+F 2 "" H 10500 3750 50  0001 C CNN
+F 3 "" H 10500 3750 50  0001 C CNN
+	1    10500 3750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9500 3650 9400 3650
+Wire Wire Line
+	9400 3650 9400 3550
+Connection ~ 9400 3550
+Wire Wire Line
+	9400 3550 9500 3550
+Wire Wire Line
+	10000 3550 10100 3550
+Wire Wire Line
+	10100 3550 10100 3650
+Connection ~ 10100 3650
+Wire Wire Line
+	10100 3650 10500 3650
+Wire Wire Line
+	9500 3750 9400 3750
+Wire Wire Line
+	10000 3750 10100 3750
+Wire Wire Line
+	9500 3850 9400 3850
+Wire Wire Line
+	10000 3850 10100 3850
+Wire Wire Line
+	9500 3950 9400 3950
+Wire Wire Line
+	10000 3950 10100 3950
+Wire Wire Line
+	9500 4050 9400 4050
+Wire Wire Line
+	10000 4050 10100 4050
+Wire Wire Line
+	9500 4150 9400 4150
+Wire Wire Line
+	10000 4150 10100 4150
+Wire Wire Line
+	9500 4250 9400 4250
+Wire Wire Line
+	10000 4250 10100 4250
+Wire Wire Line
+	9500 4350 9400 4350
+Wire Wire Line
+	10000 4350 10100 4350
+Wire Wire Line
+	9500 4450 9400 4450
+Wire Wire Line
+	10000 4450 10100 4450
+$Comp
+L power:+5V #PWR?
+U 1 1 6150667D
+P 10500 2050
+F 0 "#PWR?" H 10500 1900 50  0001 C CNN
+F 1 "+5V" H 10515 2223 50  0000 C CNN
+F 2 "" H 10500 2050 50  0001 C CNN
+F 3 "" H 10500 2050 50  0001 C CNN
+	1    10500 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 61506799
+P 9000 2050
+F 0 "#PWR?" H 9000 1900 50  0001 C CNN
+F 1 "+3.3V" H 9015 2223 50  0000 C CNN
+F 2 "" H 9000 2050 50  0001 C CNN
+F 3 "" H 9000 2050 50  0001 C CNN
+	1    9000 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 6150D688
+P 10100 2950
+F 0 "#PWR?" H 10100 2700 50  0001 C CNN
+F 1 "GNDD" H 10104 2795 50  0000 C CNN
+F 2 "" H 10100 2950 50  0001 C CNN
+F 3 "" H 10100 2950 50  0001 C CNN
+	1    10100 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9000 2150 9400 2150
+Wire Wire Line
+	10500 2150 10500 2050
+Wire Wire Line
+	9000 2150 9000 2050
+Wire Wire Line
+	9500 2250 9400 2250
+Wire Wire Line
+	9400 2250 9400 2150
+Connection ~ 9400 2150
+Wire Wire Line
+	9400 2150 9500 2150
+Wire Wire Line
+	10000 2250 10100 2250
+Wire Wire Line
+	10100 2250 10100 2150
+Wire Wire Line
+	10000 2850 10100 2850
+Wire Wire Line
+	10100 2850 10100 2950
+Wire Wire Line
+	10000 2750 10100 2750
+Wire Wire Line
+	10100 2750 10100 2850
+Connection ~ 10100 2850
+$Comp
+L power:GNDD #PWR?
+U 1 1 6152CA27
+P 9400 2950
+F 0 "#PWR?" H 9400 2700 50  0001 C CNN
+F 1 "GNDD" H 9404 2795 50  0000 C CNN
+F 2 "" H 9400 2950 50  0001 C CNN
+F 3 "" H 9400 2950 50  0001 C CNN
+	1    9400 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9500 2850 9400 2850
+Wire Wire Line
+	9400 2850 9400 2950
+Wire Wire Line
+	9500 2750 9400 2750
+Wire Wire Line
+	9400 2750 9400 2850
+Connection ~ 9400 2850
+$Comp
+L Connector_Generic:Conn_02x08_Odd_Even J?
+U 1 1 6153637A
+P 9700 2450
+F 0 "J?" H 9750 2967 50  0000 C CNN
+F 1 "Conn_02x08_Odd_Even" H 9750 2876 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x08_P2.54mm_Vertical" H 9700 2450 50  0001 C CNN
+F 3 "~" H 9700 2450 50  0001 C CNN
+	1    9700 2450
+	1    0    0    -1  
+$EndComp
+Connection ~ 10100 2150
+Wire Wire Line
+	10100 2150 10500 2150
+Wire Wire Line
+	10000 2150 10100 2150
+Wire Wire Line
+	9500 2350 9400 2350
+Wire Wire Line
+	9400 2350 9400 2250
+Connection ~ 9400 2250
+Wire Wire Line
+	10000 2350 10100 2350
+Wire Wire Line
+	10100 2350 10100 2250
+Connection ~ 10100 2250
+Wire Wire Line
+	9500 2450 9400 2450
+Wire Wire Line
+	9400 2450 9400 2350
+Connection ~ 9400 2350
+Wire Wire Line
+	10000 2450 10100 2450
+Wire Wire Line
+	10100 2450 10100 2350
+Connection ~ 10100 2350
+Wire Wire Line
+	9500 2650 9400 2650
+Wire Wire Line
+	9400 2650 9400 2750
+Connection ~ 9400 2750
+Wire Wire Line
+	10000 2650 10100 2650
+Wire Wire Line
+	10100 2650 10100 2750
+Connection ~ 10100 2750
+Wire Wire Line
+	9500 2550 9400 2550
+Wire Wire Line
+	9400 2550 9400 2650
+Connection ~ 9400 2650
+Wire Wire Line
+	10000 2550 10100 2550
+Wire Wire Line
+	10100 2550 10100 2650
+Connection ~ 10100 2650
+$Comp
+L power:GNDD #PWR?
+U 1 1 6156CCE3
+P 8400 4550
+F 0 "#PWR?" H 8400 4300 50  0001 C CNN
+F 1 "GNDD" H 8404 4395 50  0000 C CNN
+F 2 "" H 8400 4550 50  0001 C CNN
+F 3 "" H 8400 4550 50  0001 C CNN
+	1    8400 4550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8300 4450 8400 4450
+Wire Wire Line
+	8400 4450 8400 4550
 $EndSCHEMATC
