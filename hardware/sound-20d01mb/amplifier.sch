@@ -656,9 +656,6 @@ F 3 "~" H 6850 2100 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	4650 3350 4550 3350
-Wire Wire Line
-	4550 3350 4550 3750
-Connection ~ 4550 3750
 Connection ~ 5850 3450
 Wire Wire Line
 	5650 3050 5750 3050
@@ -670,16 +667,9 @@ Wire Wire Line
 Connection ~ 5750 4150
 Wire Wire Line
 	4650 3050 4400 3050
-Wire Wire Line
-	4400 3150 4650 3150
-Wire Wire Line
-	4400 3150 4400 3050
 Connection ~ 4400 3050
 Wire Wire Line
-	4400 3250 4400 3150
-Wire Wire Line
 	4400 3250 4650 3250
-Connection ~ 4400 3150
 Wire Wire Line
 	4650 4150 4400 4150
 Wire Wire Line
@@ -730,8 +720,290 @@ F 3 "https://www.ti.com/lit/ds/symlink/tpa3123d2.pdf" H 5150 2400 50  0001 C CNN
 	1    5150 3600
 	1    0    0    -1  
 $EndComp
-Text HLabel 2800 1700 0    50   Input ~ 0
+Text HLabel 1300 6300 0    50   Input ~ 0
 ~SHUTDOWN
-Text HLabel 2800 1800 0    50   Input ~ 0
+Text HLabel 4200 6300 0    50   Input ~ 0
 MUTE
+$Comp
+L Isolator:PC817 U?
+U 1 1 619A1AC9
+P 5000 6400
+F 0 "U?" H 5000 6725 50  0000 C CNN
+F 1 "PC817" H 5000 6634 50  0000 C CNN
+F 2 "Package_DIP:DIP-4_W7.62mm" H 4800 6200 50  0001 L CIN
+F 3 "http://www.soselectronic.cz/a_info/resource/d/pc817.pdf" H 5000 6400 50  0001 L CNN
+	1    5000 6400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 619A1DC1
+P 4450 6300
+F 0 "R?" V 4657 6300 50  0000 C CNN
+F 1 "1K" V 4566 6300 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4380 6300 50  0001 C CNN
+F 3 "~" H 4450 6300 50  0001 C CNN
+	1    4450 6300
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4600 6300 4700 6300
+Wire Wire Line
+	4200 6300 4300 6300
+$Comp
+L power:GNDD #PWR?
+U 1 1 619BAA1F
+P 4600 6600
+F 0 "#PWR?" H 4600 6350 50  0001 C CNN
+F 1 "GNDD" H 4604 6445 50  0000 C CNN
+F 2 "" H 4600 6600 50  0001 C CNN
+F 3 "" H 4600 6600 50  0001 C CNN
+	1    4600 6600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4700 6500 4600 6500
+Wire Wire Line
+	4600 6500 4600 6600
+$Comp
+L Device:LED D?
+U 1 1 619C5780
+P 5400 7150
+AR Path="/61033008/619C5780" Ref="D?"  Part="1" 
+AR Path="/60DE2DF4/619C5780" Ref="D?"  Part="1" 
+F 0 "D?" V 5438 7033 50  0000 R CNN
+F 1 "MUTE_LED" V 5347 7033 50  0000 R CNN
+F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 5400 7150 50  0001 C CNN
+F 3 "~" H 5400 7150 50  0001 C CNN
+	1    5400 7150
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5400 7000 5400 6900
+Wire Wire Line
+	5400 6600 5400 6500
+$Comp
+L Device:R R?
+U 1 1 619C5789
+P 5400 6750
+AR Path="/61033008/619C5789" Ref="R?"  Part="1" 
+AR Path="/60DE2DF4/619C5789" Ref="R?"  Part="1" 
+F 0 "R?" H 5470 6796 50  0000 L CNN
+F 1 "1K" H 5470 6705 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 5330 6750 50  0001 C CNN
+F 3 "~" H 5400 6750 50  0001 C CNN
+	1    5400 6750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5400 7300 5400 7400
+Text Notes 4900 7200 0    50   ~ 0
+Orange LED
+Wire Wire Line
+	5300 6500 5400 6500
+$Comp
+L power:+5VA #PWR?
+U 1 1 619E4AC7
+P 5400 6200
+F 0 "#PWR?" H 5400 6050 50  0001 C CNN
+F 1 "+5VA" H 5415 6373 50  0000 C CNN
+F 2 "" H 5400 6200 50  0001 C CNN
+F 3 "" H 5400 6200 50  0001 C CNN
+	1    5400 6200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5300 6300 5400 6300
+Wire Wire Line
+	5400 6300 5400 6200
+$Comp
+L power:GNDA #PWR?
+U 1 1 619EA895
+P 5400 7400
+F 0 "#PWR?" H 5400 7150 50  0001 C CNN
+F 1 "GNDA" H 5405 7227 50  0000 C CNN
+F 2 "" H 5400 7400 50  0001 C CNN
+F 3 "" H 5400 7400 50  0001 C CNN
+	1    5400 7400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 619F18D7
+P 6100 6750
+F 0 "R?" H 6170 6796 50  0000 L CNN
+F 1 "10K" H 6170 6705 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 6030 6750 50  0001 C CNN
+F 3 "~" H 6100 6750 50  0001 C CNN
+	1    6100 6750
+	1    0    0    -1  
+$EndComp
+Connection ~ 5400 6500
+Wire Wire Line
+	6100 6500 6100 6600
+$Comp
+L power:GNDA #PWR?
+U 1 1 619FDBCC
+P 6100 7000
+F 0 "#PWR?" H 6100 6750 50  0001 C CNN
+F 1 "GNDA" H 6105 6827 50  0000 C CNN
+F 2 "" H 6100 7000 50  0001 C CNN
+F 3 "" H 6100 7000 50  0001 C CNN
+	1    6100 7000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6100 6900 6100 7000
+Wire Wire Line
+	5400 6500 6100 6500
+Text GLabel 4550 3350 0    50   Input ~ 0
+AMP_MUTE
+Text GLabel 6200 6500 2    50   Output ~ 0
+AMP_MUTE
+Wire Wire Line
+	6100 6500 6200 6500
+Connection ~ 6100 6500
+$Comp
+L Isolator:PC817 U?
+U 1 1 61A58182
+P 2100 6400
+F 0 "U?" H 2100 6725 50  0000 C CNN
+F 1 "PC817" H 2100 6634 50  0000 C CNN
+F 2 "Package_DIP:DIP-4_W7.62mm" H 1900 6200 50  0001 L CIN
+F 3 "http://www.soselectronic.cz/a_info/resource/d/pc817.pdf" H 2100 6400 50  0001 L CNN
+	1    2100 6400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 61A58188
+P 1550 6300
+F 0 "R?" V 1757 6300 50  0000 C CNN
+F 1 "1K" V 1666 6300 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 1480 6300 50  0001 C CNN
+F 3 "~" H 1550 6300 50  0001 C CNN
+	1    1550 6300
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1700 6300 1800 6300
+Wire Wire Line
+	1300 6300 1400 6300
+$Comp
+L power:GNDD #PWR?
+U 1 1 61A58190
+P 1700 6600
+F 0 "#PWR?" H 1700 6350 50  0001 C CNN
+F 1 "GNDD" H 1704 6445 50  0000 C CNN
+F 2 "" H 1700 6600 50  0001 C CNN
+F 3 "" H 1700 6600 50  0001 C CNN
+	1    1700 6600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1800 6500 1700 6500
+Wire Wire Line
+	1700 6500 1700 6600
+$Comp
+L Device:LED D?
+U 1 1 61A58198
+P 2500 7150
+AR Path="/61033008/61A58198" Ref="D?"  Part="1" 
+AR Path="/60DE2DF4/61A58198" Ref="D?"  Part="1" 
+F 0 "D?" V 2538 7033 50  0000 R CNN
+F 1 "AMP_LED" V 2447 7033 50  0000 R CNN
+F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 2500 7150 50  0001 C CNN
+F 3 "~" H 2500 7150 50  0001 C CNN
+	1    2500 7150
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2500 7000 2500 6900
+Wire Wire Line
+	2500 6600 2500 6500
+$Comp
+L Device:R R?
+U 1 1 61A581A0
+P 2500 6750
+AR Path="/61033008/61A581A0" Ref="R?"  Part="1" 
+AR Path="/60DE2DF4/61A581A0" Ref="R?"  Part="1" 
+F 0 "R?" H 2570 6796 50  0000 L CNN
+F 1 "1K" H 2570 6705 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 2430 6750 50  0001 C CNN
+F 3 "~" H 2500 6750 50  0001 C CNN
+	1    2500 6750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2500 7300 2500 7400
+Text Notes 2000 7200 0    50   ~ 0
+Green LED
+Wire Wire Line
+	2400 6500 2500 6500
+$Comp
+L power:+5VA #PWR?
+U 1 1 61A581A9
+P 2500 6200
+F 0 "#PWR?" H 2500 6050 50  0001 C CNN
+F 1 "+5VA" H 2515 6373 50  0000 C CNN
+F 2 "" H 2500 6200 50  0001 C CNN
+F 3 "" H 2500 6200 50  0001 C CNN
+	1    2500 6200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2400 6300 2500 6300
+Wire Wire Line
+	2500 6300 2500 6200
+$Comp
+L power:GNDA #PWR?
+U 1 1 61A581B1
+P 2500 7400
+F 0 "#PWR?" H 2500 7150 50  0001 C CNN
+F 1 "GNDA" H 2505 7227 50  0000 C CNN
+F 2 "" H 2500 7400 50  0001 C CNN
+F 3 "" H 2500 7400 50  0001 C CNN
+	1    2500 7400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 61A581B7
+P 3200 6750
+F 0 "R?" H 3270 6796 50  0000 L CNN
+F 1 "10K" H 3270 6705 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 3130 6750 50  0001 C CNN
+F 3 "~" H 3200 6750 50  0001 C CNN
+	1    3200 6750
+	1    0    0    -1  
+$EndComp
+Connection ~ 2500 6500
+Wire Wire Line
+	3200 6500 3200 6600
+$Comp
+L power:GNDA #PWR?
+U 1 1 61A581BF
+P 3200 7000
+F 0 "#PWR?" H 3200 6750 50  0001 C CNN
+F 1 "GNDA" H 3205 6827 50  0000 C CNN
+F 2 "" H 3200 7000 50  0001 C CNN
+F 3 "" H 3200 7000 50  0001 C CNN
+	1    3200 7000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3200 6900 3200 7000
+Wire Wire Line
+	2500 6500 3200 6500
+Text GLabel 3300 6500 2    50   Output ~ 0
+~AMP_SD
+Wire Wire Line
+	3200 6500 3300 6500
+Connection ~ 3200 6500
+Text GLabel 4300 3150 0    50   Input ~ 0
+~AMP_SD
+Wire Wire Line
+	4400 3050 4400 3250
+Wire Wire Line
+	4650 3150 4300 3150
 $EndSCHEMATC
