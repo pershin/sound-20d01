@@ -429,4 +429,186 @@ Wire Wire Line
 Wire Wire Line
 	3950 4450 4450 4450
 Connection ~ 4450 4450
+$Comp
+L Regulator_Linear:L7805 U?
+U 1 1 619AB518
+P 8550 4450
+F 0 "U?" H 8550 4692 50  0000 C CNN
+F 1 "L7805ABD2T-TR" H 8550 4601 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:TO-263-2" H 8575 4300 50  0001 L CIN
+F 3 "https://www.st.com/resource/en/datasheet/l78.pdf" H 8550 4400 50  0001 C CNN
+	1    8550 4450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 619AB62A
+P 7850 4700
+F 0 "C?" H 7965 4746 50  0000 L CNN
+F 1 "0.33uF" H 7965 4655 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 7888 4550 50  0001 C CNN
+F 3 "~" H 7850 4700 50  0001 C CNN
+	1    7850 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 619AB6DE
+P 9250 4700
+F 0 "C?" H 9365 4746 50  0000 L CNN
+F 1 "0.1uF" H 9365 4655 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 9288 4550 50  0001 C CNN
+F 3 "~" H 9250 4700 50  0001 C CNN
+	1    9250 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C?
+U 1 1 619AB778
+P 9750 4700
+F 0 "C?" H 9868 4746 50  0000 L CNN
+F 1 "10uF" H 9868 4655 50  0000 L CNN
+F 2 "Capacitor_SMD:CP_Elec_4x5.4" H 9788 4550 50  0001 C CNN
+F 3 "~" H 9750 4700 50  0001 C CNN
+	1    9750 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C?
+U 1 1 619AB88D
+P 7350 4700
+F 0 "C?" H 7468 4746 50  0000 L CNN
+F 1 "47uF" H 7468 4655 50  0000 L CNN
+F 2 "Capacitor_SMD:CP_Elec_6.3x5.4" H 7388 4550 50  0001 C CNN
+F 3 "~" H 7350 4700 50  0001 C CNN
+	1    7350 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDA #PWR?
+U 1 1 619AB987
+P 8550 5050
+F 0 "#PWR?" H 8550 4800 50  0001 C CNN
+F 1 "GNDA" H 8555 4877 50  0000 C CNN
+F 2 "" H 8550 5050 50  0001 C CNN
+F 3 "" H 8550 5050 50  0001 C CNN
+	1    8550 5050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8850 4450 9250 4450
+Wire Wire Line
+	7350 4450 7850 4450
+Wire Wire Line
+	7850 4550 7850 4450
+Connection ~ 7850 4450
+Wire Wire Line
+	7850 4450 8250 4450
+Wire Wire Line
+	9250 4550 9250 4450
+Connection ~ 9250 4450
+Wire Wire Line
+	9250 4450 9750 4450
+Wire Wire Line
+	7850 4850 7850 4950
+Wire Wire Line
+	7850 4950 8550 4950
+Wire Wire Line
+	9250 4950 9250 4850
+Wire Wire Line
+	8550 4750 8550 4950
+Connection ~ 8550 4950
+Wire Wire Line
+	8550 4950 9250 4950
+Wire Wire Line
+	8550 4950 8550 5050
+Wire Wire Line
+	7350 4550 7350 4450
+Wire Wire Line
+	9750 4550 9750 4450
+Wire Wire Line
+	9750 4850 9750 4950
+Wire Wire Line
+	9750 4950 9250 4950
+Connection ~ 9250 4950
+Wire Wire Line
+	7850 4950 7350 4950
+Wire Wire Line
+	7350 4950 7350 4850
+Connection ~ 7850 4950
+$Comp
+L power:+5VA #PWR?
+U 1 1 619CBAE2
+P 9750 4350
+AR Path="/60DE2DF4/619CBAE2" Ref="#PWR?"  Part="1" 
+AR Path="/61033008/619CBAE2" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 9750 4200 50  0001 C CNN
+F 1 "+5VA" H 9765 4523 50  0000 C CNN
+F 2 "" H 9750 4350 50  0001 C CNN
+F 3 "" H 9750 4350 50  0001 C CNN
+	1    9750 4350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9750 4450 9750 4350
+Connection ~ 9750 4450
+$Comp
+L power:VCC #PWR?
+U 1 1 619CEE4C
+P 7350 4350
+AR Path="/619CEE4C" Ref="#PWR?"  Part="1" 
+AR Path="/61033008/619CEE4C" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 7350 4200 50  0001 C CNN
+F 1 "VCC" H 7367 4523 50  0000 C CNN
+F 2 "" H 7350 4350 50  0001 C CNN
+F 3 "" H 7350 4350 50  0001 C CNN
+	1    7350 4350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7350 4450 7350 4350
+Connection ~ 7350 4450
+$Comp
+L Device:LED D?
+U 1 1 619D82C7
+P 10250 5100
+F 0 "D?" V 10288 4983 50  0000 R CNN
+F 1 "A_PWR_LED" V 10197 4983 50  0000 R CNN
+F 2 "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 10250 5100 50  0001 C CNN
+F 3 "~" H 10250 5100 50  0001 C CNN
+	1    10250 5100
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	10250 4950 10250 4850
+Wire Wire Line
+	10250 4550 10250 4450
+$Comp
+L Device:R R?
+U 1 1 619D82CF
+P 10250 4700
+F 0 "R?" H 10320 4746 50  0000 L CNN
+F 1 "1K" H 10320 4655 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 10180 4700 50  0001 C CNN
+F 3 "~" H 10250 4700 50  0001 C CNN
+	1    10250 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10250 5250 10250 5350
+Text Notes 9750 5150 0    50   ~ 0
+Green LED
+Wire Wire Line
+	9750 4450 10250 4450
+$Comp
+L power:GNDA #PWR?
+U 1 1 619E1D00
+P 10250 5350
+F 0 "#PWR?" H 10250 5100 50  0001 C CNN
+F 1 "GNDA" H 10255 5177 50  0000 C CNN
+F 2 "" H 10250 5350 50  0001 C CNN
+F 3 "" H 10250 5350 50  0001 C CNN
+	1    10250 5350
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
