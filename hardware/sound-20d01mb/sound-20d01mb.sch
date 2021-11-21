@@ -846,4 +846,79 @@ Wire Wire Line
 	7300 5350 7300 5250
 Text GLabel 7300 5250 1    50   Output ~ 0
 RTC_VBAT
+$Comp
+L Connector_Generic:Conn_02x04_Odd_Even J?
+U 1 1 61A1BC0A
+P 8000 2650
+F 0 "J?" H 8050 2967 50  0000 C CNN
+F 1 "Conn_02x04_Odd_Even" H 8050 2876 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x04_P2.54mm_Vertical" H 8000 2650 50  0001 C CNN
+F 3 "~" H 8000 2650 50  0001 C CNN
+	1    8000 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5VA #PWR?
+U 1 1 61A21C9A
+P 7300 2450
+AR Path="/60DE2DF4/61A21C9A" Ref="#PWR?"  Part="1" 
+AR Path="/61033008/61A21C9A" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 7300 2300 50  0001 C CNN
+F 1 "+5VA" H 7315 2623 50  0000 C CNN
+F 2 "" H 7300 2450 50  0001 C CNN
+F 3 "" H 7300 2450 50  0001 C CNN
+	1    7300 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7300 2550 7300 2450
+Wire Wire Line
+	7300 2550 7700 2550
+Wire Wire Line
+	7800 2650 7700 2650
+Wire Wire Line
+	7700 2650 7700 2550
+Connection ~ 7700 2550
+Wire Wire Line
+	7700 2550 7800 2550
+Wire Wire Line
+	7800 2750 7700 2750
+Wire Wire Line
+	7700 2750 7700 2650
+Connection ~ 7700 2650
+Wire Wire Line
+	7800 2850 7700 2850
+Wire Wire Line
+	7700 2850 7700 2750
+Connection ~ 7700 2750
+$Comp
+L power:GNDA #PWR?
+U 1 1 61A4ACD4
+P 8400 2950
+F 0 "#PWR?" H 8400 2700 50  0001 C CNN
+F 1 "GNDA" H 8405 2777 50  0000 C CNN
+F 2 "" H 8400 2950 50  0001 C CNN
+F 3 "" H 8400 2950 50  0001 C CNN
+	1    8400 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8300 2850 8400 2850
+Wire Wire Line
+	8400 2850 8400 2950
+Wire Wire Line
+	8300 2750 8400 2750
+Wire Wire Line
+	8400 2750 8400 2850
+Connection ~ 8400 2850
+Wire Wire Line
+	8300 2650 8400 2650
+Wire Wire Line
+	8400 2650 8400 2750
+Connection ~ 8400 2750
+Wire Wire Line
+	8300 2550 8400 2550
+Wire Wire Line
+	8400 2550 8400 2650
+Connection ~ 8400 2650
 $EndSCHEMATC
