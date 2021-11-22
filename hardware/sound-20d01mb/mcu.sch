@@ -1044,19 +1044,6 @@ Wire Notes Line
 Wire Notes Line
 	8700 1800 8700 1050
 $Comp
-L Oscillator:DFA-S2 X?
-U 1 1 619CF940
-P 8100 5400
-AR Path="/60DE2DEE/612AF97F/619CF940" Ref="X?"  Part="1" 
-AR Path="/60DE2DEE/619CF940" Ref="X?"  Part="1" 
-F 0 "X?" H 8200 5800 50  0000 L CNN
-F 1 "SM7745HEV-12.288M" H 8200 5700 50  0000 L CNN
-F 2 "Oscillator:Oscillator_SMD_Fordahl_DFAS2-4Pin_7.3x5.1mm_HandSoldering" H 9200 5050 50  0001 C CNN
-F 3 "http://www.metatech.com.hk/product/fordahl/pdf/2002%20TCXO%20Page%2043-58.pdf" H 8000 5400 50  0001 C CNN
-	1    8100 5400
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:R R?
 U 1 1 619CF947
 P 8450 4500
@@ -1143,7 +1130,18 @@ Wire Wire Line
 Wire Wire Line
 	9100 4500 9100 5400
 Wire Wire Line
-	9100 5400 8500 5400
+	9100 5400 8400 5400
 Wire Wire Line
 	8200 3850 8200 4500
+$Comp
+L Oscillator:XO91 X?
+U 1 1 619CCBD0
+P 8100 5400
+F 0 "X?" H 8600 5800 50  0000 C CNN
+F 1 "SM7745HEV-12.288M" H 8600 5700 50  0000 C CNN
+F 2 "Oscillator:Oscillator_SMD_Fordahl_DFAS2-4Pin_7.3x5.1mm_HandSoldering" H 8800 5050 50  0001 C CNN
+F 3 "http://www.pletronics.com/uploads/datasheets/sm77h%203.3v.pdf" H 8000 5400 50  0001 C CNN
+	1    8100 5400
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
