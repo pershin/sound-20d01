@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 6 5
+Sheet 5 5
 Title "Sound-20D01MB"
 Date "2021-07-01"
 Rev "0"
@@ -338,7 +338,7 @@ F 3 "~" H 3050 2800 50  0001 C CNN
 	1    3050 2800
 	-1   0    0    1   
 $EndComp
-Text Notes 6850 3500 0    50   ~ 0
+Text Notes 7250 3500 2    50   ~ 0
 Green LED
 $Comp
 L power:VBUS #PWR?
@@ -596,7 +596,7 @@ F 3 "~" H 10250 4700 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	10250 5250 10250 5350
-Text Notes 9750 5150 0    50   ~ 0
+Text Notes 10150 5150 2    50   ~ 0
 Green LED
 Wire Wire Line
 	9750 4450 10250 4450

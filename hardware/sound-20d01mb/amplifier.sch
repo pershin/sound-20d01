@@ -797,7 +797,7 @@ F 3 "~" H 5400 6750 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	5400 7300 5400 7400
-Text Notes 4900 7200 0    50   ~ 0
+Text Notes 5300 7200 2    50   ~ 0
 Orange LED
 Wire Wire Line
 	5300 6500 5400 6500
@@ -936,7 +936,7 @@ F 3 "~" H 2500 6750 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2500 7300 2500 7400
-Text Notes 2000 7200 0    50   ~ 0
+Text Notes 2400 7200 2    50   ~ 0
 Green LED
 Wire Wire Line
 	2400 6500 2500 6500
