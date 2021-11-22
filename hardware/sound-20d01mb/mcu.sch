@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 6
+Sheet 2 5
 Title "Sound-20D01MB"
 Date "2021-07-01"
 Rev "0"
@@ -676,30 +676,16 @@ F 3 "~" H 1550 4300 50  0001 C CNN
 	1    1550 4300
 	1    0    0    -1  
 $EndComp
-$Sheet
-S 8700 4600 1000 1000
-U 612AF97F
-F0 "Oscillators" 50
-F1 "oscillators.sch" 50
-F2 "OSC_OUTPUT" O L 8700 4700 50 
-F3 "OSC_SEL" I L 8700 4800 50 
-$EndSheet
-Wire Wire Line
-	8700 4700 8200 4700
-Wire Wire Line
-	8200 4700 8200 3850
 Wire Wire Line
 	8200 3850 6600 3850
 Text Label 6700 3850 0    50   ~ 0
 I2S_CKIN
 Text GLabel 4200 3950 0    50   Output ~ 0
-OSC_SEL
+I2S_OSC_EN
 Wire Wire Line
 	4300 3950 4200 3950
-Text GLabel 8600 4800 0    50   Input ~ 0
-OSC_SEL
-Wire Wire Line
-	8600 4800 8700 4800
+Text GLabel 7700 5400 0    50   Input ~ 0
+I2S_OSC_EN
 Wire Wire Line
 	5300 2650 5300 2550
 Wire Wire Line
@@ -1057,4 +1043,107 @@ Wire Notes Line
 	10200 1050 10200 1800
 Wire Notes Line
 	8700 1800 8700 1050
+$Comp
+L Oscillator:DFA-S2 X?
+U 1 1 619CF940
+P 8100 5400
+AR Path="/60DE2DEE/612AF97F/619CF940" Ref="X?"  Part="1" 
+AR Path="/60DE2DEE/619CF940" Ref="X?"  Part="1" 
+F 0 "X?" H 8200 5800 50  0000 L CNN
+F 1 "SM7745HEV-12.288M" H 8200 5700 50  0000 L CNN
+F 2 "Oscillator:Oscillator_SMD_Fordahl_DFAS2-4Pin_7.3x5.1mm_HandSoldering" H 9200 5050 50  0001 C CNN
+F 3 "http://www.metatech.com.hk/product/fordahl/pdf/2002%20TCXO%20Page%2043-58.pdf" H 8000 5400 50  0001 C CNN
+	1    8100 5400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 619CF947
+P 8450 4500
+AR Path="/60DE2DEE/612AF97F/619CF947" Ref="R?"  Part="1" 
+AR Path="/60DE2DEE/619CF947" Ref="R?"  Part="1" 
+F 0 "R?" V 8657 4500 50  0000 C CNN
+F 1 "51R" V 8566 4500 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 8380 4500 50  0001 C CNN
+F 3 "~" H 8450 4500 50  0001 C CNN
+	1    8450 4500
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 619CF950
+P 8100 5800
+AR Path="/60DE2DEE/612AF97F/619CF950" Ref="#PWR?"  Part="1" 
+AR Path="/60DE2DEE/619CF950" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 8100 5550 50  0001 C CNN
+F 1 "GNDD" H 8104 5645 50  0000 C CNN
+F 2 "" H 8100 5800 50  0001 C CNN
+F 3 "" H 8100 5800 50  0001 C CNN
+	1    8100 5800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8100 5700 8100 5800
+$Comp
+L power:+3V3 #PWR?
+U 1 1 619CF957
+P 7600 4400
+AR Path="/60DE2DEE/612AF97F/619CF957" Ref="#PWR?"  Part="1" 
+AR Path="/60DE2DEE/619CF957" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 7600 4250 50  0001 C CNN
+F 1 "+3V3" H 7615 4573 50  0000 C CNN
+F 2 "" H 7600 4400 50  0001 C CNN
+F 3 "" H 7600 4400 50  0001 C CNN
+	1    7600 4400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 619CF95D
+P 7600 4750
+AR Path="/60DE2DEE/612AF97F/619CF95D" Ref="C?"  Part="1" 
+AR Path="/60DE2DEE/619CF95D" Ref="C?"  Part="1" 
+F 0 "C?" H 7715 4796 50  0000 L CNN
+F 1 "0.1uF" H 7715 4705 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 7638 4600 50  0001 C CNN
+F 3 "~" H 7600 4750 50  0001 C CNN
+	1    7600 4750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7600 4600 7600 4500
+$Comp
+L power:GNDD #PWR?
+U 1 1 619CF965
+P 7600 5000
+AR Path="/60DE2DEE/612AF97F/619CF965" Ref="#PWR?"  Part="1" 
+AR Path="/60DE2DEE/619CF965" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 7600 4750 50  0001 C CNN
+F 1 "GNDD" H 7604 4845 50  0000 C CNN
+F 2 "" H 7600 5000 50  0001 C CNN
+F 3 "" H 7600 5000 50  0001 C CNN
+	1    7600 5000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7600 4900 7600 5000
+Wire Wire Line
+	7600 4500 8100 4500
+Connection ~ 7600 4500
+Wire Wire Line
+	7600 4500 7600 4400
+Wire Wire Line
+	7800 5400 7700 5400
+Wire Wire Line
+	8100 4500 8100 5100
+Wire Wire Line
+	8300 4500 8200 4500
+Wire Wire Line
+	8600 4500 9100 4500
+Wire Wire Line
+	9100 4500 9100 5400
+Wire Wire Line
+	9100 5400 8500 5400
+Wire Wire Line
+	8200 3850 8200 4500
 $EndSCHEMATC

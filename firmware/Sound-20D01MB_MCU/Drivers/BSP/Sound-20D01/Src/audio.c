@@ -37,19 +37,8 @@ void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai) {
 	HalfTransfer_CallBack_FS();
 }
 
-void BSP_AUDIO_OSC_Select(BSP_AUDIO_OSC sel) {
-	switch (sel) {
-	case BSP_AUDIO_OSC_44K1:
-		HAL_GPIO_WritePin(OSC_SEL_GPIO_Port, OSC_SEL_Pin, GPIO_PIN_SET);
-		break;
-	case BSP_AUDIO_OSC_48K:
-		HAL_GPIO_WritePin(OSC_SEL_GPIO_Port, OSC_SEL_Pin, GPIO_PIN_RESET);
-		break;
-	}
-}
-
 void BSP_AUDIO_Init() {
-	BSP_AUDIO_OSC_Select(BSP_AUDIO_OSC_48K);
+	HAL_GPIO_WritePin(I2S_OSC_EN_GPIO_Port, I2S_OSC_EN_Pin, GPIO_PIN_SET);
 	BSP_AUDIO_OUT_SetVolume(150);
 	BSP_AUDIO_OUT_Mute(1);
 	BSP_AUDIO_OUT_Shutdown(0);

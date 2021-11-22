@@ -327,13 +327,13 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, OSC_SEL_Pin|SHUTDOWN_Pin|MUTE_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, I2S_OSC_EN_Pin|SHUTDOWN_Pin|MUTE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(AD1938_CLATCH_GPIO_Port, AD1938_CLATCH_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : OSC_SEL_Pin SHUTDOWN_Pin MUTE_Pin */
-  GPIO_InitStruct.Pin = OSC_SEL_Pin|SHUTDOWN_Pin|MUTE_Pin;
+  /*Configure GPIO pins : I2S_OSC_EN_Pin SHUTDOWN_Pin MUTE_Pin */
+  GPIO_InitStruct.Pin = I2S_OSC_EN_Pin|SHUTDOWN_Pin|MUTE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

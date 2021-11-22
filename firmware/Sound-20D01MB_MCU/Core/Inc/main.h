@@ -58,8 +58,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define OSC_SEL_Pin GPIO_PIN_2
-#define OSC_SEL_GPIO_Port GPIOC
+#define I2S_OSC_EN_Pin GPIO_PIN_2
+#define I2S_OSC_EN_GPIO_Port GPIOC
 #define AD1938_CLATCH_Pin GPIO_PIN_4
 #define AD1938_CLATCH_GPIO_Port GPIOA
 #define SHUTDOWN_Pin GPIO_PIN_4
