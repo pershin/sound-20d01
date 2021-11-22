@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 5 5
+Sheet 4 5
 Title "Sound-20D01MB"
 Date "2021-07-01"
 Rev "0"
@@ -713,8 +713,8 @@ $Comp
 L sound-20d01_Library:TPA3123D2 U?
 U 1 1 61611A87
 P 5150 3600
-F 0 "U?" H 5150 4417 50  0000 C CNN
-F 1 "TPA3123D2" H 5150 4326 50  0000 C CNN
+F 0 "U?" H 5150 4400 50  0000 C CNN
+F 1 "TPA3123D2" H 5150 4300 50  0000 C CNN
 F 2 "Package_SO:HTSSOP-24-1EP_4.4x7.8mm_P0.65mm_EP3.4x7.8mm_Mask2.4x4.68mm_ThermalVias" H 5150 2500 50  0001 C CNN
 F 3 "https://www.ti.com/lit/ds/symlink/tpa3123d2.pdf" H 5150 2400 50  0001 C CNN
 	1    5150 3600
