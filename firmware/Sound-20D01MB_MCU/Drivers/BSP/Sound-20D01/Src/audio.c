@@ -51,6 +51,9 @@ void BSP_AUDIO_OSC_Select(BSP_AUDIO_OSC sel) {
 void BSP_AUDIO_Init() {
 	BSP_AUDIO_OSC_Select(BSP_AUDIO_OSC_48K);
 	BSP_AUDIO_OUT_SetVolume(150);
+	BSP_AUDIO_OUT_Mute(1);
+	BSP_AUDIO_OUT_Shutdown(0);
+	BSP_AUDIO_OUT_Mute(0);
 }
 
 uint8_t BSP_AUDIO_OUT_Play(uint8_t *pbuf, uint32_t size) {
@@ -91,7 +94,20 @@ void BSP_AUDIO_OUT_SetVolume(uint8_t vol) {
 #endif
 }
 
+void BSP_AUDIO_OUT_Shutdown(uint8_t cmd) {
+	if (1 == cmd) {
+		HAL_GPIO_WritePin(SHUTDOWN_GPIO_Port, SHUTDOWN_Pin, GPIO_PIN_RESET);
+	} else {
+		HAL_GPIO_WritePin(SHUTDOWN_GPIO_Port, SHUTDOWN_Pin, GPIO_PIN_SET);
+	}
+}
+
 void BSP_AUDIO_OUT_Mute(uint8_t cmd) {
+	if (1 == cmd) {
+		HAL_GPIO_WritePin(MUTE_GPIO_Port, MUTE_Pin, GPIO_PIN_SET);
+	} else {
+		HAL_GPIO_WritePin(MUTE_GPIO_Port, MUTE_Pin, GPIO_PIN_RESET);
+	}
 
 #ifdef DEBUG
 	printf("Mute: %d\n", cmd);

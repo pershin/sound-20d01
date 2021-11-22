@@ -62,6 +62,10 @@ void Error_Handler(void);
 #define OSC_SEL_GPIO_Port GPIOC
 #define AD1938_CLATCH_Pin GPIO_PIN_4
 #define AD1938_CLATCH_GPIO_Port GPIOA
+#define SHUTDOWN_Pin GPIO_PIN_4
+#define SHUTDOWN_GPIO_Port GPIOC
+#define MUTE_Pin GPIO_PIN_5
+#define MUTE_GPIO_Port GPIOC
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
