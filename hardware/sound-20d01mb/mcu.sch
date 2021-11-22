@@ -1013,4 +1013,48 @@ Wire Wire Line
 	4300 3150 3200 3150
 Wire Wire Line
 	3300 3050 3300 2200
+Text GLabel 9250 1200 0    50   BiDi ~ 0
+I2C1_SDA
+Text GLabel 9250 1300 0    50   Output ~ 0
+I2C1_SCL
+$Comp
+L power:GNDD #PWR?
+U 1 1 61A1F060
+P 9250 1500
+F 0 "#PWR?" H 9250 1250 50  0001 C CNN
+F 1 "GNDD" H 9254 1345 50  0000 C CNN
+F 2 "" H 9250 1500 50  0001 C CNN
+F 3 "" H 9250 1500 50  0001 C CNN
+	1    9250 1500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x03 J?
+U 1 1 61A1F1F2
+P 9550 1300
+F 0 "J?" H 9630 1342 50  0000 L CNN
+F 1 "Conn_01x03" H 9630 1251 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 9550 1300 50  0001 C CNN
+F 3 "~" H 9550 1300 50  0001 C CNN
+	1    9550 1300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9350 1200 9250 1200
+Wire Wire Line
+	9350 1300 9250 1300
+Wire Wire Line
+	9350 1400 9250 1400
+Wire Wire Line
+	9250 1400 9250 1500
+Text Notes 8700 1000 0    50   ~ 0
+I2C (Optional)
+Wire Notes Line
+	8700 1050 10200 1050
+Wire Notes Line
+	8700 1800 10200 1800
+Wire Notes Line
+	10200 1050 10200 1800
+Wire Notes Line
+	8700 1800 8700 1050
 $EndSCHEMATC
