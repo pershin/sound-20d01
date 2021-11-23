@@ -707,7 +707,7 @@ Wire Wire Line
 Text HLabel 3350 1850 0    50   Output ~ 0
 DAC_SD
 $Comp
-L sound-20d01_Library:PCM5142 U?
+L sound-20d01_Library:PCM5142_I2C U?
 U 1 1 6140DEF6
 P 5500 3350
 F 0 "U?" H 5500 3300 50  0000 C CNN
