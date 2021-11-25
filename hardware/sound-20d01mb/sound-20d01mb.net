@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /mnt/hdd/projects/sergey/sound-20d01/hardware/sound-20d01mb/sound-20d01mb.sch)
-    (date "Thu 25 Nov 2021 08:49:25 PM MSK")
+    (date "Thu 25 Nov 2021 11:31:53 PM MSK")
     (tool "Eeschema 5.0.2+dfsg1-1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -900,7 +900,7 @@
       (tstamp 619AB778))
     (comp (ref C52)
       (value 47uF)
-      (footprint Capacitor_SMD:CP_Elec_6.3x5.4)
+      (footprint Capacitor_SMD:CP_Elec_6.3x7.7)
       (datasheet ~)
       (libsource (lib Device) (part CP) (description "Polarized capacitor"))
       (sheetpath (names "/Power Supply Unit/") (tstamps /61033008/))
