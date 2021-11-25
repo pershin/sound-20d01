@@ -241,7 +241,7 @@ Wire Wire Line
 Wire Wire Line
 	6850 3300 6350 3300
 Text Notes 5200 2450 0    50   ~ 0
-Place U? as close\nto the MCU as possible.
+Place U7 as close\nto the MCU as possible.
 $Comp
 L Device:CP C49
 U 1 1 613DBAC3
@@ -260,7 +260,7 @@ Wire Wire Line
 Wire Wire Line
 	4450 4950 4950 4950
 Text Notes 5200 4100 0    50   ~ 0
-Place U? as close\nto the DAC as possible.
+Place U8 as close\nto the DAC as possible.
 $Comp
 L Device:LED D4
 U 1 1 61475539
