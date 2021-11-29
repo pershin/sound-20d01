@@ -715,7 +715,7 @@ U 1 1 61611A87
 P 5150 3600
 F 0 "U4" H 5150 4400 50  0000 C CNN
 F 1 "TPA3123D2" H 5150 4300 50  0000 C CNN
-F 2 "Package_SO:HTSSOP-24-1EP_4.4x7.8mm_P0.65mm_EP3.4x7.8mm_Mask2.4x4.68mm_ThermalVias" H 5150 2500 50  0001 C CNN
+F 2 "sound-20d01mb:PWP0024B" H 5150 2500 50  0001 C CNN
 F 3 "https://www.ti.com/lit/ds/symlink/tpa3123d2.pdf" H 5150 2400 50  0001 C CNN
 	1    5150 3600
 	1    0    0    -1  

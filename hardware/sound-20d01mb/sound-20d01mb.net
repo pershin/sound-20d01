@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /mnt/hdd/projects/sergey/sound-20d01/hardware/sound-20d01mb/sound-20d01mb.sch)
-    (date "Thu 25 Nov 2021 11:31:53 PM MSK")
+    (date "Mon 29 Nov 2021 08:47:50 AM MSK")
     (tool "Eeschema 5.0.2+dfsg1-1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -690,7 +690,7 @@
       (tstamp 613EF0A5))
     (comp (ref U4)
       (value TPA3123D2)
-      (footprint Package_SO:HTSSOP-24-1EP_4.4x7.8mm_P0.65mm_EP3.4x7.8mm_Mask2.4x4.68mm_ThermalVias)
+      (footprint sound-20d01mb:PWP0024B)
       (datasheet https://www.ti.com/lit/ds/symlink/tpa3123d2.pdf)
       (libsource (lib sound-20d01_Library) (part TPA3123D2) (description "25-W stereo, 10- to 30-V supply, analog input Class-D audio amplifier w/ SE outputs"))
       (sheetpath (names /Amplifier/) (tstamps /60DE2DF4/))
