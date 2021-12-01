@@ -439,17 +439,17 @@ F 3 "~" H 8000 3950 50  0001 C CNN
 	1    8000 3950
 	1    0    0    -1  
 $EndComp
-Text GLabel 7700 3750 0    50   BiDi ~ 0
-PC13
-Text GLabel 8400 3750 2    50   BiDi ~ 0
-PC1
-Text GLabel 7700 3850 0    50   BiDi ~ 0
-PC3
-Text GLabel 8400 3850 2    50   BiDi ~ 0
-PA0
-Text GLabel 7700 3950 0    50   BiDi ~ 0
-PA1
 Text GLabel 8400 3950 2    50   BiDi ~ 0
+PC13
+Text GLabel 7700 3950 0    50   BiDi ~ 0
+PC1
+Text GLabel 8400 3850 2    50   BiDi ~ 0
+PC3
+Text GLabel 7700 3750 0    50   BiDi ~ 0
+PA0
+Text GLabel 8400 3750 2    50   BiDi ~ 0
+PA1
+Text GLabel 7700 3850 0    50   BiDi ~ 0
 PA2
 Text GLabel 7700 4050 0    50   BiDi ~ 0
 PA3
