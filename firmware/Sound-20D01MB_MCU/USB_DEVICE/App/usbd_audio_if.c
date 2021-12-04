@@ -154,10 +154,8 @@ USBD_AUDIO_ItfTypeDef USBD_AUDIO_fops_FS =
 static int8_t AUDIO_Init_FS(uint32_t AudioFreq, uint32_t Volume, uint32_t options)
 {
   /* USER CODE BEGIN 0 */
-  UNUSED(AudioFreq);
-  UNUSED(Volume);
-  UNUSED(options);
-  BSP_AUDIO_Init();
+  BSP_AUDIO_Init(AudioFreq, Volume, options);
+
   return (USBD_OK);
   /* USER CODE END 0 */
 }
@@ -194,9 +192,7 @@ static int8_t AUDIO_AudioCmd_FS(uint8_t* pbuf, uint32_t size, uint8_t cmd)
     	BSP_AUDIO_OUT_ChangeBuffer(pbuf, size);
     break;
   }
-  UNUSED(pbuf);
-  UNUSED(size);
-  UNUSED(cmd);
+
   return (USBD_OK);
   /* USER CODE END 2 */
 }
@@ -222,8 +218,8 @@ static int8_t AUDIO_VolumeCtl_FS(uint8_t vol)
 static int8_t AUDIO_MuteCtl_FS(uint8_t cmd)
 {
   /* USER CODE BEGIN 4 */
-  //UNUSED(cmd);
   BSP_AUDIO_OUT_Mute(cmd);
+
   return (USBD_OK);
   /* USER CODE END 4 */
 }

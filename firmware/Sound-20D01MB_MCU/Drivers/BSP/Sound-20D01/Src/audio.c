@@ -30,19 +30,26 @@ void HalfTransfer_CallBack_FS(void);
 void Error_CallBack_FS(void);
 
 void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
+	UNUSED(hsai);
 	TransferComplete_CallBack_FS();
 }
 
 void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai) {
+	UNUSED(hsai);
 	HalfTransfer_CallBack_FS();
 }
 
-void BSP_AUDIO_Init() {
+void BSP_AUDIO_Init(uint32_t AudioFreq, uint32_t Volume, uint32_t options) {
 	HAL_GPIO_WritePin(I2S_OSC_EN_GPIO_Port, I2S_OSC_EN_Pin, GPIO_PIN_SET);
 	BSP_AUDIO_OUT_SetVolume(100);
 	BSP_AUDIO_OUT_Mute(1);
 	BSP_AUDIO_OUT_Shutdown(0);
 	BSP_AUDIO_OUT_Mute(0);
+
+#ifdef DEBUG
+	printf("BSP_AUDIO_Init :: AudioFreq: %lu, Volume: %lu, options: %lu\n",
+			AudioFreq, Volume, options);
+#endif
 }
 
 uint8_t BSP_AUDIO_OUT_Play(uint8_t *pbuf, uint32_t size) {
