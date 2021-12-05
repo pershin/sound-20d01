@@ -23,6 +23,8 @@
 #define VOLUME_RES           0x0001 //  1/256 dB
 #define VOLUME_CUR           0X8000 // -Infinity dB
 
+uint8_t* USB_AUDIO_GetCfgDesc(uint16_t *length);
+uint8_t USB_AUDIO_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
 uint8_t USB_AUDIO_EP0_RxReady(USBD_HandleTypeDef *pdev);
 uint8_t AUDIO_REQ(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
 

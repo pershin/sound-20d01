@@ -62,7 +62,7 @@ EndBSPDependencies */
 /* Includes ------------------------------------------------------------------*/
 #include "usbd_audio.h"
 #include "usbd_ctlreq.h"
-#include "usb_audio.h"
+
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
   * @{
@@ -216,8 +216,7 @@ __ALIGN_BEGIN static uint8_t USBD_AUDIO_CfgDesc[USB_AUDIO_CONFIG_DESC_SIZ] __ALI
   AUDIO_OUT_STREAMING_CTRL,             /* bUnitID */
   0x01,                                 /* bSourceID */
   0x01,                                 /* bControlSize */
-  AUDIO_CONTROL_MUTE |                  /* bmaControls(0) */
-  AUDIO_CONTROL_VOLUME,
+  AUDIO_CONTROL_MUTE,                   /* bmaControls(0) */
   0,                                    /* bmaControls(1) */
   0x00,                                 /* iTerminal */
   /* 09 byte*/
@@ -439,21 +438,12 @@ static uint8_t USBD_AUDIO_Setup(USBD_HandleTypeDef *pdev,
     case USB_REQ_TYPE_CLASS:
       switch (req->bRequest)
       {
-/*
         case AUDIO_REQ_GET_CUR:
           AUDIO_REQ_GetCurrent(pdev, req);
           break;
 
         case AUDIO_REQ_SET_CUR:
           AUDIO_REQ_SetCurrent(pdev, req);
-          break;
-*/
-        case AUDIO_REQ_GET_CUR:
-        case AUDIO_REQ_GET_MIN:
-        case AUDIO_REQ_GET_MAX:
-        case AUDIO_REQ_GET_RES:
-        case AUDIO_REQ_SET_CUR:
-        	ret = AUDIO_REQ(pdev, req);
           break;
 
         default:

@@ -65,7 +65,11 @@ USBD_HandleTypeDef hUsbDeviceFS;
 void MX_USB_DEVICE_Init(void)
 {
   /* USER CODE BEGIN USB_DEVICE_Init_PreTreatment */
+  USBD_AUDIO.Setup = USB_AUDIO_Setup;
   USBD_AUDIO.EP0_RxReady = USB_AUDIO_EP0_RxReady;
+  USBD_AUDIO.GetHSConfigDescriptor = USB_AUDIO_GetCfgDesc;
+  USBD_AUDIO.GetFSConfigDescriptor = USB_AUDIO_GetCfgDesc;
+  USBD_AUDIO.GetOtherSpeedConfigDescriptor = USB_AUDIO_GetCfgDesc;
   /* USER CODE END USB_DEVICE_Init_PreTreatment */
 
   /* Init Device Library, add supported class and start the library. */
