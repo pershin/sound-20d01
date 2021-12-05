@@ -205,7 +205,8 @@ static int8_t AUDIO_AudioCmd_FS(uint8_t* pbuf, uint32_t size, uint8_t cmd)
 static int8_t AUDIO_VolumeCtl_FS(uint8_t vol)
 {
   /* USER CODE BEGIN 3 */
-  UNUSED(vol);
+  BSP_AUDIO_OUT_SetVolume(vol);
+
   return (USBD_OK);
   /* USER CODE END 3 */
 }

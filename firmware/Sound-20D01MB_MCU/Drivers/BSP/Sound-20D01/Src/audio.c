@@ -77,6 +77,11 @@ void PCM5142_SetPageSelectRegister(uint8_t page) {
 void BSP_AUDIO_OUT_SetVolume(uint8_t vol) {
 	uint8_t data[2];
 
+	// Volume limit
+	if (100 > vol) {
+		vol = 100;
+	}
+
 	PCM5142_SetPageSelectRegister(0);
 
 	data[1] = vol;
@@ -84,10 +89,11 @@ void BSP_AUDIO_OUT_SetVolume(uint8_t vol) {
 	HAL_I2C_Master_Transmit(&hi2c1, PCM5142_ADDRESS, data, 2, HAL_MAX_DELAY);
 	data[0] = PCM5142_VOLR;
 	HAL_I2C_Master_Transmit(&hi2c1, PCM5142_ADDRESS, data, 2, HAL_MAX_DELAY);
-
+/*
 #ifdef DEBUG
 	printf("Set volume: %d\n", vol);
 #endif
+*/
 }
 
 void BSP_AUDIO_OUT_Shutdown(uint8_t cmd) {
