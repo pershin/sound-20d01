@@ -19,6 +19,7 @@
 #define PCM5142_ADDRESS 0x98
 
 /* Page 0 */
+#define PCM5142_PCTL 60 /* Digital Volume Control */
 #define PCM5142_VOLL 61 /* Left Digital Volume */
 #define PCM5142_VOLR 62 /* Right Digital Volume */
 
@@ -28,6 +29,8 @@ extern I2C_HandleTypeDef hi2c1;
 void TransferComplete_CallBack_FS(void);
 void HalfTransfer_CallBack_FS(void);
 void Error_CallBack_FS(void);
+void PCM5142_Init(void);
+void PCM5142_SetPageSelectRegister(uint8_t page);
 
 void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
 	UNUSED(hsai);
@@ -40,6 +43,7 @@ void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai) {
 }
 
 void BSP_AUDIO_Init(uint32_t AudioFreq, uint32_t Volume, uint32_t options) {
+	PCM5142_Init();
 	HAL_GPIO_WritePin(I2S_OSC_EN_GPIO_Port, I2S_OSC_EN_Pin, GPIO_PIN_SET);
 	BSP_AUDIO_OUT_SetVolume(100);
 	BSP_AUDIO_OUT_Mute(1);
@@ -62,6 +66,16 @@ void BSP_AUDIO_OUT_ChangeBuffer(uint8_t *pbuf, uint32_t size) {
 	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) pbuf, size);
 }
 
+void PCM5142_Init(void) {
+	uint8_t data[2];
+
+	PCM5142_SetPageSelectRegister(0);
+
+	data[0] = PCM5142_PCTL;
+	data[1] = (1 << 0); /* Right channel volume follows left channel setting */
+	HAL_I2C_Master_Transmit(&hi2c1, PCM5142_ADDRESS, data, 2, HAL_MAX_DELAY);
+}
+
 void PCM5142_SetPageSelectRegister(uint8_t page) {
 	uint8_t data[2];
 
@@ -77,18 +91,11 @@ void PCM5142_SetPageSelectRegister(uint8_t page) {
 void BSP_AUDIO_OUT_SetVolume(uint8_t vol) {
 	uint8_t data[2];
 
-	// Volume limit
-	if (100 > vol) {
-		vol = 100;
-	}
-
-	PCM5142_SetPageSelectRegister(0);
-
 	data[1] = vol;
 	data[0] = PCM5142_VOLL;
 	HAL_I2C_Master_Transmit(&hi2c1, PCM5142_ADDRESS, data, 2, HAL_MAX_DELAY);
-	data[0] = PCM5142_VOLR;
-	HAL_I2C_Master_Transmit(&hi2c1, PCM5142_ADDRESS, data, 2, HAL_MAX_DELAY);
+	//data[0] = PCM5142_VOLR;
+	//HAL_I2C_Master_Transmit(&hi2c1, PCM5142_ADDRESS, data, 2, HAL_MAX_DELAY);
 /*
 #ifdef DEBUG
 	printf("Set volume: %d\n", vol);
