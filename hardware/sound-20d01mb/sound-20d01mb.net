@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /mnt/hdd/projects/sergey/sound-20d01/hardware/sound-20d01mb/sound-20d01mb.sch)
-    (date "Wed 01 Dec 2021 10:26:07 PM MSK")
+    (date "Thu 16 Dec 2021 06:46:32 PM MSK")
     (tool "Eeschema 5.0.2+dfsg1-1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -843,7 +843,7 @@
       (sheetpath (names "/Power Supply Unit/") (tstamps /61033008/))
       (tstamp 61475539))
     (comp (ref R25)
-      (value 330R)
+      (value 680R)
       (footprint Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder)
       (datasheet ~)
       (libsource (lib Device) (part R) (description Resistor))
