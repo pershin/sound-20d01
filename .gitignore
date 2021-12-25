@@ -6,3 +6,6 @@
 
 # STM32CubeIDE
 firmware/Sound-20D01MB_MCU/Debug/
+
+# Others
+*.zip
