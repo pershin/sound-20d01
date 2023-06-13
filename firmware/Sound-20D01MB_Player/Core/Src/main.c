@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "audio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,6 +57,9 @@ volatile uint16_t *signal_read_buff = NULL;
 volatile uint16_t signal_buff1[ABUFSIZ];
 volatile uint16_t signal_buff2[ABUFSIZ];
 volatile uint8_t is_playing = 0;
+volatile uint16_t track = 1;
+volatile uint8_t volume = 130;
+
 FATFS fs;
 FRESULT res;
 FIL MyFile;
@@ -118,7 +121,7 @@ FRESULT Find_File(uint16_t track) {
 }
 
 int Player_Init(void) {
-	BSP_AUDIO_Init(48000, 130, 0);
+	BSP_AUDIO_Init(48000, volume, 0);
 
     // mount the default drive
     res = f_mount(&fs, "", 1);
@@ -137,6 +140,26 @@ int Player_Open(char *path) {
     }
 
     return 0;
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+    switch (GPIO_Pin) {
+        case VOL_D_Pin: // Volume -
+        	volume++;
+        	BSP_AUDIO_OUT_SetVolume(volume);
+            break;
+        case VOL_U_Pin: // Volume +
+        	volume--;
+        	BSP_AUDIO_OUT_SetVolume(volume);
+            break;
+        case PREV_Pin: // Prev
+        	is_playing = 0;
+        	track -= 2;
+            break;
+        case NEXT_Pin: // Next
+        	is_playing = 0;
+            break;
+	}
 }
 
 void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
@@ -254,7 +277,6 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   Player_Init();
-  uint16_t track = 1;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -503,6 +525,22 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : VOL_D_Pin */
+  GPIO_InitStruct.Pin = VOL_D_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(VOL_D_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : VOL_U_Pin PREV_Pin NEXT_Pin */
+  GPIO_InitStruct.Pin = VOL_U_Pin|PREV_Pin|NEXT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 

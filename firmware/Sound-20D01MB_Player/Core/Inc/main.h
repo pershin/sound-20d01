@@ -66,6 +66,18 @@ void Error_Handler(void);
 #define SHUTDOWN_GPIO_Port GPIOC
 #define MUTE_Pin GPIO_PIN_5
 #define MUTE_GPIO_Port GPIOC
+#define VOL_D_Pin GPIO_PIN_15
+#define VOL_D_GPIO_Port GPIOA
+#define VOL_D_EXTI_IRQn EXTI15_10_IRQn
+#define VOL_U_Pin GPIO_PIN_10
+#define VOL_U_GPIO_Port GPIOC
+#define VOL_U_EXTI_IRQn EXTI15_10_IRQn
+#define PREV_Pin GPIO_PIN_11
+#define PREV_GPIO_Port GPIOC
+#define PREV_EXTI_IRQn EXTI15_10_IRQn
+#define NEXT_Pin GPIO_PIN_12
+#define NEXT_GPIO_Port GPIOC
+#define NEXT_EXTI_IRQn EXTI15_10_IRQn
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
