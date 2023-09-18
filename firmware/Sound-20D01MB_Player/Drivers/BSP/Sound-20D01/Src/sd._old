@@ -88,7 +88,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "sd.h"
-#include "../../FATFS/Target/user_diskio.h"
+//#include "../../FATFS/Target/user_diskio.h"
 #include "stdlib.h"
 #include "string.h"
 #include "stdio.h"

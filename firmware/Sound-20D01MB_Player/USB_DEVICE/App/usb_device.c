@@ -65,7 +65,7 @@ USBD_HandleTypeDef hUsbDeviceFS;
 void MX_USB_DEVICE_Init(void)
 {
   /* USER CODE BEGIN USB_DEVICE_Init_PreTreatment */
-	if (HAL_GPIO_ReadPin (GPIOD, GPIO_PIN_2)) {
+	if (HAL_GPIO_ReadPin (SD_DETECT_GPIO_Port, SD_DETECT_Pin)) {
 		usb_mode = 1;
 	}
 

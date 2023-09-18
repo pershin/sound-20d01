@@ -60,26 +60,26 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define I2S_OSC_EN_Pin GPIO_PIN_2
 #define I2S_OSC_EN_GPIO_Port GPIOC
+#define VOL_D_Pin GPIO_PIN_0
+#define VOL_D_GPIO_Port GPIOA
+#define VOL_D_EXTI_IRQn EXTI0_IRQn
+#define VOL_U_Pin GPIO_PIN_1
+#define VOL_U_GPIO_Port GPIOA
+#define VOL_U_EXTI_IRQn EXTI1_IRQn
+#define PREV_Pin GPIO_PIN_2
+#define PREV_GPIO_Port GPIOA
+#define PREV_EXTI_IRQn EXTI2_IRQn
+#define NEXT_Pin GPIO_PIN_3
+#define NEXT_GPIO_Port GPIOA
+#define NEXT_EXTI_IRQn EXTI3_IRQn
 #define SD_CS_Pin GPIO_PIN_4
 #define SD_CS_GPIO_Port GPIOA
 #define SHUTDOWN_Pin GPIO_PIN_4
 #define SHUTDOWN_GPIO_Port GPIOC
 #define MUTE_Pin GPIO_PIN_5
 #define MUTE_GPIO_Port GPIOC
-#define VOL_D_Pin GPIO_PIN_15
-#define VOL_D_GPIO_Port GPIOA
-#define VOL_D_EXTI_IRQn EXTI15_10_IRQn
-#define VOL_U_Pin GPIO_PIN_10
-#define VOL_U_GPIO_Port GPIOC
-#define VOL_U_EXTI_IRQn EXTI15_10_IRQn
-#define PREV_Pin GPIO_PIN_11
-#define PREV_GPIO_Port GPIOC
-#define PREV_EXTI_IRQn EXTI15_10_IRQn
-#define NEXT_Pin GPIO_PIN_12
-#define NEXT_GPIO_Port GPIOC
-#define NEXT_EXTI_IRQn EXTI15_10_IRQn
-#define UBB_MODE_Pin GPIO_PIN_2
-#define UBB_MODE_GPIO_Port GPIOD
+#define SD_DETECT_Pin GPIO_PIN_8
+#define SD_DETECT_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
