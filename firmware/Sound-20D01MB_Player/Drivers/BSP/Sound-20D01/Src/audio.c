@@ -14,15 +14,31 @@
 
 #define PCM5142_ADDRESS 0x98
 
+#define AUDIODATA_SIZE 2 /* 16-bits audio data size */
+#define DMA_MAX_SZE    0xFFFF
+#define DMA_MAX(x)     (((x) <= DMA_MAX_SZE)? (x):DMA_MAX_SZE)
+
 /* Page 0 */
 #define PCM5142_PCTL 60 /* Digital Volume Control */
 #define PCM5142_VOLL 61 /* Left Digital Volume */
 #define PCM5142_VOLR 62 /* Right Digital Volume */
 
 extern I2C_HandleTypeDef hi2c1;
+extern SAI_HandleTypeDef hsai_BlockB1;
+extern I2C_HandleTypeDef hi2c1;
 
 void PCM5142_Init(void);
 void PCM5142_SetPageSelectRegister(uint8_t page);
+
+uint8_t BSP_AUDIO_OUT_Play(uint8_t *pbuf, uint32_t size) {
+	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) pbuf,
+			DMA_MAX(size / AUDIODATA_SIZE));
+	return 0;
+}
+
+void BSP_AUDIO_OUT_ChangeBuffer(uint8_t *pbuf, uint32_t size) {
+	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) pbuf, size);
+}
 
 void BSP_AUDIO_Init(uint32_t AudioFreq, uint32_t Volume, uint32_t options) {
 	PCM5142_Init();

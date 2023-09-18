@@ -20,10 +20,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "fatfs.h"
+#include "sd.h"
+#include "fs.h"
+#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "audio.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,7 +62,9 @@ volatile uint16_t signal_buff1[ABUFSIZ];
 volatile uint16_t signal_buff2[ABUFSIZ];
 volatile uint8_t is_playing = 0;
 volatile uint16_t track = 1;
-volatile uint8_t volume = 130;
+volatile uint8_t volume = 160;
+
+int usb_mode = 0;
 
 FATFS fs;
 FRESULT res;
@@ -90,6 +96,28 @@ int _write(int32_t file, uint8_t *ptr, int32_t len) {
 	return len;
 }
 #endif
+
+uint32_t Get_Number_Of_Tracks(void) {
+    FRESULT fr;     /* Return value */
+    DIR dj;         /* Directory object */
+    FILINFO fno;    /* File information */
+    uint32_t i;
+    FRESULT res;
+
+    res = FR_NO_FILE;
+
+    fr = f_findfirst(&dj, &fno, "", "*.PCM");
+    i = 0;
+
+    while (fr == FR_OK && fno.fname[0]) {
+    	i++;
+        fr = f_findnext(&dj, &fno);
+    }
+
+    f_closedir(&dj);
+
+    return i;
+}
 
 FRESULT Find_File(uint16_t track) {
     FRESULT fr;     /* Return value */
@@ -142,7 +170,11 @@ int Player_Open(char *path) {
     return 0;
 }
 
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+	if (1 == usb_mode) {
+		return;
+	}
+
     switch (GPIO_Pin) {
         case VOL_D_Pin: // Volume -
         	volume++;
@@ -163,16 +195,28 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 }
 
 void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
-    if (end_of_file_reached == 1)
-        return;
+	UNUSED(hsai);
 
-    volatile uint16_t* temp = signal_play_buff;
-    signal_play_buff = signal_read_buff;
-    signal_read_buff = temp;
+	if (1 == usb_mode) {
+		TransferComplete_CallBack_FS();
+		return;
+	}
 
-    HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) signal_play_buff, ABUFSIZ);
+	if (end_of_file_reached == 1)
+		return;
 
-    read_next_chunk = 1;
+	volatile uint16_t* temp = signal_play_buff;
+	signal_play_buff = signal_read_buff;
+	signal_read_buff = temp;
+
+	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) signal_play_buff, ABUFSIZ);
+
+	read_next_chunk = 1;
+}
+
+void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai) {
+	UNUSED(hsai);
+	HalfTransfer_CallBack_FS();
 }
 
 int Player_Play() {
@@ -239,7 +283,6 @@ int Player_Stop() {
 
 	return 0;
 }
-
 /* USER CODE END 0 */
 
 /**
@@ -275,12 +318,22 @@ int main(void)
   MX_SPI1_Init();
   MX_FATFS_Init();
   MX_I2C1_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-  Player_Init();
+  if (0 == usb_mode) {
+      Player_Init();
+  }
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  while (1 == usb_mode)
+  {
+
+  }
+
+  uint32_t number_of_tracks = Get_Number_Of_Tracks();
+
   while (1)
   {
     if (FR_OK == Find_File(track)) {
@@ -291,7 +344,7 @@ int main(void)
 
 	track++;
 
-	if (999 < track) {
+	if (number_of_tracks < track) {
 		track = 1;
 	}
     /* USER CODE END WHILE */
@@ -350,7 +403,13 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SAI1;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SAI1|RCC_PERIPHCLK_CLK48;
+  PeriphClkInitStruct.PLLSAI.PLLSAIM = 4;
+  PeriphClkInitStruct.PLLSAI.PLLSAIN = 96;
+  PeriphClkInitStruct.PLLSAI.PLLSAIQ = 2;
+  PeriphClkInitStruct.PLLSAI.PLLSAIP = RCC_PLLSAIP_DIV4;
+  PeriphClkInitStruct.PLLSAIDivQ = 1;
+  PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48CLKSOURCE_PLLSAIP;
   PeriphClkInitStruct.Sai1ClockSelection = RCC_SAI1CLKSOURCE_EXT;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
@@ -497,6 +556,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, I2S_OSC_EN_Pin|SHUTDOWN_Pin|MUTE_Pin, GPIO_PIN_RESET);
@@ -537,6 +597,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : UBB_MODE_Pin */
+  GPIO_InitStruct.Pin = UBB_MODE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(UBB_MODE_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);

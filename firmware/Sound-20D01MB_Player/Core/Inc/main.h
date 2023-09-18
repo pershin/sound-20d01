@@ -78,6 +78,8 @@ void Error_Handler(void);
 #define NEXT_Pin GPIO_PIN_12
 #define NEXT_GPIO_Port GPIOC
 #define NEXT_EXTI_IRQn EXTI15_10_IRQn
+#define UBB_MODE_Pin GPIO_PIN_2
+#define UBB_MODE_GPIO_Port GPIOD
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
