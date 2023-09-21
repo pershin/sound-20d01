@@ -24,6 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "usbd_audio_if.h"
 #include "audio.h"
 
 /* USER CODE END Includes */
@@ -35,7 +36,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define ABUFSIZ 512
+#define DEFAULT_VOLUME 40
+#define ABUFSIZ        512
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -50,6 +52,7 @@ SAI_HandleTypeDef hsai_BlockB1;
 DMA_HandleTypeDef hdma_sai1_b;
 
 SD_HandleTypeDef hsd;
+DMA_HandleTypeDef hdma_sdio;
 
 /* USER CODE BEGIN PV */
 volatile uint8_t end_of_file_reached = 0;
@@ -60,7 +63,8 @@ volatile uint16_t signal_buff1[ABUFSIZ];
 volatile uint16_t signal_buff2[ABUFSIZ];
 volatile uint8_t is_playing = 0;
 volatile uint16_t track = 1;
-volatile uint8_t volume = 160;
+volatile uint8_t volume = DEFAULT_VOLUME;
+volatile uint8_t old_volume = DEFAULT_VOLUME;
 
 int usb_mode = 0;
 
@@ -100,7 +104,6 @@ uint32_t Get_Number_Of_Tracks(void) {
     DIR dj;         /* Directory object */
     FILINFO fno;    /* File information */
     uint32_t i;
-    FRESULT res;
 
     res = FR_NO_FILE;
 
@@ -149,6 +152,8 @@ FRESULT Find_File(uint16_t track) {
 int Player_Init(void) {
 	BSP_AUDIO_Init(48000, volume, 0);
 
+	BSP_Player_SetVolume(volume);
+
     // mount the default drive
     res = f_mount(&fs, "", 1);
     if (res != FR_OK) {
@@ -161,7 +166,6 @@ int Player_Init(void) {
 int Player_Open(char *path) {
     res = f_open(&MyFile, path, FA_READ);
     if (res != FR_OK) {
-    	Error_Handler();
         return -1;
     }
 
@@ -174,19 +178,21 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	}
 
     switch (GPIO_Pin) {
-        case VOL_D_Pin: // Volume -
-        	volume++;
-        	BSP_AUDIO_OUT_SetVolume(volume);
+        case VOL_D_Pin: /* Volume - */
+        	if (0 < volume) {
+        		volume--;
+        	}
             break;
-        case VOL_U_Pin: // Volume +
-        	volume--;
-        	BSP_AUDIO_OUT_SetVolume(volume);
+        case VOL_U_Pin: /* Volume + */
+        	if (100 > volume) {
+        		volume++;
+        	}
             break;
-        case PREV_Pin: // Prev
+        case PREV_Pin: /* Prev */
         	is_playing = 0;
         	track -= 2;
             break;
-        case NEXT_Pin: // Next
+        case NEXT_Pin: /* Next */
         	is_playing = 0;
             break;
 	}
@@ -214,7 +220,10 @@ void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
 
 void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai) {
 	UNUSED(hsai);
-	HalfTransfer_CallBack_FS();
+
+	if (1 == usb_mode) {
+		HalfTransfer_CallBack_FS();
+	}
 }
 
 int Player_Play() {
@@ -225,7 +234,6 @@ int Player_Play() {
     res = f_read(&MyFile, (uint8_t*)signal_buff1, sizeof(signal_buff1),
                  &bytesRead);
     if (res != FR_OK) {
-    	Error_Handler();
         f_close(&MyFile);
         return -10;
     }
@@ -233,7 +241,6 @@ int Player_Play() {
     res = f_read(&MyFile, (uint8_t*)signal_buff2, sizeof(signal_buff2),
                  &bytesRead);
     if (res != FR_OK) {
-    	Error_Handler();
         f_close(&MyFile);
         return -11;
     }
@@ -246,6 +253,11 @@ int Player_Play() {
     HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) signal_buff1, ABUFSIZ);
 
     while (is_playing) {
+    	if (old_volume != volume) {
+    		old_volume = volume;
+    		BSP_Player_SetVolume(volume);
+    	}
+
         if (1 != read_next_chunk) {
            continue;
         }
@@ -255,8 +267,7 @@ int Player_Play() {
         res = f_read(&MyFile, (uint8_t*) signal_read_buff, sizeof(signal_buff1), &bytesRead);
 
         if (res != FR_OK) {
-        	Error_Handler();
-            f_close(&MyFile);
+        	f_close(&MyFile);
             return -13;
         }
 
@@ -275,7 +286,6 @@ int Player_Stop() {
     res = f_close(&MyFile);
 
     if (res != FR_OK) {
-    	Error_Handler();
         return -14;
     }
 
@@ -341,6 +351,10 @@ int main(void)
     }
 
 	track++;
+
+	if (0 == track) {
+		track = 1;
+	}
 
 	if (number_of_tracks < track) {
 		track = 1;
@@ -526,6 +540,9 @@ static void MX_DMA_Init(void)
   __HAL_RCC_DMA2_CLK_ENABLE();
 
   /* DMA interrupt init */
+  /* DMA2_Stream3_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream3_IRQn);
   /* DMA2_Stream5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream5_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream5_IRQn);
@@ -551,9 +568,6 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, I2S_OSC_EN_Pin|SHUTDOWN_Pin|MUTE_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(SD_CS_GPIO_Port, SD_CS_Pin, GPIO_PIN_RESET);
-
   /*Configure GPIO pins : I2S_OSC_EN_Pin SHUTDOWN_Pin MUTE_Pin */
   GPIO_InitStruct.Pin = I2S_OSC_EN_Pin|SHUTDOWN_Pin|MUTE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -561,18 +575,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : VOL_D_Pin VOL_U_Pin PREV_Pin NEXT_Pin */
-  GPIO_InitStruct.Pin = VOL_D_Pin|VOL_U_Pin|PREV_Pin|NEXT_Pin;
+  /*Configure GPIO pins : PREV_Pin NEXT_Pin VOL_D_Pin VOL_U_Pin */
+  GPIO_InitStruct.Pin = PREV_Pin|NEXT_Pin|VOL_D_Pin|VOL_U_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : SD_CS_Pin */
-  GPIO_InitStruct.Pin = SD_CS_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(SD_CS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PC9 */
   GPIO_InitStruct.Pin = GPIO_PIN_9;
@@ -589,17 +596,14 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(SD_DETECT_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
-
   HAL_NVIC_SetPriority(EXTI2_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI2_IRQn);
 
   HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 }
 

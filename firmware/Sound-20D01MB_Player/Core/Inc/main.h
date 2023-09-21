@@ -60,20 +60,18 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define I2S_OSC_EN_Pin GPIO_PIN_2
 #define I2S_OSC_EN_GPIO_Port GPIOC
-#define VOL_D_Pin GPIO_PIN_0
-#define VOL_D_GPIO_Port GPIOA
-#define VOL_D_EXTI_IRQn EXTI0_IRQn
-#define VOL_U_Pin GPIO_PIN_1
-#define VOL_U_GPIO_Port GPIOA
-#define VOL_U_EXTI_IRQn EXTI1_IRQn
 #define PREV_Pin GPIO_PIN_2
 #define PREV_GPIO_Port GPIOA
 #define PREV_EXTI_IRQn EXTI2_IRQn
 #define NEXT_Pin GPIO_PIN_3
 #define NEXT_GPIO_Port GPIOA
 #define NEXT_EXTI_IRQn EXTI3_IRQn
-#define SD_CS_Pin GPIO_PIN_4
-#define SD_CS_GPIO_Port GPIOA
+#define VOL_D_Pin GPIO_PIN_5
+#define VOL_D_GPIO_Port GPIOA
+#define VOL_D_EXTI_IRQn EXTI9_5_IRQn
+#define VOL_U_Pin GPIO_PIN_6
+#define VOL_U_GPIO_Port GPIOA
+#define VOL_U_EXTI_IRQn EXTI9_5_IRQn
 #define SHUTDOWN_Pin GPIO_PIN_4
 #define SHUTDOWN_GPIO_Port GPIOC
 #define MUTE_Pin GPIO_PIN_5
