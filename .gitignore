@@ -10,3 +10,5 @@ firmware/Sound-20D01MB_Player/Debug/
 
 # Others
 *.zip
+/software/sound-20d01-fs/build/
+/software/sound-20d01-fs/dist/
