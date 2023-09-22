@@ -27,7 +27,6 @@
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
-      <itemPath>list.xml</itemPath>
       <itemPath>test.php</itemPath>
     </logicalFolder>
   </logicalFolder>

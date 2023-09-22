@@ -14,7 +14,7 @@
 
 volatile uint32_t current_sector = 0;
 volatile uint32_t last_sector = 0;
-volatile uint16_t ls_size = 0;
+volatile uint16_t last_sector_size = 0;
 
 void print_bcd_time(uint8_t minutes, uint8_t seconds) {
     char time_str[9] = "00:00:00";
@@ -51,7 +51,7 @@ void print_track_info(FS_TRACK_structure *track) {
     printf("First Sector: %u\n", track->FirstSector);
     printf("Last Sector: %u\n", track->LastSector);
     printf("Size: %u\n", track->Size);
-    printf("Offset: %d\n", (int) track->Offset);
+    printf("Last Sector Size: %d\n", (int) track->LastSectorSize);
 
     /* Created */
     created = localtime(&track->Created);
@@ -70,7 +70,7 @@ uint8_t dec2bcd(uint8_t dec) {
     return ((dec / 10) << 4) | (dec % 10);
 }
 
-FS_structure *fs_init(void) {
+FS_structure *fs_init_new(void) {
     FS_structure *fs;
 
     if (0 != sd_init()) {
@@ -152,12 +152,9 @@ int fs_add_file(char *filename, char *title, FS_structure *fs) {
         sd_write(++track->LastSector, buffer);
 
         track->Size += numread;
+        track->LastSectorSize = numread;
 
         MD5_Update(&hMD5, buffer, numread);
-
-        if (SECTOR_SIZE > numread) {
-            track->Offset = numread;
-        }
     }
 
     fclose(stream);
@@ -196,7 +193,7 @@ uint8_t fs_open(uint16_t track_number) {
 
     current_sector = track->FirstSector;
     last_sector = track->LastSector;
-    ls_size = track->Offset;
+    last_sector_size = track->LastSectorSize;
 
     print_track_info(track);
 
@@ -213,9 +210,9 @@ uint16_t fs_read(uint8_t *buffer) {
     }
 
     if (current_sector == last_sector) {
-        retval = ls_size ? ls_size : 512;
+        retval = last_sector_size;
     } else {
-        retval = 512;
+        retval = SECTOR_SIZE;
     }
 
     sd_read(current_sector++, buffer);

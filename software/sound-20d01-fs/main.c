@@ -11,7 +11,7 @@
 #include "sd.h"
 #include "../../firmware/Sound-20D01MB_Player/Drivers/BSP/Sound-20D01/Inc/fs.h"
 
-FS_structure *fs_init(void);
+FS_structure *fs_init_new(void);
 void fs_format(FS_structure *fs);
 int fs_update(FS_structure *fs);
 int fs_add_file(char *filename, char *title, FS_structure *fs);
@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
         putchar('\n');
     }
 
-    fs = fs_init();
+    fs = fs_init_new();
     if (NULL == fs) {
         return 1;
     }

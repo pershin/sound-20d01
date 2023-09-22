@@ -19,13 +19,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "fatfs.h"
-#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "usbd_audio_if.h"
 #include "audio.h"
+#include "fs.h"
 
 /* USER CODE END Includes */
 
@@ -36,8 +34,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define DEFAULT_VOLUME 40
-#define ABUFSIZ        512
+#define DEFAULT_VOLUME 50
+#define ABUFSIZ        256
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -54,24 +52,22 @@ DMA_HandleTypeDef hdma_sai1_b;
 SD_HandleTypeDef hsd;
 DMA_HandleTypeDef hdma_sdio;
 
+PCD_HandleTypeDef hpcd_USB_OTG_FS;
+
 /* USER CODE BEGIN PV */
-volatile uint8_t end_of_file_reached = 0;
+volatile uint8_t eof = 0;
 volatile uint8_t read_next_chunk = 0;
-volatile uint16_t *signal_play_buff = NULL;
-volatile uint16_t *signal_read_buff = NULL;
-volatile uint16_t signal_buff1[ABUFSIZ];
-volatile uint16_t signal_buff2[ABUFSIZ];
+volatile uint16_t *buffer_play = NULL;
+volatile uint16_t *buffer_read = NULL;
+volatile uint16_t buffer_a[ABUFSIZ];
+volatile uint16_t buffer_b[ABUFSIZ];
 volatile uint8_t is_playing = 0;
-volatile uint16_t track = 1;
+volatile uint16_t track_number = 1;
+volatile uint16_t number_of_tracks = 0;
 volatile uint8_t volume = DEFAULT_VOLUME;
 volatile uint8_t old_volume = DEFAULT_VOLUME;
 
 int usb_mode = 0;
-
-FATFS fs;
-FRESULT res;
-FIL MyFile;
-char filename[13];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -81,6 +77,7 @@ static void MX_DMA_Init(void);
 static void MX_SAI1_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SDIO_SD_Init(void);
+static void MX_USB_OTG_FS_PCD_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -99,77 +96,10 @@ int _write(int32_t file, uint8_t *ptr, int32_t len) {
 }
 #endif
 
-uint32_t Get_Number_Of_Tracks(void) {
-    FRESULT fr;     /* Return value */
-    DIR dj;         /* Directory object */
-    FILINFO fno;    /* File information */
-    uint32_t i;
-
-    res = FR_NO_FILE;
-
-    fr = f_findfirst(&dj, &fno, "", "*.PCM");
-    i = 0;
-
-    while (fr == FR_OK && fno.fname[0]) {
-    	i++;
-        fr = f_findnext(&dj, &fno);
-    }
-
-    f_closedir(&dj);
-
-    return i;
-}
-
-FRESULT Find_File(uint16_t track) {
-    FRESULT fr;     /* Return value */
-    DIR dj;         /* Directory object */
-    FILINFO fno;    /* File information */
-    uint16_t i;
-    FRESULT res;
-
-    res = FR_NO_FILE;
-
-    fr = f_findfirst(&dj, &fno, "", "*.PCM");
-    i = 0;
-
-    while (fr == FR_OK && fno.fname[0]) {
-    	i++;
-
-    	if (i == track) {
-    		sprintf(filename, "%s", fno.fname);
-    		res = FR_OK;
-    		break;
-    	}
-
-        fr = f_findnext(&dj, &fno);
-    }
-
-    f_closedir(&dj);
-
-    return res;
-}
-
 int Player_Init(void) {
 	BSP_AUDIO_Init(48000, volume, 0);
-
 	BSP_Player_SetVolume(volume);
-
-    // mount the default drive
-    res = f_mount(&fs, "", 1);
-    if (res != FR_OK) {
-    	Error_Handler();
-    }
-
 	return 0;
-}
-
-int Player_Open(char *path) {
-    res = f_open(&MyFile, path, FA_READ);
-    if (res != FR_OK) {
-        return -1;
-    }
-
-    return 0;
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
@@ -190,7 +120,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
             break;
         case PREV_Pin: /* Prev */
         	is_playing = 0;
-        	track -= 2;
+        	track_number -= 2;
             break;
         case NEXT_Pin: /* Next */
         	is_playing = 0;
@@ -201,56 +131,43 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
 	UNUSED(hsai);
 
-	if (1 == usb_mode) {
-		TransferComplete_CallBack_FS();
-		return;
-	}
-
-	if (end_of_file_reached == 1)
+	if (eof == 1)
 		return;
 
-	volatile uint16_t* temp = signal_play_buff;
-	signal_play_buff = signal_read_buff;
-	signal_read_buff = temp;
+	volatile uint16_t* temp = buffer_play;
+	buffer_play = buffer_read;
+	buffer_read = temp;
 
-	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) signal_play_buff, ABUFSIZ);
+	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) buffer_play, ABUFSIZ);
 
 	read_next_chunk = 1;
 }
 
 void HAL_SAI_TxHalfCpltCallback(SAI_HandleTypeDef *hsai) {
 	UNUSED(hsai);
-
-	if (1 == usb_mode) {
-		HalfTransfer_CallBack_FS();
-	}
 }
 
 int Player_Play() {
-    unsigned int bytesRead;
+    uint16_t numread;
 
     is_playing = 1;
 
-    res = f_read(&MyFile, (uint8_t*)signal_buff1, sizeof(signal_buff1),
-                 &bytesRead);
-    if (res != FR_OK) {
-        f_close(&MyFile);
+    numread = fs_read((uint8_t *) buffer_a);
+    if (0 == numread) {
         return -10;
     }
 
-    res = f_read(&MyFile, (uint8_t*)signal_buff2, sizeof(signal_buff2),
-                 &bytesRead);
-    if (res != FR_OK) {
-        f_close(&MyFile);
+    numread = fs_read((uint8_t *) buffer_b);
+    if (0 == numread) {
         return -11;
     }
 
     read_next_chunk = 0;
-    end_of_file_reached = 0;
-    signal_play_buff = signal_buff1;
-    signal_read_buff = signal_buff2;
+    eof = 0;
+    buffer_play = buffer_a;
+    buffer_read = buffer_b;
 
-    HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) signal_buff1, ABUFSIZ);
+    HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) buffer_a, ABUFSIZ);
 
     while (is_playing) {
     	if (old_volume != volume) {
@@ -264,32 +181,15 @@ int Player_Play() {
 
         read_next_chunk = 0;
 
-        res = f_read(&MyFile, (uint8_t*) signal_read_buff, sizeof(signal_buff1), &bytesRead);
-
-        if (res != FR_OK) {
-        	f_close(&MyFile);
-            return -13;
-        }
-
-        if (0 == bytesRead) {
+        numread = fs_read((uint8_t *) buffer_read);
+        if (BLOCKSIZE > numread) {
         	break;
         }
     }
 
-    end_of_file_reached = 1;
+    eof = 1;
 
     return 0;
-}
-
-int Player_Stop() {
-	is_playing = 0;
-    res = f_close(&MyFile);
-
-    if (res != FR_OK) {
-        return -14;
-    }
-
-	return 0;
 }
 /* USER CODE END 0 */
 
@@ -324,9 +224,8 @@ int main(void)
   MX_DMA_Init();
   MX_SAI1_Init();
   MX_I2C1_Init();
-  MX_USB_DEVICE_Init();
   MX_SDIO_SD_Init();
-  MX_FATFS_Init();
+  MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
   if (0 == usb_mode) {
       Player_Init();
@@ -340,24 +239,21 @@ int main(void)
 
   }
 
-  uint32_t number_of_tracks = Get_Number_Of_Tracks();
+  number_of_tracks = fs_init();
 
   while (1)
   {
-    if (FR_OK == Find_File(track)) {
-        Player_Open(filename);
-	    Player_Play();
-	    Player_Stop();
-    }
+	  fs_open(track_number);
+	  Player_Play();
+	  is_playing = 0;
+	  track_number++;
 
-	track++;
-
-	if (0 == track) {
-		track = 1;
+	if (0 == track_number) {
+		track_number = 1;
 	}
 
-	if (number_of_tracks < track) {
-		track = 1;
+	if (number_of_tracks < track_number) {
+		track_number = 1;
 	}
     /* USER CODE END WHILE */
 
@@ -524,9 +420,52 @@ static void MX_SDIO_SD_Init(void)
   hsd.Init.BusWide = SDIO_BUS_WIDE_1B;
   hsd.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
   hsd.Init.ClockDiv = 0;
+  if (HAL_SD_Init(&hsd) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_SD_ConfigWideBusOperation(&hsd, SDIO_BUS_WIDE_4B) != HAL_OK)
+  {
+    Error_Handler();
+  }
   /* USER CODE BEGIN SDIO_Init 2 */
 
   /* USER CODE END SDIO_Init 2 */
+
+}
+
+/**
+  * @brief USB_OTG_FS Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USB_OTG_FS_PCD_Init(void)
+{
+
+  /* USER CODE BEGIN USB_OTG_FS_Init 0 */
+
+  /* USER CODE END USB_OTG_FS_Init 0 */
+
+  /* USER CODE BEGIN USB_OTG_FS_Init 1 */
+
+  /* USER CODE END USB_OTG_FS_Init 1 */
+  hpcd_USB_OTG_FS.Instance = USB_OTG_FS;
+  hpcd_USB_OTG_FS.Init.dev_endpoints = 6;
+  hpcd_USB_OTG_FS.Init.speed = PCD_SPEED_FULL;
+  hpcd_USB_OTG_FS.Init.dma_enable = DISABLE;
+  hpcd_USB_OTG_FS.Init.phy_itface = PCD_PHY_EMBEDDED;
+  hpcd_USB_OTG_FS.Init.Sof_enable = DISABLE;
+  hpcd_USB_OTG_FS.Init.low_power_enable = DISABLE;
+  hpcd_USB_OTG_FS.Init.lpm_enable = DISABLE;
+  hpcd_USB_OTG_FS.Init.vbus_sensing_enable = DISABLE;
+  hpcd_USB_OTG_FS.Init.use_dedicated_ep1 = DISABLE;
+  if (HAL_PCD_Init(&hpcd_USB_OTG_FS) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USB_OTG_FS_Init 2 */
+
+  /* USER CODE END USB_OTG_FS_Init 2 */
 
 }
 

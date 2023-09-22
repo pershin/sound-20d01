@@ -25,6 +25,8 @@ if ($result_code) {
     }
 }
 
+unlink(TMP_DIR . 'data.bin');
+
 if (!file_exists(TMP_DIR . 'data.bin')) {
     touch(TMP_DIR . 'data.bin');
     exec(SOUND20D01FS . ' --format');
