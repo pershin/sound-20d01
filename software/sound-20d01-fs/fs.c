@@ -171,6 +171,9 @@ int fs_add_file(char *filename, char *title, FS_structure *fs) {
     sd_write(++fs->NumberOfTracks, track);
 
     printf("%d\n", fs->NumberOfTracks);
+    printf("sudo dd if=/mnt/hdd/tmp/ramdisk/data.bin of=/dev/sdc count=1\n");
+    printf("sudo dd if=/mnt/hdd/tmp/ramdisk/data.bin of=/dev/sdc count=1 seek=%d skip=%d\n", fs->NumberOfTracks, fs->NumberOfTracks);
+    printf("sudo dd if=/mnt/hdd/tmp/ramdisk/data.bin of=/dev/sdc count=%d seek=%d skip=%d\n", track->LastSector - track->FirstSector, track->FirstSector, track->FirstSector);
     print_track_info(track);
     printf("\n");
 

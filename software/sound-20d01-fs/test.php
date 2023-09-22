@@ -25,7 +25,7 @@ if ($result_code) {
     }
 }
 
-unlink(TMP_DIR . 'data.bin');
+//unlink(TMP_DIR . 'data.bin');
 
 if (!file_exists(TMP_DIR . 'data.bin')) {
     touch(TMP_DIR . 'data.bin');
@@ -51,6 +51,7 @@ foreach ($list->item as $item) {
         'filename' => $filename,
         'md5_in' => md5_file($tmp),
         'md5_out' => md5_file($tmp_test),
+        'dd' => $output[1] . PHP_EOL . $output[2] . PHP_EOL . $output[3],
     ];
 
     unlink($tmp);
@@ -66,6 +67,7 @@ foreach ($log as $log_item) {
     echo 'filename:  ', $log_item['filename'], PHP_EOL;
     echo 'md5 (in):  ', $log_item['md5_in'], PHP_EOL;
     echo 'md5 (out): ', $log_item['md5_out'], PHP_EOL;
+    echo $log_item['dd'], PHP_EOL;
 
     if ($log_item['md5_in'] == $log_item['md5_out']) {
         echo 'OK', PHP_EOL;
