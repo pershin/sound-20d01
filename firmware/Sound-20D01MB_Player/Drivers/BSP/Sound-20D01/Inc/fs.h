@@ -10,6 +10,10 @@
 
 #include <stdint.h>
 
+#define SECTOR_SIZE 512
+#define SECTORS_PER_CLUSTER 32
+#define CLUSTER_SIZE SECTOR_SIZE * SECTORS_PER_CLUSTER
+
 #define FS_OK    0
 #define FS_ERROR 1
 
@@ -17,7 +21,8 @@ typedef struct {
 	uint8_t MBR_jmpBoot[3]; /* Instruction to Jump to Bootstrap Code */
 	uint8_t FSName[8];
 	uint8_t Version;
-	uint16_t Reserved1;
+	uint8_t SectorsPerCluster;
+	uint8_t Reserved1;
 	uint16_t NumberOfTracks;
 	uint32_t TotalCountOfSectors;
 	uint32_t NextFreeSector;
@@ -27,9 +32,11 @@ typedef struct {
 
 typedef struct {
 	uint32_t FirstSector;
-	uint32_t LastSector;
+	uint32_t LastSector; /* Single-Block Read */
+	uint32_t LastCluster; /* Multiple-Block Read (sector address) */
 	uint32_t Size; /* The size of the file in bytes */
-	uint16_t LastSectorSize;
+	uint16_t LastSectorSize; /* Last sector size in bytes (Single-Block Read) */
+	uint16_t LastClusterSize; /* Last cluster size in bytes (Multiple-Block Read) */
 	uint16_t Type;
 	uint8_t Seconds; /* BCD format */
 	uint8_t Minutes; /* BCD format */

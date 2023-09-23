@@ -16,17 +16,19 @@ void fs_format(FS_structure *fs);
 int fs_update(FS_structure *fs);
 int fs_add_file(char *filename, char *title, FS_structure *fs);
 void fs_deinit(FS_structure *fs);
+uint16_t fs_read_block(uint8_t *buffer);
 
 void extract_track(uint16_t track_number, char *filename) {
     FILE *stream;
     uint16_t numread;
-    uint8_t buffer[512];
+    uint8_t buffer[CLUSTER_SIZE];
 
     fs_open(track_number);
     stream = fopen(filename, "wb");
 
     for (;;) {
-        numread = fs_read(buffer);
+        /*numread = fs_read(buffer);*/
+        numread = fs_read_block(buffer);
         if (numread <= 0) {
             break;
         }
@@ -113,10 +115,10 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    /*
-        printf("FS_structure: %d\n", sizeof (FS_structure));
-        printf("FS_TRACK_structure: %d\n", sizeof (FS_TRACK_structure));
-     */
+/*
+    printf("FS_structure: %d\n", sizeof (FS_structure));
+    printf("FS_TRACK_structure: %d\n", sizeof (FS_TRACK_structure));
+*/
 
     if (format_flag) {
         printf("Disk formatting...\n");

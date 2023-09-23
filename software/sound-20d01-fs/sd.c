@@ -24,8 +24,20 @@ int sd_read(uint32_t sector, void *buffer) {
     return 0;
 }
 
+int sd_read_blocks(uint32_t sector, void *buffer, uint8_t count) {
+    fseek(stream, sector * SECTOR_SIZE, SEEK_SET);
+    fread(buffer, SECTOR_SIZE, count, stream);
+    return 0;
+}
+
 int sd_write(uint32_t sector, void *buffer) {
     fseek(stream, sector * SECTOR_SIZE, SEEK_SET);
     fwrite(buffer, SECTOR_SIZE, 1, stream);
+    return 0;
+}
+
+int sd_write_blocks(uint32_t sector, void *buffer, uint8_t count) {
+    fseek(stream, sector * SECTOR_SIZE, SEEK_SET);
+    fwrite(buffer, SECTOR_SIZE, count, stream);
     return 0;
 }

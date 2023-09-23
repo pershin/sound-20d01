@@ -10,11 +10,11 @@
 
 extern SD_HandleTypeDef hsd;
 
-uint8_t buffer[BLOCKSIZE];
+uint8_t buffer[SECTOR_SIZE];
 uint16_t number_of_tracks;
 uint32_t current_sector;
-uint32_t last_sector;
-uint16_t last_sector_size;
+uint32_t last_cluster;
+uint16_t last_cluster_size;
 
 uint16_t fs_init(void) {
 	FS_structure *fs = (FS_structure*) buffer;
@@ -49,8 +49,8 @@ uint8_t fs_open(uint16_t track_number) {
 	}
 
 	current_sector = track->FirstSector;
-	last_sector = track->LastSector;
-	last_sector_size = track->LastSectorSize;
+	last_cluster = track->LastCluster;
+	last_cluster_size = track->LastClusterSize;
 
 	return FS_OK;
 }
@@ -58,21 +58,22 @@ uint8_t fs_open(uint16_t track_number) {
 uint16_t fs_read(uint8_t *buffer) {
 	uint16_t numread;
 
-	if (current_sector > last_sector) {
+	if (current_sector > last_cluster) {
 		return 0;
 	}
 
-	if (current_sector == last_sector) {
-		numread = last_sector_size;
+	if (current_sector == last_cluster) {
+		numread = last_cluster_size;
 	} else {
-		numread = BLOCKSIZE;
+		numread = CLUSTER_SIZE;
 	}
 
-	if (HAL_OK
-			!= HAL_SD_ReadBlocks(&hsd, (uint8_t*) buffer, current_sector++, 1,
-			SDMMC_DATATIMEOUT)) {
+	if (HAL_OK != HAL_SD_ReadBlocks(&hsd, (uint8_t*) buffer, current_sector,
+	SECTORS_PER_CLUSTER, SDMMC_DATATIMEOUT)) {
 		numread = 0;
 	}
+
+	current_sector += SECTORS_PER_CLUSTER;
 
 	return numread;
 }

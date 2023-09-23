@@ -15,6 +15,8 @@
 volatile uint32_t current_sector = 0;
 volatile uint32_t last_sector = 0;
 volatile uint16_t last_sector_size = 0;
+volatile uint32_t last_cluster = 0;
+volatile uint16_t last_cluster_size = 0;
 
 void print_bcd_time(uint8_t minutes, uint8_t seconds) {
     char time_str[9] = "00:00:00";
@@ -35,6 +37,7 @@ void print_fs_info(FS_structure *fs) {
     printf("FS INFO\n");
     printf("FS Name: %s\n", fs_name);
     printf("Version: %d\n", fs->Version);
+    printf("Sectors Per Cluster: %d\n", fs->SectorsPerCluster);
     printf("Number Of Tracks: %d\n", fs->NumberOfTracks);
     printf("Next Free Sector: %d\n", fs->NextFreeSector);
 }
@@ -50,8 +53,10 @@ void print_track_info(FS_TRACK_structure *track) {
     printf("\n");
     printf("First Sector: %u\n", track->FirstSector);
     printf("Last Sector: %u\n", track->LastSector);
+    printf("Last Cluster: %u\n", track->LastCluster);
     printf("Size: %u\n", track->Size);
     printf("Last Sector Size: %d\n", (int) track->LastSectorSize);
+    printf("Last Cluster Size: %d\n", (int) track->LastClusterSize);
 
     /* Created */
     created = localtime(&track->Created);
@@ -95,6 +100,7 @@ void fs_format(FS_structure *fs) {
 
     strncpy(fs->FSName, "FS-AUDIO", 8);
     fs->Version = 1;
+    fs->SectorsPerCluster = SECTORS_PER_CLUSTER;
     fs->NextFreeSector = FIRST_DATA_SECTOR;
 }
 
@@ -112,7 +118,7 @@ int fs_update(FS_structure *fs) {
 int fs_add_file(char *filename, char *title, FS_structure *fs) {
     FS_TRACK_structure *track;
     FILE *stream;
-    uint8_t buffer[SECTOR_SIZE];
+    uint8_t buffer[CLUSTER_SIZE];
     uint32_t numread, duration;
     MD5_CTX hMD5;
 
@@ -139,20 +145,21 @@ int fs_add_file(char *filename, char *title, FS_structure *fs) {
     MD5_Init(&hMD5);
 
     track->FirstSector = fs->NextFreeSector;
-    track->LastSector = track->FirstSector - 1;
+    track->LastCluster = track->FirstSector;
 
     for (;;) {
-        memset(buffer, 0, SECTOR_SIZE);
+        memset(buffer, 0, CLUSTER_SIZE);
 
-        numread = fread(buffer, sizeof (uint8_t), SECTOR_SIZE, stream);
+        numread = fread(buffer, sizeof (uint8_t), CLUSTER_SIZE, stream);
         if (numread <= 0) {
             break;
         }
 
-        sd_write(++track->LastSector, buffer);
+        sd_write_blocks(track->LastCluster, buffer, SECTORS_PER_CLUSTER);
 
+        track->LastCluster += SECTORS_PER_CLUSTER;
         track->Size += numread;
-        track->LastSectorSize = numread;
+        track->LastClusterSize = numread;
 
         MD5_Update(&hMD5, buffer, numread);
     }
@@ -161,7 +168,14 @@ int fs_add_file(char *filename, char *title, FS_structure *fs) {
 
     MD5_Final(track->Hash, &hMD5);
 
-    fs->NextFreeSector = track->LastSector + 1;
+    fs->NextFreeSector = track->LastCluster + 1;
+    track->LastCluster -= SECTORS_PER_CLUSTER;
+
+    /* Single-Block Read */
+    track->LastSector = track->LastCluster;
+    track->LastSector += track->LastClusterSize / SECTOR_SIZE;
+    track->LastSectorSize = track->LastClusterSize;
+    track->LastSectorSize -= track->LastClusterSize / SECTOR_SIZE * SECTOR_SIZE;
 
     /* Duration */
     duration = track->Size / (SAMPLE_RATE * sizeof (uint16_t) * CHANNELS);
@@ -173,12 +187,12 @@ int fs_add_file(char *filename, char *title, FS_structure *fs) {
     printf("%d\n", fs->NumberOfTracks);
     printf("sudo dd if=/mnt/hdd/tmp/ramdisk/data.bin of=/dev/sdc count=1\n");
     printf("sudo dd if=/mnt/hdd/tmp/ramdisk/data.bin of=/dev/sdc count=1 seek=%d skip=%d\n", fs->NumberOfTracks, fs->NumberOfTracks);
-    printf("sudo dd if=/mnt/hdd/tmp/ramdisk/data.bin of=/dev/sdc count=%d seek=%d skip=%d\n", track->LastSector - track->FirstSector, track->FirstSector, track->FirstSector);
+    printf("sudo dd if=/mnt/hdd/tmp/ramdisk/data.bin of=/dev/sdc count=%d seek=%d skip=%d\n", track->LastCluster - track->FirstSector, track->FirstSector, track->FirstSector);
     print_track_info(track);
     printf("\n");
 
     free(track);
-    
+
     return 0;
 }
 
@@ -197,6 +211,8 @@ uint8_t fs_open(uint16_t track_number) {
     current_sector = track->FirstSector;
     last_sector = track->LastSector;
     last_sector_size = track->LastSectorSize;
+    last_cluster = track->LastCluster;
+    last_cluster_size = track->LastClusterSize;
 
     print_track_info(track);
 
@@ -205,7 +221,7 @@ uint8_t fs_open(uint16_t track_number) {
     return 0;
 }
 
-uint16_t fs_read(uint8_t *buffer) {
+uint16_t fs_read_block(uint8_t *buffer) {
     uint16_t retval;
 
     if (current_sector > last_sector) {
@@ -218,7 +234,29 @@ uint16_t fs_read(uint8_t *buffer) {
         retval = SECTOR_SIZE;
     }
 
-    sd_read(current_sector++, buffer);
+    sd_read(current_sector, buffer);
+
+    current_sector++;
+
+    return retval;
+}
+
+uint16_t fs_read(uint8_t *buffer) {
+    uint16_t retval;
+
+    if (current_sector > last_cluster) {
+        return 0;
+    }
+
+    if (current_sector == last_cluster) {
+        retval = last_cluster_size;
+    } else {
+        retval = CLUSTER_SIZE;
+    }
+
+    sd_read_blocks(current_sector, buffer, SECTORS_PER_CLUSTER);
+
+    current_sector += SECTORS_PER_CLUSTER;
 
     return retval;
 }

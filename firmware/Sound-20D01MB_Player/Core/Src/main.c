@@ -34,8 +34,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define DEFAULT_VOLUME 50
-#define ABUFSIZ        256
+#define DEFAULT_VOLUME 40
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -53,10 +52,11 @@ SD_HandleTypeDef hsd;
 
 /* USER CODE BEGIN PV */
 volatile uint8_t read_next_chunk = 0;
-volatile uint16_t *buffer_play = NULL;
-volatile uint16_t *buffer_read = NULL;
-volatile uint16_t buffer_a[ABUFSIZ];
-volatile uint16_t buffer_b[ABUFSIZ];
+volatile uint8_t *buffer_play = NULL;
+volatile uint8_t *buffer_read = NULL;
+volatile uint8_t buffer_a[CLUSTER_SIZE];
+volatile uint8_t buffer_b[CLUSTER_SIZE];
+volatile uint16_t numread;
 volatile uint16_t track_number = 1;
 volatile uint16_t old_track_number = 1;
 volatile uint16_t number_of_tracks = 0;
@@ -117,11 +117,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 }
 
 void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
-	volatile uint16_t* temp = buffer_play;
+	volatile uint8_t* temp = buffer_play;
 	buffer_play = buffer_read;
 	buffer_read = temp;
 
-	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) buffer_play, ABUFSIZ);
+	if (0 < numread) {
+		HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) buffer_play, numread / 2);
+	}
 
 	read_next_chunk = 1;
 
@@ -166,22 +168,20 @@ int main(void)
   MX_I2C1_Init();
   MX_SDIO_SD_Init();
   /* USER CODE BEGIN 2 */
-	uint16_t numread;
-
 	Player_Init();
 
 	number_of_tracks = fs_init();
 
 	fs_open(track_number);
 
-	fs_read((uint8_t*) buffer_a);
-	fs_read((uint8_t*) buffer_b);
+	numread = fs_read((uint8_t*) buffer_a);
+	numread = fs_read((uint8_t*) buffer_b);
 
 	read_next_chunk = 0;
 	buffer_play = buffer_a;
 	buffer_read = buffer_b;
 
-	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) buffer_a, ABUFSIZ);
+	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) buffer_a, numread / 2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -214,7 +214,7 @@ int main(void)
 		read_next_chunk = 0;
 
 		numread = fs_read((uint8_t*) buffer_read);
-		if (BLOCKSIZE > numread) {
+		if (CLUSTER_SIZE > numread) {
 			track_number++;
 		}
     /* USER CODE END WHILE */
