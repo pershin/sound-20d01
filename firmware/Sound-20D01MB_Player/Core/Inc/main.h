@@ -60,6 +60,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define I2S_OSC_EN_Pin GPIO_PIN_2
 #define I2S_OSC_EN_GPIO_Port GPIOC
+#define DISP_LATCH_Pin GPIO_PIN_0
+#define DISP_LATCH_GPIO_Port GPIOA
+#define DISP_EN_Pin GPIO_PIN_1
+#define DISP_EN_GPIO_Port GPIOA
 #define PREV_Pin GPIO_PIN_2
 #define PREV_GPIO_Port GPIOA
 #define PREV_EXTI_IRQn EXTI2_IRQn

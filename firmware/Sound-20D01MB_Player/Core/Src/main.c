@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "audio.h"
 #include "fs.h"
+#include "display.h"
 
 /* USER CODE END Includes */
 
@@ -50,6 +51,8 @@ DMA_HandleTypeDef hdma_sai1_b;
 
 SD_HandleTypeDef hsd;
 
+SPI_HandleTypeDef hspi2;
+
 /* USER CODE BEGIN PV */
 volatile uint8_t read_next_chunk = 0;
 volatile uint8_t *buffer_play = NULL;
@@ -71,6 +74,7 @@ static void MX_DMA_Init(void);
 static void MX_SAI1_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SDIO_SD_Init(void);
+static void MX_SPI2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -167,10 +171,13 @@ int main(void)
   MX_SAI1_Init();
   MX_I2C1_Init();
   MX_SDIO_SD_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 	Player_Init();
 
 	number_of_tracks = fs_init();
+
+	display_update(track_number);
 
 	fs_open(track_number);
 
@@ -203,6 +210,8 @@ int main(void)
 			}
 
 			old_track_number = track_number;
+
+			display_update(track_number);
 
 			fs_open(track_number);
 		}
@@ -397,6 +406,44 @@ static void MX_SDIO_SD_Init(void)
 }
 
 /**
+  * @brief SPI2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI2_Init(void)
+{
+
+  /* USER CODE BEGIN SPI2_Init 0 */
+
+  /* USER CODE END SPI2_Init 0 */
+
+  /* USER CODE BEGIN SPI2_Init 1 */
+
+  /* USER CODE END SPI2_Init 1 */
+  /* SPI2 parameter configuration*/
+  hspi2.Instance = SPI2;
+  hspi2.Init.Mode = SPI_MODE_MASTER;
+  hspi2.Init.Direction = SPI_DIRECTION_1LINE;
+  hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi2.Init.NSS = SPI_NSS_SOFT;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi2.Init.FirstBit = SPI_FIRSTBIT_LSB;
+  hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi2.Init.CRCPolynomial = 10;
+  if (HAL_SPI_Init(&hspi2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI2_Init 2 */
+
+  /* USER CODE END SPI2_Init 2 */
+
+}
+
+/**
   * Enable DMA controller clock
   */
 static void MX_DMA_Init(void)
@@ -431,12 +478,22 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, I2S_OSC_EN_Pin|SHUTDOWN_Pin|MUTE_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, DISP_LATCH_Pin|DISP_EN_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pins : I2S_OSC_EN_Pin SHUTDOWN_Pin MUTE_Pin */
   GPIO_InitStruct.Pin = I2S_OSC_EN_Pin|SHUTDOWN_Pin|MUTE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : DISP_LATCH_Pin DISP_EN_Pin */
+  GPIO_InitStruct.Pin = DISP_LATCH_Pin|DISP_EN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PREV_Pin NEXT_Pin VOL_D_Pin VOL_U_Pin */
   GPIO_InitStruct.Pin = PREV_Pin|NEXT_Pin|VOL_D_Pin|VOL_U_Pin;
