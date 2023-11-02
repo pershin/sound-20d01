@@ -23,6 +23,7 @@ volatile int stop_flag = 0;
 
 static int decode(char *, char *);
 static int encode(char *, char *);
+static long int filesize(FILE *);
 static int play(char *);
 static void usage(char *);
 
@@ -134,8 +135,6 @@ static int encode(char *src_filename, char *dest_filename) {
         return EXIT_FAILURE;
     }
 
-    free(wav);
-
     dest = fopen(dest_filename, "w");
     if (NULL == dest) {
         fprintf(stderr, "Cannot open file \"%s\"\n", dest_filename);
@@ -149,7 +148,7 @@ static int encode(char *src_filename, char *dest_filename) {
         printf("Output: %s\n", dest_filename);
     }
 
-    for (src_size = ftell(src), dest_size = 0;;) {
+    for (src_size = ftell(src), dest_size = 0; src_size < wav->data.Size;) {
         numread = fread(input, sizeof (int16_t), PLAC_BUFSIZ * PLAC_NUM_CHANNELS, src);
         if (0 == numread) {
             break;
@@ -167,6 +166,7 @@ static int encode(char *src_filename, char *dest_filename) {
         printf("Delta:       %ld\n", dest_size - src_size);
     }
 
+    free(wav);
     free(input);
 
     fclose(src);
@@ -179,7 +179,7 @@ static int decode(char *src_filename, char *dest_filename) {
     FILE *src, *dest;
     int16_t *output;
     int numread, numwritten;
-    long int src_size, dest_size;
+    long int src_size, data_size, dest_size;
 
     output = malloc(PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t));
     if (NULL == output) {
@@ -210,7 +210,10 @@ static int decode(char *src_filename, char *dest_filename) {
 
     fseek(dest, sizeof (WAVE_header), SEEK_SET);
 
-    for (src_size = 0, dest_size = 0;;) {
+    /* Get source size */
+    src_size = filesize(src);
+
+    for (data_size = 0, dest_size = 0;;) {
         numread = decoder_decode(src, output);
         if (0 == numread) {
             break;
@@ -218,7 +221,7 @@ static int decode(char *src_filename, char *dest_filename) {
 
         numwritten = fwrite(output, sizeof (int16_t), numread, dest);
 
-        src_size += numread * sizeof (int16_t);
+        data_size += numread * sizeof (int16_t);
         dest_size += numwritten * sizeof (int16_t);
     }
 
@@ -226,6 +229,7 @@ static int decode(char *src_filename, char *dest_filename) {
 
     if (verbose_flag) {
         printf("Input Size:  %ld\n", src_size);
+        printf("Data Size:   %ld\n", data_size);
         printf("Output Size: %ld\n", dest_size);
         printf("Delta:       %ld\n", dest_size - src_size);
     }
@@ -236,6 +240,18 @@ static int decode(char *src_filename, char *dest_filename) {
     decoder_deinit();
 
     return EXIT_SUCCESS;
+}
+
+/* Get file size in bytes. */
+static long int filesize(FILE *stream) {
+    long int offset, size;
+
+    offset = ftell(stream);
+    fseek(stream, 0, SEEK_END);
+    size = ftell(stream);
+    fseek(stream, offset, SEEK_SET);
+
+    return size;
 }
 
 static int play(char *filename) {
