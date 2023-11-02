@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
+#include "encoder.h"
 #include "plac.h"
 
 static void group_by_channel(int16_t *, int);
 static void interchannel_decorrelation(int16_t *, int);
+static int is_empty_buffer(int16_t *, int);
 static int is_int8_buffer(int16_t *, int);
 static void int16_to_int8(int16_t *, int);
 
@@ -18,6 +20,10 @@ int encoder_encode(int16_t *input, FILE *dest, int count) {
     flags = 0;
     half = count / 2;
     output_size = 0;
+
+    if (is_empty_buffer(input, count)) {
+        flags |= PLAC_EMPTY_FLAG;
+    }
 
     group_by_channel(input, count);
     interchannel_decorrelation(input, count);
@@ -45,6 +51,10 @@ int encoder_encode(int16_t *input, FILE *dest, int count) {
     if (flags & PLAC_EOF_FLAG) {
         numwritten = fwrite(&end, sizeof (uint16_t), 1, dest);
         output_size += numwritten * sizeof (uint16_t);
+    }
+
+    if (flags & PLAC_EMPTY_FLAG) {
+        return output_size;
     }
 
     if (flags & PLAC_X8_FLAG) {
@@ -118,25 +128,38 @@ static void interchannel_decorrelation(int16_t *input_buffer, int count) {
     }
 }
 
-static int is_int8_buffer(int16_t *input_buffer, int n) {
-    int i, min, max;
+static int is_empty_buffer(int16_t *input_buffer, int n) {
+    int result, i;
+
+    result = 1;
 
     for (i = 0; n > i; i++) {
-        /* Fist iteration */
-        if (0 == i) {
-            min = max = input_buffer[i];
-        }
-
-        if (min > input_buffer[i]) {
-            min = input_buffer[i];
-        }
-
-        if (max < input_buffer[i]) {
-            max = input_buffer[i];
+        if (0 != input_buffer[i]) {
+            result = 0;
         }
     }
 
-    return (128 > max && -128 < min) ? 1 : 0;
+    return result;
+}
+
+static int is_int8_buffer(int16_t *input_buffer, int n) {
+    int result, i;
+
+    result = 1;
+
+    for (i = 0; n > i; i++) {
+        if (127 < input_buffer[i]) {
+            result = 0;
+            break;
+        }
+
+        if (-128 > input_buffer[i]) {
+            result = 0;
+            break;
+        }
+    }
+
+    return result;
 }
 
 static void int16_to_int8(int16_t *input_buffer, int count) {

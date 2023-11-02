@@ -12,16 +12,17 @@
 
 #define PLAC_ID 0x43414c50 /* "PLAC" */
 
-#define PLAC_BUFSIZ           512 * 4
+#define PLAC_BUFSIZ           512 * 2
 #define PLAC_NUM_CHANNELS     2
 #define PLAC_BYTES_PER_SAMPLE sizeof (int16_t)
 #define PLAC_BITS_PER_SAMPLE  16
 #define PLAC_SAMPLE_RATE      48000
 
 /* Flags */
-#define PLAC_X8_FLAG (1 << 0)
-#define PLAC_Y8_FLAG (1 << 1)
-#define PLAC_EOF_FLAG (1 << 2)
+#define PLAC_X8_FLAG    (1 << 0)
+#define PLAC_Y8_FLAG    (1 << 1)
+#define PLAC_EOF_FLAG   (1 << 2)
+#define PLAC_EMPTY_FLAG (1 << 3)
 
 typedef struct {
     uint32_t FormatID; /* "PLAC" */

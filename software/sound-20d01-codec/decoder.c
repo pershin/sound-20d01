@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <memory.h>
 #include <math.h>
 #include "plac.h"
 
@@ -49,6 +50,12 @@ int decoder_decode(FILE *src, int16_t *output_buffer) {
     }
 
     numread = 0;
+
+    if (flags & PLAC_EMPTY_FLAG) {
+        numread = count * PLAC_BYTES_PER_SAMPLE;
+        memset(output_buffer, 0, count * PLAC_NUM_CHANNELS * PLAC_BYTES_PER_SAMPLE);
+        return numread;
+    }
 
     if (flags & PLAC_X8_FLAG) {
         numread += plac_read_8(left_buffer, count, src);
