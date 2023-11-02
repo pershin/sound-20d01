@@ -3,6 +3,8 @@
 #include <alloca.h>
 #include <alsa/asoundlib.h>
 #include "wav.h"
+#include "plac.h"
+#include "decoder.h"
 
 #define PCM_DEVICE "default"
 
@@ -45,8 +47,9 @@ void pcm_device_deinit(void) {
 int player_play(char *filename) {
     FILE *stream;
     WAVE_header *wav;
-    int buffer_size, sample_rate, channels, numread;
-    char *buffer;
+    PLAC_header *plac;
+    int buffer_size, sample_rate, channels, bits_per_sample, numread;
+    int16_t *buffer;
 
     stream = fopen(filename, "r");
     if (NULL == stream) {
@@ -56,24 +59,37 @@ int player_play(char *filename) {
 
     wav = wav_header_read(stream);
     if (NULL == wav) {
-        fprintf(stderr, "Format is not supported\n");
-        return EXIT_FAILURE;
+        plac = plac_header_read(stream);
+        if (!plac) {
+            fprintf(stderr, "Format is not supported\n");
+            return EXIT_FAILURE;
+        }
+    }
+
+    if (NULL != wav) {
+        sample_rate = wav->fmt.SampleRate;
+        bits_per_sample = wav->fmt.BitsPerSample;
+        channels = wav->fmt.NumChannels;
+    } else {
+        decoder_init();
+        sample_rate = PLAC_SAMPLE_RATE;
+        bits_per_sample = PLAC_BITS_PER_SAMPLE;
+        channels = PLAC_NUM_CHANNELS;
     }
 
     if (verbose_flag) {
-        printf("Sample Rate: %d\n", (int) wav->fmt.SampleRate);
-        printf("Bits Per Sample: %d\n", (int) wav->fmt.BitsPerSample);
-        printf("Num Channels: %d\n", (int) wav->fmt.NumChannels);
+        printf("Sample Rate: %d\n", sample_rate);
+        printf("Bits Per Sample: %d\n", bits_per_sample);
+        printf("Num Channels: %d\n", channels);
     }
-
-    sample_rate = wav->fmt.SampleRate;
-    channels = wav->fmt.NumChannels;
-
-    free(wav);
 
     pcm_device_init(sample_rate, channels);
 
     buffer_size = frames * channels * 2;
+
+    if (NULL == wav) {
+        buffer_size = PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t);
+    }
 
     buffer = malloc(buffer_size);
     if (NULL == buffer) {
@@ -81,10 +97,14 @@ int player_play(char *filename) {
         return EXIT_FAILURE;
     }
 
-    stop_flag = 0;
+    for (stop_flag = 0; !stop_flag;) {
+        if (NULL != wav) {
+            numread = fread(buffer, sizeof (int8_t), buffer_size, stream);
+        } else {
+            numread = decoder_decode(stream, buffer);
+            frames = numread / 2;
+        }
 
-    for (; !stop_flag;) {
-        numread = fread(buffer, sizeof (char), buffer_size, stream);
         if (0 == numread) {
             break;
         }
@@ -94,7 +114,15 @@ int player_play(char *filename) {
 
     pcm_device_deinit();
 
+    if (NULL != wav) {
+        free(wav);
+    } else {
+        decoder_deinit();
+        free(plac);
+    }
+
     free(buffer);
+
     fclose(stream);
 
     return EXIT_SUCCESS;
