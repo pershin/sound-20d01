@@ -6,19 +6,16 @@
 
 static void group_by_channel(int16_t *, int);
 static void interchannel_decorrelation(int16_t *, int);
+static int is_int8_buffer(int16_t *, int);
 static void int16_to_int8(int16_t *, int);
 
 int encoder_encode(int16_t *input, FILE *dest, int count) {
-    int i, j, numwritten, write_size, output_size, half;
-    int16_t min_x, max_x, min_y, max_y;
+    int numwritten, write_size, output_size, half;
     int16_t *left_buffer, *right_buffer;
     uint8_t flags;
     uint16_t end;
 
     flags = 0;
-    max_x = 0;
-    min_y = 0;
-    max_y = 0;
     half = count / 2;
     output_size = 0;
 
@@ -28,41 +25,17 @@ int encoder_encode(int16_t *input, FILE *dest, int count) {
     left_buffer = &input[0];
     right_buffer = &input[half];
 
-    for (i = 0, j = 0; count > i; i += 2, j++) {
-        /* Fist interation */
-        if (0 == i) {
-            min_x = max_x = left_buffer[j];
-            min_y = max_y = right_buffer[j];
-        }
-
-        if (min_x > left_buffer[j]) {
-            min_x = left_buffer[j];
-        }
-
-        if (max_x < left_buffer[j]) {
-            max_x = left_buffer[j];
-        }
-
-        if (min_y > right_buffer[j]) {
-            min_y = right_buffer[j];
-        }
-
-        if (max_y < right_buffer[j]) {
-            max_y = right_buffer[j];
-        }
-    }
-
-    end = j;
+    end = half;
 
     if (PLAC_BUFSIZ * 2 != count) {
         flags |= PLAC_EOF_FLAG;
     }
 
-    if (128 > max_x && -128 < min_x) {
+    if (is_int8_buffer(left_buffer, half)) {
         flags |= PLAC_X8_FLAG;
     }
 
-    if (128 > max_y && -128 < min_y) {
+    if (is_int8_buffer(right_buffer, half)) {
         flags |= PLAC_Y8_FLAG;
     }
 
@@ -143,6 +116,27 @@ static void interchannel_decorrelation(int16_t *input_buffer, int count) {
         right_buffer[i] = l - r;
         left_buffer[i] = l - floor(0.5 * right_buffer[i]);
     }
+}
+
+static int is_int8_buffer(int16_t *input_buffer, int n) {
+    int i, min, max;
+
+    for (i = 0; n > i; i++) {
+        /* Fist iteration */
+        if (0 == i) {
+            min = max = input_buffer[i];
+        }
+
+        if (min > input_buffer[i]) {
+            min = input_buffer[i];
+        }
+
+        if (max < input_buffer[i]) {
+            max = input_buffer[i];
+        }
+    }
+
+    return (128 > max && -128 < min) ? 1 : 0;
 }
 
 static void int16_to_int8(int16_t *input_buffer, int count) {
