@@ -20,6 +20,7 @@
       <itemPath>decoder.c</itemPath>
       <itemPath>encoder.c</itemPath>
       <itemPath>main.c</itemPath>
+      <itemPath>plac.c</itemPath>
       <itemPath>player.c</itemPath>
       <itemPath>wav.c</itemPath>
     </logicalFolder>
@@ -59,6 +60,8 @@
       <item path="encoder.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="plac.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="plac.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -101,6 +104,8 @@
       <item path="encoder.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="plac.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="plac.h" ex="false" tool="3" flavor2="0">
       </item>

@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/decoder.o \
 	${OBJECTDIR}/encoder.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/plac.o \
 	${OBJECTDIR}/player.o \
 	${OBJECTDIR}/wav.o
 
@@ -80,6 +81,11 @@ ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c89 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+
+${OBJECTDIR}/plac.o: plac.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c89 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/plac.o plac.c
 
 ${OBJECTDIR}/player.o: player.c
 	${MKDIR} -p ${OBJECTDIR}

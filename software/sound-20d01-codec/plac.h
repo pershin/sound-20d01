@@ -8,6 +8,10 @@
 #ifndef PLAC_H
 #define PLAC_H
 
+#include <stdint.h>
+
+#define PLAC_ID 0x43414c50 /* "PLAC" */
+
 #define PLAC_BUFSIZ           512 * 4
 #define PLAC_NUM_CHANNELS     2
 #define PLAC_BYTES_PER_SAMPLE sizeof (int16_t)
@@ -21,5 +25,8 @@
 typedef struct {
     uint32_t FormatID; /* "PLAC" */
 } PLAC_header;
+
+int plac_header_write(FILE *stream);
+PLAC_header *plac_header_read(FILE *stream);
 
 #endif /* PLAC_H */

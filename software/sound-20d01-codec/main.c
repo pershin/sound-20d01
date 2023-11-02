@@ -148,7 +148,9 @@ static int encode(char *src_filename, char *dest_filename) {
         printf("Output: %s\n", dest_filename);
     }
 
-    for (src_size = ftell(src), dest_size = 0; src_size < wav->data.Size;) {
+    dest_size = plac_header_write(dest);
+
+    for (src_size = ftell(src); src_size < wav->data.Size;) {
         numread = fread(input, sizeof (int16_t), PLAC_BUFSIZ * PLAC_NUM_CHANNELS, src);
         if (0 == numread) {
             break;
@@ -177,6 +179,7 @@ static int encode(char *src_filename, char *dest_filename) {
 
 static int decode(char *src_filename, char *dest_filename) {
     FILE *src, *dest;
+    PLAC_header *plac;
     int16_t *output;
     int numread, numwritten;
     long int src_size, data_size, dest_size;
@@ -198,6 +201,12 @@ static int decode(char *src_filename, char *dest_filename) {
     src = fopen(src_filename, "r");
     if (NULL == src) {
         fprintf(stderr, "Cannot open file \"%s\"\n", src_filename);
+        return EXIT_FAILURE;
+    }
+
+    plac = plac_header_read(src);
+    if (NULL == plac) {
+        fprintf(stderr, "Input file must be PLAC format\n");
         return EXIT_FAILURE;
     }
 
@@ -234,9 +243,12 @@ static int decode(char *src_filename, char *dest_filename) {
         printf("Delta:       %ld\n", dest_size - src_size);
     }
 
+    free(output);
+    free(plac);
+
     fclose(src);
     fclose(dest);
-    free(output);
+
     decoder_deinit();
 
     return EXIT_SUCCESS;
