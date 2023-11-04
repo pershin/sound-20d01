@@ -36,10 +36,13 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/decoder.o \
+	${OBJECTDIR}/dp_dec.o \
+	${OBJECTDIR}/dp_enc.o \
 	${OBJECTDIR}/encoder.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/plac.o \
 	${OBJECTDIR}/player.o \
+	${OBJECTDIR}/utils.o \
 	${OBJECTDIR}/wav.o
 
 
@@ -72,6 +75,16 @@ ${OBJECTDIR}/decoder.o: decoder.c
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/decoder.o decoder.c
 
+${OBJECTDIR}/dp_dec.o: dp_dec.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dp_dec.o dp_dec.c
+
+${OBJECTDIR}/dp_enc.o: dp_enc.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dp_enc.o dp_enc.c
+
 ${OBJECTDIR}/encoder.o: encoder.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -91,6 +104,11 @@ ${OBJECTDIR}/player.o: player.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/player.o player.c
+
+${OBJECTDIR}/utils.o: utils.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utils.o utils.c
 
 ${OBJECTDIR}/wav.o: wav.c
 	${MKDIR} -p ${OBJECTDIR}

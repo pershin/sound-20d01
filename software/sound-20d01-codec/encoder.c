@@ -2,133 +2,183 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
+#include <malloc.h>
+#include "utils.h"
 #include "encoder.h"
 #include "plac.h"
+#include "dplib.h"
 
-static void group_by_channel(int16_t *, int);
-static void interchannel_decorrelation(int16_t *, int);
-static int is_empty_buffer(int16_t *, int);
-static int is_int8_buffer(int16_t *, int);
-static void int16_to_int8(int16_t *, int);
+static void group_by_channel(int16_t *, int16_t *, int16_t *, int);
+static void interchannel_decorrelation(int16_t *, int16_t *, int, int);
+static void predictor(int16_t *, int);
+static uint16_t compress(int16_t *, int, uint8_t *, FILE *);
+int is_empty_buffer(int16_t *, int);
+static void conv16to8(int16_t *, int, int);
 
-int encoder_encode(int16_t *input, FILE *dest, int count) {
-    int numwritten, write_size, output_size, half;
+int encoder_encode(int16_t *input_buffer, FILE *dest, int count, uint32_t mixres) {
+    int half, output_size;
     int16_t *left_buffer, *right_buffer;
+    uint8_t *output_buffer;
     uint8_t flags;
-    uint16_t end;
 
     flags = 0;
     half = count / 2;
-    output_size = 0;
 
-    if (is_empty_buffer(input, count)) {
-        flags |= PLAC_EMPTY_FLAG;
+    output_buffer = malloc(count * PLAC_NUM_CHANNELS * sizeof (int16_t));
+    if (NULL == output_buffer) {
+        fprintf(stderr, "Insufficient memory available\n");
+        return 0;
     }
 
-    group_by_channel(input, count);
-    interchannel_decorrelation(input, count);
+    left_buffer = (int16_t *) & output_buffer[0];
+    right_buffer = (int16_t *) & output_buffer[count];
 
-    left_buffer = &input[0];
-    right_buffer = &input[half];
+    group_by_channel(input_buffer, left_buffer, right_buffer, count);
 
-    end = half;
+    /* Interchannel Decorrelation */
+    flags |= (mixres << 4);
+    interchannel_decorrelation(left_buffer, right_buffer, half, mixres);
 
-    if (PLAC_BUFSIZ * 2 != count) {
-        flags |= PLAC_EOF_FLAG;
-    }
+    predictor(left_buffer, half);
+    predictor(right_buffer, half);
 
-    if (is_int8_buffer(left_buffer, half)) {
-        flags |= PLAC_X8_FLAG;
-    }
+    output_size = compress((int16_t *) output_buffer, half, &flags, dest);
 
-    if (is_int8_buffer(right_buffer, half)) {
-        flags |= PLAC_Y8_FLAG;
-    }
-
-    /* Write flags */
-    output_size = fwrite(&flags, sizeof (uint8_t), 1, dest);
-
-    if (flags & PLAC_EOF_FLAG) {
-        numwritten = fwrite(&end, sizeof (uint16_t), 1, dest);
-        output_size += numwritten * sizeof (uint16_t);
-    }
-
-    if (flags & PLAC_EMPTY_FLAG) {
-        return output_size;
-    }
-
-    if (flags & PLAC_X8_FLAG) {
-        write_size = sizeof (int8_t);
-        int16_to_int8(left_buffer, end);
-    } else {
-        write_size = sizeof (int16_t);
-    }
-
-    numwritten = fwrite(left_buffer, write_size, end, dest);
-    output_size += numwritten * write_size;
-
-    if (flags & PLAC_Y8_FLAG) {
-        write_size = sizeof (int8_t);
-        int16_to_int8(right_buffer, end);
-    } else {
-        write_size = sizeof (int16_t);
-    }
-
-    numwritten = fwrite(right_buffer, write_size, end, dest);
-    output_size += numwritten * write_size;
+    free(output_buffer);
 
     return output_size;
 }
 
-static void group_by_channel(int16_t *input_buffer, int count) {
-    int i, j, half;
-    int16_t *tmp, *left_buffer, *right_buffer, *left_tmp, *right_tmp;
+static void group_by_channel(
+        int16_t *input_buffer,
+        int16_t *left_buffer,
+        int16_t *right_buffer,
+        int count) {
+    int i, j;
 
-    tmp = malloc(count * sizeof (int16_t));
-    if (NULL == tmp) {
-        fprintf(stderr, "Insufficient memory available\n");
+    for (i = 0, j = 0; count > i; i += 2, j++) {
+        left_buffer[j] = input_buffer[i];
+        right_buffer[j] = input_buffer[i + 1];
+    }
+}
+
+static void interchannel_decorrelation(
+        int16_t *left_buffer,
+        int16_t *right_buffer,
+        int n,
+        int mixres) {
+    int i;
+    int16_t l, r;
+    int32_t m2;
+
+    if (0 == mixres) {
         return;
     }
 
-    half = count / sizeof (int16_t);
-    left_buffer = &input_buffer[0];
-    right_buffer = &input_buffer[half];
-    left_tmp = &tmp[0];
-    right_tmp = &tmp[half];
+    /* matrixed stereo */
+    m2 = (1 << 2) - mixres;
 
-    for (i = 0, j = 0; count > i; i += 2, j++) {
-        left_tmp[j] = input_buffer[i];
-        right_tmp[j] = input_buffer[i + 1];
-    }
-
-    for (i = 0; half > i; i++) {
-        left_buffer[i] = left_tmp[i];
-        right_buffer[i] = right_tmp[i];
-    }
-
-    free(tmp);
-}
-
-static void interchannel_decorrelation(int16_t *input_buffer, int count) {
-    int i, half;
-    int16_t l, r;
-    int16_t *left_buffer, *right_buffer;
-
-    half = count / sizeof (int16_t);
-    left_buffer = &input_buffer[0];
-    right_buffer = &input_buffer[half];
-
-    for (i = 0; half > i; i++) {
+    for (i = 0; n > i; i++) {
         l = left_buffer[i];
         r = right_buffer[i];
 
         /* Interchannel Decorrelation */
+        left_buffer[i] = (mixres * l + m2 * r) >> 2;
         right_buffer[i] = l - r;
-        left_buffer[i] = l - floor(0.5 * right_buffer[i]);
+
+        // right_buffer[i] = l - r;
+        // left_buffer[i] = l - floor(0.5 * right_buffer[i]);
     }
 }
 
-static int is_empty_buffer(int16_t *input_buffer, int n) {
+static void predictor(int16_t *input_buffer, int n) {
+    int16_t *predictor_buffer = malloc(n * sizeof (int16_t));
+    int numactive = n;
+
+    numactive = n;
+
+    pc_block(input_buffer, predictor_buffer, n, NULL, numactive, PLAC_BITS_PER_SAMPLE + 1, DENSHIFT_DEFAULT);
+
+    for (int i = 0; n > i; i++) {
+        input_buffer[i] = predictor_buffer[i];
+    }
+
+    free(predictor_buffer);
+}
+
+static uint16_t compress(int16_t *output_buffer, int n, uint8_t *flags, FILE *dest) {
+    int output_size, data_size, numwritten;
+    uint16_t conf_flags;
+    uint16_t end_size;
+
+    conf_flags = 0;
+    end_size = n;
+
+    if (PLAC_BUFSIZ != end_size) {
+        *flags |= PLAC_EOF_FLAG;
+    }
+
+    if (!(*flags & PLAC_EOF_FLAG)) {
+        for (int i = 0; PLAC_COMPN > i; i++) {
+            int offset;
+            data_size = PLAC_COMPSIZ;
+            offset = i * data_size;
+
+            if (is_8bit_buffer_w(&output_buffer[offset], data_size)) {
+                *flags |= PLAC_8BIT_FLAG;
+                conf_flags |= (1 << i);
+            }
+        }
+    }
+
+    /* Write flags */
+    if (NULL != dest) {
+        fwrite(flags, sizeof (uint8_t), 1, dest);
+    }
+
+    output_size = 1;
+
+    if (*flags & PLAC_EOF_FLAG) {
+        if (NULL != dest) {
+            fwrite(&end_size, sizeof (uint16_t), 1, dest);
+        }
+
+        output_size += 2;
+        return output_size;
+    }
+
+    if (*flags & PLAC_8BIT_FLAG) {
+        if (NULL != dest) {
+            fwrite(&conf_flags, sizeof (uint16_t), 1, dest);
+        }
+
+        output_size += 2;
+    }
+
+    for (int i = 0; PLAC_COMPN > i; i++) {
+        int offset;
+        int bps = sizeof (int16_t);
+        data_size = PLAC_COMPSIZ;
+        offset = i * data_size;
+
+        if (conf_flags & (1 << i)) {
+            conv16to8(output_buffer, offset, data_size);
+            bps = sizeof (uint8_t);
+        }
+
+        if (NULL != dest) {
+            numwritten = fwrite(&output_buffer[offset], bps, data_size, dest);
+        } else {
+            numwritten = data_size;
+        }
+
+        output_size += numwritten * bps;
+    }
+
+    return output_size;
+}
+
+int is_empty_buffer(int16_t *input_buffer, int n) {
     int result, i;
 
     result = 1;
@@ -142,33 +192,14 @@ static int is_empty_buffer(int16_t *input_buffer, int n) {
     return result;
 }
 
-static int is_int8_buffer(int16_t *input_buffer, int n) {
-    int result, i;
-
-    result = 1;
-
-    for (i = 0; n > i; i++) {
-        if (127 < input_buffer[i]) {
-            result = 0;
-            break;
-        }
-
-        if (-128 > input_buffer[i]) {
-            result = 0;
-            break;
-        }
-    }
-
-    return result;
-}
-
-static void int16_to_int8(int16_t *input_buffer, int count) {
-    int8_t *tmp_buffer;
+static void conv16to8(int16_t *input_buffer, int offset, int count) {
+    uint8_t *output_buffer;
     int i;
 
-    tmp_buffer = (int8_t *) & input_buffer[0];
+    output_buffer = (uint8_t *) & input_buffer[offset];
 
+    /* Convert 16 bits to 8 bits */
     for (i = 0; i < count; i++) {
-        tmp_buffer[i] = (int8_t) input_buffer[i];
+        output_buffer[i] = (uint8_t) input_buffer[i + offset];
     }
 }

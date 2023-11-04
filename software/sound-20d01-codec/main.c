@@ -156,7 +156,24 @@ static int encode(char *src_filename, char *dest_filename) {
             break;
         }
 
-        numwritten = encoder_encode(input, dest, numread);
+        int best_mix_size = 0;
+        int best_mix_num = 0;
+
+        for (int i = 0; 5 > i; i++) {
+            numwritten = encoder_encode(input, NULL, numread, i);
+
+            if (0 == i) {
+                best_mix_size = numwritten;
+                best_mix_num = i;
+            } else {
+                if (best_mix_size > numwritten) {
+                    best_mix_size = numwritten;
+                    best_mix_num = i;
+                }
+            }
+        }
+
+        numwritten = encoder_encode(input, dest, numread, best_mix_num);
 
         src_size += numread * sizeof (int16_t);
         dest_size += numwritten;
