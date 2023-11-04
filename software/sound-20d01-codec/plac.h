@@ -12,6 +12,9 @@
 
 #define PLAC_ID 0x43414c50 /* "PLAC" */
 
+/* Predictor */
+#define PLAC_CHANSHIFT 32 - (PLAC_BITS_PER_SAMPLE + 1)
+
 /* Compressor */
 #define PLAC_COMPN   16
 #define PLAC_COMPSIZ 128

@@ -5,7 +5,6 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>decoder.h</itemPath>
-      <itemPath>dplib.h</itemPath>
       <itemPath>encoder.h</itemPath>
       <itemPath>plac.h</itemPath>
       <itemPath>player.h</itemPath>
@@ -20,8 +19,6 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>decoder.c</itemPath>
-      <itemPath>dp_dec.c</itemPath>
-      <itemPath>dp_enc.c</itemPath>
       <itemPath>encoder.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>plac.c</itemPath>
@@ -59,12 +56,6 @@
       <item path="decoder.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="decoder.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dp_dec.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="dp_enc.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="dplib.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="encoder.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -113,12 +104,6 @@
       <item path="decoder.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="decoder.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dp_dec.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="dp_enc.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="dplib.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="encoder.c" ex="false" tool="0" flavor2="0">
       </item>

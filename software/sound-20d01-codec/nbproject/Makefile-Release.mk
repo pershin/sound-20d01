@@ -36,8 +36,6 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/decoder.o \
-	${OBJECTDIR}/dp_dec.o \
-	${OBJECTDIR}/dp_enc.o \
 	${OBJECTDIR}/encoder.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/plac.o \
@@ -74,16 +72,6 @@ ${OBJECTDIR}/decoder.o: decoder.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c89 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/decoder.o decoder.c
-
-${OBJECTDIR}/dp_dec.o: dp_dec.c
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -std=c89 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dp_dec.o dp_dec.c
-
-${OBJECTDIR}/dp_enc.o: dp_enc.c
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -std=c89 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dp_enc.o dp_enc.c
 
 ${OBJECTDIR}/encoder.o: encoder.c
 	${MKDIR} -p ${OBJECTDIR}

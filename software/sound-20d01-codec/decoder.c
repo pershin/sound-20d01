@@ -4,12 +4,11 @@
 #include <memory.h>
 #include <math.h>
 #include "plac.h"
-#include "dplib.h"
 
 static int16_t *tmp_buffer;
 
 static int decompress(FILE *, int16_t *, int, uint8_t);
-static void predictor(int16_t *, int16_t *, int);
+static void predictor(int16_t *, int);
 int plac_read_8(int16_t *buffer_out, int count, FILE *src);
 
 int decoder_init(void) {
@@ -53,7 +52,8 @@ int decoder_decode(FILE *src, int16_t *output_buffer) {
 
     decompress(src, tmp_buffer, size, flags);
 
-    predictor(left_buffer, right_buffer, size);
+    predictor(left_buffer, size);
+    predictor(right_buffer, size);
 
     mixres = (flags & 0x70) >> 4;
 
@@ -102,22 +102,19 @@ static int decompress(FILE *src, int16_t *output_buffer, int size, uint8_t flags
     return size;
 }
 
-static void predictor(int16_t *left_buffer, int16_t *right_buffer, int n) {
-    int16_t *left_predictor = malloc(n * sizeof (int16_t));
-    int16_t *right_predictor = malloc(n * sizeof (int16_t));
+static void predictor(int16_t *input_buffer, int n) {
+    int i;
+    int32_t del;
+    uint32_t chanshift = PLAC_CHANSHIFT;
+    int16_t prev;
 
-    int numactive = n;
+    prev = input_buffer[0];
 
-    unpc_block(left_buffer, left_predictor, n, NULL, numactive, PLAC_BITS_PER_SAMPLE + 1, DENSHIFT_DEFAULT);
-    unpc_block(right_buffer, right_predictor, n, NULL, numactive, PLAC_BITS_PER_SAMPLE + 1, DENSHIFT_DEFAULT);
-
-    for (int i = 0; n > i; i++) {
-        left_buffer[i] = left_predictor[i];
-        right_buffer[i] = right_predictor[i];
+    for (i = 1; i < n; i++) {
+        del = input_buffer[i] + prev;
+        prev = (del << chanshift) >> chanshift;
+        input_buffer[i] = prev;
     }
-
-    free(left_predictor);
-    free(right_predictor);
 }
 
 int plac_read_8(int16_t *buffer_out, int count, FILE *src) {

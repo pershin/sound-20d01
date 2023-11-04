@@ -6,7 +6,6 @@
 #include "utils.h"
 #include "encoder.h"
 #include "plac.h"
-#include "dplib.h"
 
 static void group_by_channel(int16_t *, int16_t *, int16_t *, int);
 static void interchannel_decorrelation(int16_t *, int16_t *, int, int);
@@ -92,18 +91,18 @@ static void interchannel_decorrelation(
 }
 
 static void predictor(int16_t *input_buffer, int n) {
-    int16_t *predictor_buffer = malloc(n * sizeof (int16_t));
-    int numactive = n;
+    int i;
+    int32_t del;
+    uint32_t chanshift = PLAC_CHANSHIFT;
+    int16_t prev;
 
-    numactive = n;
+    prev = input_buffer[0];
 
-    pc_block(input_buffer, predictor_buffer, n, NULL, numactive, PLAC_BITS_PER_SAMPLE + 1, DENSHIFT_DEFAULT);
-
-    for (int i = 0; n > i; i++) {
-        input_buffer[i] = predictor_buffer[i];
+    for (i = 1; i < n; i++) {
+        del = input_buffer[i] - prev;
+        prev = input_buffer[i];
+        input_buffer[i] = (del << chanshift) >> chanshift;
     }
-
-    free(predictor_buffer);
 }
 
 static uint16_t compress(int16_t *output_buffer, int n, uint8_t *flags, FILE *dest) {
