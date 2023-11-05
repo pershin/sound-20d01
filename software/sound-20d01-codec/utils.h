@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 
+int is_empty_buffer(int16_t *, int);
 int is_8bit_buffer_w(int16_t *, int);
 
 #endif /* UTILS_H */

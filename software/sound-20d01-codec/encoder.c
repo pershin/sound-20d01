@@ -11,7 +11,6 @@ static void group_by_channel(int16_t *, int16_t *, int16_t *, int);
 static void interchannel_decorrelation(int16_t *, int16_t *, int, int);
 static void predictor(int16_t *, int);
 static uint16_t compress(int16_t *, int, uint8_t *, FILE *);
-int is_empty_buffer(int16_t *, int);
 static void conv16to8(int16_t *, int);
 
 int encoder_encode(int16_t *input_buffer, FILE *dest, int count, uint32_t mixres) {
@@ -107,10 +106,10 @@ static void predictor(int16_t *input_buffer, int n) {
 
 static uint16_t compress(int16_t *output_buffer, int n, uint8_t *flags, FILE *dest) {
     int output_size, data_size, numwritten;
-    uint16_t conf_flags;
-    uint16_t end_size;
+    uint16_t e_flags, b_flags, end_size;
 
-    conf_flags = 0;
+    e_flags = 0;
+    b_flags = 0;
     end_size = n;
 
     if (PLAC_BUFSIZ != end_size) {
@@ -123,9 +122,12 @@ static uint16_t compress(int16_t *output_buffer, int n, uint8_t *flags, FILE *de
             data_size = PLAC_COMPSIZ;
             offset = i * data_size;
 
-            if (is_8bit_buffer_w(&output_buffer[offset], data_size)) {
+            if (is_empty_buffer(&output_buffer[offset], data_size)) {
+                *flags |= PLAC_EMPTY_FLAG;
+                e_flags |= (1 << i);
+            } else if (is_8bit_buffer_w(&output_buffer[offset], data_size)) {
                 *flags |= PLAC_8BIT_FLAG;
-                conf_flags |= (1 << i);
+                b_flags |= (1 << i);
             }
         }
     }
@@ -140,15 +142,28 @@ static uint16_t compress(int16_t *output_buffer, int n, uint8_t *flags, FILE *de
     if (*flags & PLAC_EOF_FLAG) {
         if (NULL != dest) {
             fwrite(&end_size, sizeof (uint16_t), 1, dest);
+            numwritten = fwrite(&output_buffer[0], sizeof (int16_t), end_size * 2, dest);
+        } else {
+            numwritten = end_size * 2;
+        }
+
+        output_size += sizeof (uint16_t);
+        output_size += numwritten * sizeof (int16_t);
+
+        return output_size;
+    }
+
+    if (*flags & PLAC_EMPTY_FLAG) {
+        if (NULL != dest) {
+            fwrite(&e_flags, sizeof (uint16_t), 1, dest);
         }
 
         output_size += 2;
-        return output_size;
     }
 
     if (*flags & PLAC_8BIT_FLAG) {
         if (NULL != dest) {
-            fwrite(&conf_flags, sizeof (uint16_t), 1, dest);
+            fwrite(&b_flags, sizeof (uint16_t), 1, dest);
         }
 
         output_size += 2;
@@ -160,7 +175,9 @@ static uint16_t compress(int16_t *output_buffer, int n, uint8_t *flags, FILE *de
         data_size = PLAC_COMPSIZ;
         offset = i * data_size;
 
-        if (conf_flags & (1 << i)) {
+        if (e_flags & (1 << i)) {
+            data_size = 0;
+        } else if (b_flags & (1 << i)) {
             conv16to8(&output_buffer[offset], data_size);
             bps = sizeof (uint8_t);
         }
@@ -177,19 +194,7 @@ static uint16_t compress(int16_t *output_buffer, int n, uint8_t *flags, FILE *de
     return output_size;
 }
 
-int is_empty_buffer(int16_t *input_buffer, int n) {
-    int result, i;
 
-    result = 1;
-
-    for (i = 0; n > i; i++) {
-        if (0 != input_buffer[i]) {
-            result = 0;
-        }
-    }
-
-    return result;
-}
 
 static void conv16to8(int16_t *input_buffer, int count) {
     uint8_t *output_buffer;

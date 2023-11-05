@@ -78,13 +78,17 @@ int decoder_decode(FILE *src, int16_t *output_buffer) {
 }
 
 static int decompress(FILE *src, int16_t *output_buffer, int size, uint8_t flags) {
-    uint16_t conf_flags;
+    uint16_t e_flags, b_flags;
     int data_size;
 
-    conf_flags = 0;
+    e_flags = b_flags = 0;
+
+    if (flags & PLAC_EMPTY_FLAG) {
+        fread(&e_flags, sizeof (uint16_t), 1, src);
+    }
 
     if (flags & PLAC_8BIT_FLAG) {
-        fread(&conf_flags, sizeof (uint16_t), 1, src);
+        fread(&b_flags, sizeof (uint16_t), 1, src);
     }
 
     for (int i = 0; PLAC_COMPN > i; i++) {
@@ -92,7 +96,9 @@ static int decompress(FILE *src, int16_t *output_buffer, int size, uint8_t flags
         int offset = i * data_size;
         int16_t *read_buffer = (int16_t *) & output_buffer[offset];
 
-        if (conf_flags & (1 << i)) {
+        if (e_flags & (1 << i)) {
+            memset(read_buffer, 0, data_size * sizeof (int16_t));
+        } else if (b_flags & (1 << i)) {
             fread(read_buffer, sizeof (int8_t), data_size, src);
             conv8to16(read_buffer, data_size);
         } else {
