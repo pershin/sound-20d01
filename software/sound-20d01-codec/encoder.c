@@ -12,7 +12,7 @@ static void interchannel_decorrelation(int16_t *, int16_t *, int, int);
 static void predictor(int16_t *, int);
 static uint16_t compress(int16_t *, int, uint8_t *, FILE *);
 int is_empty_buffer(int16_t *, int);
-static void conv16to8(int16_t *, int, int);
+static void conv16to8(int16_t *, int);
 
 int encoder_encode(int16_t *input_buffer, FILE *dest, int count, uint32_t mixres) {
     int half, output_size;
@@ -161,7 +161,7 @@ static uint16_t compress(int16_t *output_buffer, int n, uint8_t *flags, FILE *de
         offset = i * data_size;
 
         if (conf_flags & (1 << i)) {
-            conv16to8(output_buffer, offset, data_size);
+            conv16to8(&output_buffer[offset], data_size);
             bps = sizeof (uint8_t);
         }
 
@@ -191,14 +191,14 @@ int is_empty_buffer(int16_t *input_buffer, int n) {
     return result;
 }
 
-static void conv16to8(int16_t *input_buffer, int offset, int count) {
+static void conv16to8(int16_t *input_buffer, int count) {
     uint8_t *output_buffer;
     int i;
 
-    output_buffer = (uint8_t *) & input_buffer[offset];
+    output_buffer = (uint8_t *) & input_buffer[0];
 
     /* Convert 16 bits to 8 bits */
     for (i = 0; i < count; i++) {
-        output_buffer[i] = (uint8_t) input_buffer[i + offset];
+        output_buffer[i] = (uint8_t) input_buffer[i];
     }
 }

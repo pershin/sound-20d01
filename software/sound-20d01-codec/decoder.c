@@ -9,7 +9,7 @@ static int16_t *tmp_buffer;
 
 static int decompress(FILE *, int16_t *, int, uint8_t);
 static void predictor(int16_t *, int);
-int plac_read_8(int16_t *buffer_out, int count, FILE *src);
+static void conv8to16(int16_t *, int);
 
 int decoder_init(void) {
     tmp_buffer = malloc(PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t));
@@ -93,7 +93,8 @@ static int decompress(FILE *src, int16_t *output_buffer, int size, uint8_t flags
         int16_t *read_buffer = (int16_t *) & output_buffer[offset];
 
         if (conf_flags & (1 << i)) {
-            plac_read_8(read_buffer, data_size, src);
+            fread(read_buffer, sizeof (int8_t), data_size, src);
+            conv8to16(read_buffer, data_size);
         } else {
             fread(read_buffer, sizeof (int16_t), data_size, src);
         }
@@ -117,26 +118,15 @@ static void predictor(int16_t *input_buffer, int n) {
     }
 }
 
-int plac_read_8(int16_t *buffer_out, int count, FILE *src) {
-    int8_t *tmp;
-    int i, numread;
+static void conv8to16(int16_t *output_buffer, int count) {
+    int i;
+    int8_t *input_buffer;
 
-    tmp = malloc(count * sizeof (int8_t));
-    if (NULL == tmp) {
-        fprintf(stderr, "Insufficient memory available\n");
-        return 0;
+    input_buffer = (int8_t *) & output_buffer[0];
+
+    /* Convert 8 bits to 16 bits */
+    for (i = 0; i < count; i++) {
+        int k = count - i - 1;
+        output_buffer[k] = input_buffer[k];
     }
-
-    numread = fread(tmp, sizeof (int8_t), count, src);
-    if (0 == numread) {
-        return 0;
-    }
-
-    for (i = 0; i < numread; i++) {
-        buffer_out[i] = (int16_t) tmp[i];
-    }
-
-    free(tmp);
-
-    return numread;
 }
