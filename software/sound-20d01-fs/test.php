@@ -1,17 +1,14 @@
 #!/usr/bin/php
 <?php
+define('DEV_PATH', '/dev/sdc');
 define('SAMPLE_RATE', 48000);
-define('SOUND20D01FS', __DIR__ . '/dist/Debug/GNU-Linux/sound-20d01-fs');
+define('SOUND20D01FS', 'sudo ' . __DIR__ . '/dist/Debug/GNU-Linux/sound-20d01-fs -p ' . DEV_PATH);
+define('SLICE', __DIR__ . '/../slice/dist/Debug/GNU-Linux/slice');
 define('TMP_DIR', '/mnt/hdd/tmp/ramdisk/');
+define('AUDIO_DIR', '/mnt/hdd/tmp/audio/');
 
-if (!file_exists(__DIR__ . '/list.xml')) {
-    exit(1);
-}
+$list = include AUDIO_DIR . 'config.inc.php';
 
-$list = simplexml_load_file(__DIR__ . '/list.xml');
-$i = 0;
-$prefix = uniqid();
-$log = [];
 $output = [];
 $result_code = 0;
 
@@ -25,67 +22,24 @@ if ($result_code) {
     }
 }
 
-unlink(TMP_DIR . 'data.bin');
+foreach ($list as $item) {
+    $tmp_file = TMP_DIR . $item['file'] . '.pcm';
 
-if (!file_exists(TMP_DIR . 'data.bin')) {
-    touch(TMP_DIR . 'data.bin');
-    exec(SOUND20D01FS . ' --format');
-}
+    exec('ffmpeg -i ' . AUDIO_DIR . $item['file'] . ' -acodec pcm_s16le -f s16le ' . $tmp_file);
 
-foreach ($list->item as $item) {
-    $filename = (string) $item->filename;
-    $title = addcslashes((string) $item->title, "'");
-    $tmp = TMP_DIR . 'tmp_' . $prefix . '-' . $i++ . '.pcm';
-    $output = [];
+    foreach ($item['index'] as $key => $index) {
+        $track_file = TMP_DIR . 'track-' . ($key + 1) . '.pcm';
+        $dest = TMP_DIR . 'track_' . SAMPLE_RATE . '-' . ($key + 1) . '.pcm';
+        exec(SLICE . ' ' . $tmp_file . ' ' . $track_file . ' ' . $index[0] . ' ' . $index[1]);
+        exec('ffmpeg -ar 44100 -ac 2 -acodec pcm_s16le -f s16le -i ' . $track_file . ' -ar ' . SAMPLE_RATE . ' -ac 2 -acodec pcm_s16le -f s16le ' . $dest);
+        unlink($track_file);
 
-    exec("ffmpeg -i '{$filename}' -ar " . SAMPLE_RATE . " -acodec pcm_s16le -f u16le -ac 2 '{$tmp}'");
-    exec(SOUND20D01FS . " --add '{$tmp}' --title '{$title}'", $output);
-    exec(SOUND20D01FS . " -o {$output[0]}", $output);
+        exec(SOUND20D01FS . " --add '{$dest}' --title '{$item['dir']}-t{$key}'", $output);
 
-    $tmp_test = TMP_DIR . 'track' . $output[0] . '.pcm';
+        print_r($output);
 
-    echo implode(PHP_EOL, $output);
-
-    $log[] = [
-        'track' => $output[0],
-        'filename' => $filename,
-        'size_in' => filesize($tmp),
-        'size_out' => filesize($tmp_test),
-        'md5_in' => md5_file($tmp),
-        'md5_out' => md5_file($tmp_test),
-        'dd' => $output[1] . PHP_EOL . $output[2] . PHP_EOL . $output[3],
-    ];
-
-    unlink($tmp);
-    unlink($tmp_test);
-}
-
-echo PHP_EOL, PHP_EOL, 'LOG', PHP_EOL, PHP_EOL;
-
-ob_start();
-
-foreach ($log as $log_item) {
-    echo 'track:      ', $log_item['track'], PHP_EOL;
-    echo 'filename:   ', $log_item['filename'], PHP_EOL;
-    echo 'size (in):  ', $log_item['size_in'], PHP_EOL;
-    echo 'size (out): ', $log_item['size_out'], PHP_EOL;
-    echo 'md5 (in):   ', $log_item['md5_in'], PHP_EOL;
-    echo 'md5 (out):  ', $log_item['md5_out'], PHP_EOL;
-    echo $log_item['dd'], PHP_EOL;
-
-    if ($log_item['md5_in'] == $log_item['md5_out']) {
-        echo 'OK', PHP_EOL;
-    } else {
-        echo 'ERROR', PHP_EOL;
+        unlink($dest);
     }
 
-    echo PHP_EOL;
+    unlink($tmp_file);
 }
-
-$log_data = ob_get_clean();
-
-echo $log_data;
-
-file_put_contents(TMP_DIR . date('d-m-Y-His') . '.log', $log_data);
-
-//exec('sudo umount ' . TMP_DIR);
