@@ -35,7 +35,7 @@ void ls(FS_structure *fs) {
     printf("| TRACK | TITLE                                                            | DURATION |\n");
     printf("|-------|------------------------------------------------------------------|----------|\n");
 
-    for (i = 1; fs->NumberOfTracks > i; i++) {
+    for (i = 1; fs->NumberOfTracks >= i; i++) {
         sd_read(i, track);
 
         printf("| %5d | %-64s | ", i, track->Title);
@@ -158,10 +158,17 @@ int main(int argc, char **argv) {
      */
 
     if (format_flag) {
-        printf("Disk formatting...\n");
-        fs_format(fs);
-        fs_update(fs);
-        printf("Disk formatting complete\n");
+        char c;
+
+        printf("Are you sure you want to format the disk (%s)? [y/N]\n", dev_path);
+
+        c = getchar();
+        if ('y' == c || 'Y' == c) {
+            printf("Disk formatting...\n");
+            fs_format(fs);
+            fs_update(fs);
+            printf("Disk formatting complete\n");
+        }
     }
 
     if (ls_flag) {
