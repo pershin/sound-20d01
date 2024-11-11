@@ -38,6 +38,10 @@ void display_update(uint16_t track_number) {
 		data[1] = 0;
 	}
 
+	if (0 == track_number) {
+		data[0] = 0;
+	}
+
 	HAL_SPI_Transmit(&hspi2, data, 4, HAL_MAX_DELAY);
 	HAL_GPIO_WritePin(DISP_LATCH_GPIO_Port, DISP_LATCH_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(DISP_LATCH_GPIO_Port, DISP_LATCH_Pin, GPIO_PIN_RESET);

@@ -22,9 +22,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <string.h>
 #include "audio.h"
 #include "fs.h"
 #include "display.h"
+#include "playlist.h"
 
 /* USER CODE END Includes */
 
@@ -57,14 +59,14 @@ SPI_HandleTypeDef hspi2;
 volatile uint8_t read_next_chunk = 0;
 volatile uint8_t *buffer_play = NULL;
 volatile uint8_t *buffer_read = NULL;
-volatile uint8_t buffer_a[CLUSTER_SIZE];
-volatile uint8_t buffer_b[CLUSTER_SIZE];
+uint8_t buffer_a[CLUSTER_SIZE];
+uint8_t buffer_b[CLUSTER_SIZE];
 volatile uint16_t numread;
-volatile uint16_t track_number = 1;
-volatile uint16_t old_track_number = 1;
+volatile uint16_t cmd = 0;
+volatile uint16_t track_number = 0;
+volatile uint16_t old_track_number = 0;
 volatile uint16_t number_of_tracks = 0;
 volatile uint8_t volume = DEFAULT_VOLUME;
-volatile uint8_t old_volume = DEFAULT_VOLUME;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -100,36 +102,21 @@ int Player_Init(void) {
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-    switch (GPIO_Pin) {
-        case VOL_D_Pin: /* Volume - */
-        	if (0 < volume) {
-        		volume--;
-        	}
-            break;
-        case VOL_U_Pin: /* Volume + */
-        	if (100 > volume) {
-        		volume++;
-        	}
-            break;
-        case PREV_Pin: /* Prev */
-        	track_number--;
-            break;
-        case NEXT_Pin: /* Next */
-        	track_number++;
-            break;
-	}
+	cmd = GPIO_Pin;
 }
 
 void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai) {
-	volatile uint8_t* temp = buffer_play;
+	volatile uint8_t *temp;
+
+	temp = buffer_play;
 	buffer_play = buffer_read;
 	buffer_read = temp;
 
-	if (0 < numread) {
-		HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) buffer_play, numread / 2);
-	}
+	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t *) buffer_play, numread / 2);
 
-	read_next_chunk = 1;
+	if (0 != track_number) {
+		read_next_chunk = 1;
+	}
 
 	UNUSED(hsai);
 }
@@ -173,45 +160,59 @@ int main(void)
   MX_SDIO_SD_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-	Player_Init();
+  Player_Init();
 
-	number_of_tracks = fs_init();
+  number_of_tracks = fs_init();
+  playlist_init(number_of_tracks);
+  display_update(0);
 
-	display_update(track_number);
+  memset(buffer_a, 0, CLUSTER_SIZE);
+  memset(buffer_b, 0, CLUSTER_SIZE);
 
-	fs_open(track_number);
+  read_next_chunk = 0;
+  buffer_play = buffer_a;
+  buffer_read = buffer_b;
+  numread = CLUSTER_SIZE;
 
-	numread = fs_read((uint8_t*) buffer_a);
-	numread = fs_read((uint8_t*) buffer_b);
+  HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t *) buffer_play, CLUSTER_SIZE / 2);
 
-	read_next_chunk = 0;
-	buffer_play = buffer_a;
-	buffer_read = buffer_b;
-
-	HAL_SAI_Transmit_DMA(&hsai_BlockB1, (uint8_t*) buffer_a, numread / 2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		if (old_volume != volume) {
-			old_volume = volume;
-			BSP_Player_SetVolume(volume);
+		if (0 != cmd) {
+			switch (cmd) {
+				case VOL_D_Pin: /* Volume Down */
+					if (0 < volume) {
+						volume--;
+						BSP_Player_SetVolume(volume);
+					}
+					break;
+				case VOL_U_Pin: /* Volume Up */
+					if (100 > volume) {
+						volume++;
+						BSP_Player_SetVolume(volume);
+					}
+					break;
+				case PREV_Pin: /* Previous Track */
+					track_number = playlist_prev();
+					break;
+				case NEXT_Pin: /* Next Track */
+					track_number = playlist_next();
+					break;
+			}
+
+			cmd = 0;
 		}
 
 		if (old_track_number != track_number) {
-			if (0 == track_number) {
-				track_number = 1;
-			}
-
-			if (track_number > number_of_tracks) {
-				track_number = 1;
-			}
-
 			old_track_number = track_number;
 
 			display_update(track_number);
+
+			while (1 != read_next_chunk) {}
 
 			fs_open(track_number);
 		}
@@ -222,10 +223,11 @@ int main(void)
 
 		read_next_chunk = 0;
 
-		numread = fs_read((uint8_t*) buffer_read);
-		if (CLUSTER_SIZE > numread) {
-			track_number++;
+		numread = fs_read((uint8_t *) buffer_read);
+		if (CLUSTER_SIZE != numread) {
+			track_number = playlist_next();
 		}
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
