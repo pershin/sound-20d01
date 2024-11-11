@@ -1,5 +1,4 @@
 # KiCad
-
 *.bak
 *.kicad_pcb-bak
 *.bck
@@ -9,6 +8,7 @@ firmware/Sound-20D01MB_MCU/Debug/
 firmware/Sound-20D01MB_Player/Debug/
 
 # Others
+.DS_Store
 *.zip
 software/sound-20d01-fs/list.xml
 /software/sound-20d01-fs/build/
