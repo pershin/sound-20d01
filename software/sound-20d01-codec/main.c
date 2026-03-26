@@ -115,11 +115,12 @@ int main(int argc, char** argv) {
 }
 
 static bool encode(char *src_filename, char *dest_filename) {
-    FILE *src, *dest;
-    WAVE_header *wav;
+    FILE *src = NULL, *dest = NULL;
+    WAVE_header *wav = NULL;
     int16_t *input;
-    int numread, numwritten;
+    int i, numread, numwritten, best_mix_size, best_mix_num;
     long int src_size, dest_size;
+    size_t bytes_left;
     bool result = false;
 
     input = malloc(PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t));
@@ -153,8 +154,7 @@ static bool encode(char *src_filename, char *dest_filename) {
     }
 
     dest_size = plac_header_write(dest);
-
-    size_t bytes_left = wav->data.Size;
+    bytes_left = wav->data.Size;
 
     for (src_size = 0; bytes_left > 0;) {
         size_t to_read = PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t);
@@ -169,12 +169,11 @@ static bool encode(char *src_filename, char *dest_filename) {
         }
 
         bytes_left -= numread;
+        best_mix_size = 0;
+        best_mix_num = 0;
 
-        int best_mix_size = 0;
-        int best_mix_num = 0;
-
-        for (int i = 0; 5 > i; i++) {
-            numwritten = encoder_encode(input, NULL, numread, i);
+        for (i = 0; 5 > i; i++) {
+            numwritten = encoder_encode(input, numread, i, NULL);
 
             if (0 == i) {
                 best_mix_size = numwritten;
@@ -187,7 +186,7 @@ static bool encode(char *src_filename, char *dest_filename) {
             }
         }
 
-        numwritten = encoder_encode(input, dest, numread / 2, best_mix_num);
+        numwritten = encoder_encode(input, numread, best_mix_num, dest);
 
         src_size += numread;
         dest_size += numwritten;
@@ -269,7 +268,7 @@ static bool decode(char *src_filename, char *dest_filename) {
     src_size = filesize(src);
 
     for (data_size = 0, dest_size = 0;;) {
-        numread = decoder_decode(src, output);
+        numread = decoder_decode(output, src);
         if (0 == numread) {
             break;
         }

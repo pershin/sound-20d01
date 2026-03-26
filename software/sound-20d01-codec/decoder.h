@@ -8,7 +8,7 @@
 #ifndef DECODER_H
 #define DECODER_H
 
-int decoder_decode(FILE *, int16_t *);
+int decoder_decode(int16_t *, FILE *);
 int decoder_init(void);
 void decoder_deinit(void);
 

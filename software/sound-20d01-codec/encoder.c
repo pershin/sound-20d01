@@ -11,36 +11,35 @@ static void interchannel_decorrelation(int16_t *, int16_t *, int, int);
 static void prepare_channel(int16_t *, size_t, PLAC_channel *);
 static void write_channel(BitStream *, int16_t *, size_t, PLAC_channel *);
 
-int encoder_encode(int16_t *input_buffer, FILE *dest, int count, uint32_t mixres) {
-    int half, output_size = 0;
+int encoder_encode(int16_t *input_buffer, size_t size, uint8_t mixres, FILE *dest) {
+    int output_size = 0;
     int16_t *left_buffer, *right_buffer;
     uint8_t *lr_buffer, *output_buffer;
     BitStream bs;
     PLAC_chunk chunk;
     size_t samples;
 
-    half = count / 2;
-    samples = half;
+    samples = size / PLAC_BYTES_PER_SAMPLE / PLAC_NUM_CHANNELS;
 
-    lr_buffer = malloc(count * PLAC_NUM_CHANNELS * sizeof (int16_t));
+    lr_buffer = malloc(size * PLAC_BYTES_PER_SAMPLE * PLAC_NUM_CHANNELS);
     if (NULL == lr_buffer) {
         fprintf(stderr, "Insufficient memory available\n");
         return 0;
     }
 
-    output_buffer = malloc(count * 100);
+    output_buffer = malloc(size * 100);
     if (NULL == output_buffer) {
         fprintf(stderr, "Insufficient memory available\n");
         return 0;
     }
 
     left_buffer = (int16_t *) & lr_buffer[0];
-    right_buffer = (int16_t *) & lr_buffer[count];
+    right_buffer = (int16_t *) & lr_buffer[size];
 
-    group_by_channel(input_buffer, left_buffer, right_buffer, count);
+    group_by_channel(input_buffer, left_buffer, right_buffer, size);
 
     /* Interchannel Decorrelation */
-    interchannel_decorrelation(left_buffer, right_buffer, half, mixres);
+    interchannel_decorrelation(left_buffer, right_buffer, samples, mixres);
 
     prepare_channel(left_buffer, samples, &chunk.Left);
     prepare_channel(right_buffer, samples, &chunk.Right);

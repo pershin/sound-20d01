@@ -101,7 +101,7 @@ int player_play(char *filename) {
         if (NULL != wav) {
             numread = fread(buffer, sizeof (int8_t), buffer_size, stream);
         } else {
-            numread = decoder_decode(stream, buffer);
+            numread = decoder_decode(buffer, stream);
             frames = numread / 2;
         }
 

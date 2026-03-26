@@ -14,7 +14,7 @@ int decoder_init(void) {
 void decoder_deinit(void) {
 }
 
-int decoder_decode(FILE *src, int16_t *output_buffer) {
+int decoder_decode(int16_t *output_buffer, FILE *src) {
     int i, j;
     int16_t l, r;
     size_t numread;
