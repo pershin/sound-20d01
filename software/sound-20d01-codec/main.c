@@ -27,11 +27,7 @@ static bool decode(char *, char *);
 static bool encode(char *, char *);
 static int play(char *);
 static void usage(char *);
-
-static void signal_handler(int sig) {
-    stop_flag = 1;
-    printf("\b\bStoping... (%d)\n", sig);
-}
+static void signal_handler(int);
 
 int main(int argc, char** argv) {
     int c, option_index;
@@ -48,10 +44,6 @@ int main(int argc, char** argv) {
     };
 
     signal(SIGINT, signal_handler);
-    signal(SIGILL, signal_handler);
-    signal(SIGABRT, signal_handler);
-    signal(SIGFPE, signal_handler);
-    signal(SIGSEGV, signal_handler);
     signal(SIGTERM, signal_handler);
 
     dest_filename = NULL;
@@ -114,10 +106,16 @@ int main(int argc, char** argv) {
     return EXIT_SUCCESS;
 }
 
+static void signal_handler(int sig) {
+    if (SIGINT == sig) {
+        stop_flag = 1;
+    }
+}
+
 static bool encode(char *src_filename, char *dest_filename) {
     FILE *src = NULL, *dest = NULL;
     WAVE_header *wav = NULL;
-    int16_t *input;
+    int16_t *input = NULL;
     int i, numread, numwritten, best_mix_size, best_mix_num;
     long int src_size, dest_size;
     size_t bytes_left;
