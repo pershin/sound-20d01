@@ -8,9 +8,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <stdint.h>
-
-int is_empty_buffer(int16_t *, int);
-int is_8bit_buffer_w(int16_t *, int);
+long int filesize(FILE *);
+uint8_t bits_needed_signed(int16_t, int16_t);
 
 #endif /* UTILS_H */
