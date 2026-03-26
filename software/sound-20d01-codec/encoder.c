@@ -1,48 +1,72 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <math.h>
-#include <malloc.h>
 #include "utils.h"
 #include "encoder.h"
 #include "plac.h"
+#include "bitstream.h"
 
 static void group_by_channel(int16_t *, int16_t *, int16_t *, int);
 static void interchannel_decorrelation(int16_t *, int16_t *, int, int);
-static void predictor(int16_t *, int);
-static uint16_t compress(int16_t *, int, uint8_t *, FILE *);
-static void conv16to8(int16_t *, int);
+static int bits_needed_signed(int16_t, int16_t);
+static void prepare_channel(int16_t *, size_t, PLAC_channel *);
+static void write_channel(BitStream *, int16_t *, size_t, PLAC_channel *);
 
 int encoder_encode(int16_t *input_buffer, FILE *dest, int count, uint32_t mixres) {
-    int half, output_size;
+    int half, output_size = 0;
     int16_t *left_buffer, *right_buffer;
-    uint8_t *output_buffer;
-    uint8_t flags;
+    uint8_t *lr_buffer, *output_buffer;
+    BitStream bs;
+    PLAC_chunk chunk;
+    size_t samples;
 
-    flags = 0;
     half = count / 2;
+    samples = half;
 
-    output_buffer = malloc(count * PLAC_NUM_CHANNELS * sizeof (int16_t));
+    lr_buffer = malloc(count * PLAC_NUM_CHANNELS * sizeof (int16_t));
+    if (NULL == lr_buffer) {
+        fprintf(stderr, "Insufficient memory available\n");
+        return 0;
+    }
+
+    output_buffer = malloc(count * 100);
     if (NULL == output_buffer) {
         fprintf(stderr, "Insufficient memory available\n");
         return 0;
     }
 
-    left_buffer = (int16_t *) & output_buffer[0];
-    right_buffer = (int16_t *) & output_buffer[count];
+    left_buffer = (int16_t *) & lr_buffer[0];
+    right_buffer = (int16_t *) & lr_buffer[count];
 
     group_by_channel(input_buffer, left_buffer, right_buffer, count);
 
     /* Interchannel Decorrelation */
-    flags |= (mixres << 4);
     interchannel_decorrelation(left_buffer, right_buffer, half, mixres);
 
-    predictor(left_buffer, half);
-    predictor(right_buffer, half);
+    prepare_channel(left_buffer, samples, &chunk.Left);
+    prepare_channel(right_buffer, samples, &chunk.Right);
 
-    output_size = compress((int16_t *) output_buffer, half, &flags, dest);
+    bitstream_init(&bs, output_buffer);
+
+    write_channel(&bs, left_buffer, samples, &chunk.Left);
+    write_channel(&bs, right_buffer, samples, &chunk.Right);
+
+    bitstream_flush(&bs);
+
+    chunk.Size = bs.pos;
+    chunk.NumSamples = samples;
+    chunk.Mixres = mixres;
+
+    if (NULL != dest) {
+        fwrite(&chunk, sizeof (PLAC_chunk), 1, dest);
+        fwrite(bs.buffer, sizeof (uint8_t), bs.pos, dest);
+    }
+
+    output_size = sizeof (PLAC_chunk) + bs.pos;
+    bs.pos = 0;
 
     free(output_buffer);
+    free(lr_buffer);
 
     return output_size;
 }
@@ -83,127 +107,51 @@ static void interchannel_decorrelation(
         /* Interchannel Decorrelation */
         left_buffer[i] = (mixres * l + m2 * r) >> 2;
         right_buffer[i] = l - r;
-
-        // right_buffer[i] = l - r;
-        // left_buffer[i] = l - floor(0.5 * right_buffer[i]);
     }
 }
 
-static void predictor(int16_t *input_buffer, int n) {
-    int i;
-    int32_t del;
-    uint32_t chanshift = PLAC_CHANSHIFT;
-    int16_t prev;
+static int bits_needed_signed(int16_t min_val, int16_t max_val) {
+    int range = max_val - min_val;
+    int bits = 0;
 
-    prev = input_buffer[0];
-
-    for (i = 1; i < n; i++) {
-        del = input_buffer[i] - prev;
-        prev = input_buffer[i];
-        input_buffer[i] = (del << chanshift) >> chanshift;
+    while ((1 << bits) <= range) {
+        bits++;
     }
+
+    return bits ? bits : 1;
 }
 
-static uint16_t compress(int16_t *output_buffer, int n, uint8_t *flags, FILE *dest) {
-    int output_size, data_size, numwritten;
-    uint16_t e_flags, b_flags, end_size;
+static void prepare_channel(int16_t *data, size_t n, PLAC_channel *ch) {
+    size_t i;
+    int16_t prev = 0, delta;
+    int16_t max_val;
 
-    e_flags = 0;
-    b_flags = 0;
-    end_size = n;
+    ch->Min = data[0] - prev;
+    max_val = ch->Min;
 
-    if (PLAC_BUFSIZ != end_size) {
-        *flags |= PLAC_EOF_FLAG;
-    }
+    for (i = 0; i < n; i++) {
+        delta = data[i] - prev;
+        prev = data[i];
+        data[i] = delta;
 
-    if (!(*flags & PLAC_EOF_FLAG)) {
-        for (int i = 0; PLAC_COMPN > i; i++) {
-            int offset;
-            data_size = PLAC_COMPSIZ;
-            offset = i * data_size;
+        if (data[i] < ch->Min) {
+            ch->Min = data[i];
+        }
 
-            if (is_empty_buffer(&output_buffer[offset], data_size)) {
-                *flags |= PLAC_EMPTY_FLAG;
-                e_flags |= (1 << i);
-            } else if (is_8bit_buffer_w(&output_buffer[offset], data_size)) {
-                *flags |= PLAC_8BIT_FLAG;
-                b_flags |= (1 << i);
-            }
+        if (data[i] > max_val) {
+            max_val = data[i];
         }
     }
 
-    /* Write flags */
-    if (NULL != dest) {
-        fwrite(flags, sizeof (uint8_t), 1, dest);
-    }
-
-    output_size = 1;
-
-    if (*flags & PLAC_EOF_FLAG) {
-        if (NULL != dest) {
-            fwrite(&end_size, sizeof (uint16_t), 1, dest);
-            numwritten = fwrite(&output_buffer[0], sizeof (int16_t), end_size * 2, dest);
-        } else {
-            numwritten = end_size * 2;
-        }
-
-        output_size += sizeof (uint16_t);
-        output_size += numwritten * sizeof (int16_t);
-
-        return output_size;
-    }
-
-    if (*flags & PLAC_EMPTY_FLAG) {
-        if (NULL != dest) {
-            fwrite(&e_flags, sizeof (uint16_t), 1, dest);
-        }
-
-        output_size += 2;
-    }
-
-    if (*flags & PLAC_8BIT_FLAG) {
-        if (NULL != dest) {
-            fwrite(&b_flags, sizeof (uint16_t), 1, dest);
-        }
-
-        output_size += 2;
-    }
-
-    for (int i = 0; PLAC_COMPN > i; i++) {
-        int offset;
-        int bps = sizeof (int16_t);
-        data_size = PLAC_COMPSIZ;
-        offset = i * data_size;
-
-        if (e_flags & (1 << i)) {
-            data_size = 0;
-        } else if (b_flags & (1 << i)) {
-            conv16to8(&output_buffer[offset], data_size);
-            bps = sizeof (uint8_t);
-        }
-
-        if (NULL != dest) {
-            numwritten = fwrite(&output_buffer[offset], bps, data_size, dest);
-        } else {
-            numwritten = data_size;
-        }
-
-        output_size += numwritten * bps;
-    }
-
-    return output_size;
+    ch->Bits = bits_needed_signed(ch->Min, max_val);
 }
 
+static void write_channel(BitStream *bw, int16_t *buffer, size_t n,
+        PLAC_channel *ch) {
+    size_t i;
 
-
-static void conv16to8(int16_t *input_buffer, int count) {
-    uint8_t *output_buffer;
-    int i;
-
-    output_buffer = (uint8_t *) & input_buffer[0];
-
-    /* Convert 16 bits to 8 bits */
-    for (i = 0; i < count; i++) {
-        output_buffer[i] = (uint8_t) input_buffer[i];
+    for (i = 0; i < n; i++) {
+        uint32_t val = (uint32_t) (buffer[i] - ch->Min);
+        bitstream_write(bw, val, ch->Bits);
     }
 }

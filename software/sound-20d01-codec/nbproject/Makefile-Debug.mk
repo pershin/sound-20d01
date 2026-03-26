@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/bitstream.o \
 	${OBJECTDIR}/decoder.o \
 	${OBJECTDIR}/encoder.o \
 	${OBJECTDIR}/main.o \
@@ -67,6 +68,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sound-20d01-codec: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sound-20d01-codec ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/bitstream.o: bitstream.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bitstream.o bitstream.c
 
 ${OBJECTDIR}/decoder.o: decoder.c
 	${MKDIR} -p ${OBJECTDIR}

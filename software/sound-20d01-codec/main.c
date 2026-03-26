@@ -150,11 +150,21 @@ static int encode(char *src_filename, char *dest_filename) {
 
     dest_size = plac_header_write(dest);
 
-    for (src_size = ftell(src); src_size < wav->data.Size;) {
-        numread = fread(input, sizeof (int16_t), PLAC_BUFSIZ * PLAC_NUM_CHANNELS, src);
+    size_t bytes_left = wav->data.Size;
+
+    for (src_size = 0; bytes_left > 0;) {
+        size_t to_read = PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t);
+
+        if (to_read > bytes_left) {
+            to_read = bytes_left;
+        }
+
+        numread = fread(input, sizeof (uint8_t), to_read, src);
         if (0 == numread) {
             break;
         }
+
+        bytes_left -= numread;
 
         int best_mix_size = 0;
         int best_mix_num = 0;
@@ -173,9 +183,9 @@ static int encode(char *src_filename, char *dest_filename) {
             }
         }
 
-        numwritten = encoder_encode(input, dest, numread, best_mix_num);
+        numwritten = encoder_encode(input, dest, numread / 2, best_mix_num);
 
-        src_size += numread * sizeof (int16_t);
+        src_size += numread;
         dest_size += numwritten;
     }
 
