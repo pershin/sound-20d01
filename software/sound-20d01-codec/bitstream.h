@@ -1,6 +1,6 @@
 /*
  * File:   bitstream.h
- * Author: sergey
+ * Author: Sergey
  *
  * Created on March 26, 2026, 6:07 PM
  */
