@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <getopt.h>
 #include <signal.h>
 #include <unistd.h>
@@ -21,8 +22,8 @@ int verbose_flag = 0; /* Flag set by ‘--verbose’. */
 int pcm_flag = 0; /* Flag set by ‘--pcm’. */
 volatile int stop_flag = 0;
 
-static int decode(char *, char *);
-static int encode(char *, char *);
+static bool decode(char *, char *);
+static bool encode(char *, char *);
 static long int filesize(FILE *);
 static int play(char *);
 static void usage(char *);
@@ -97,11 +98,13 @@ int main(int argc, char** argv) {
     }
 
     if (encode_flag) {
-        return encode(src_filename, dest_filename);
-    }
-
-    if (decode_flag) {
-        return decode(src_filename, dest_filename);
+        if (!encode(src_filename, dest_filename)) {
+            return EXIT_FAILURE;
+        }
+    } else if (decode_flag) {
+        if (!decode(src_filename, dest_filename)) {
+            return EXIT_FAILURE;
+        }
     }
 
     if (play_flag) {
@@ -111,36 +114,36 @@ int main(int argc, char** argv) {
     return EXIT_SUCCESS;
 }
 
-static int encode(char *src_filename, char *dest_filename) {
+static bool encode(char *src_filename, char *dest_filename) {
     FILE *src, *dest;
     WAVE_header *wav;
     int16_t *input;
     int numread, numwritten;
     long int src_size, dest_size;
+    bool result = false;
 
     input = malloc(PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t));
     if (NULL == input) {
         fprintf(stderr, "Insufficient memory available\n");
-        return EXIT_FAILURE;
+        goto Cleanup;
     }
 
     src = fopen(src_filename, "r");
     if (NULL == src) {
         fprintf(stderr, "Cannot open file \"%s\"\n", src_filename);
-        return EXIT_FAILURE;
+        goto Cleanup;
     }
 
     wav = wav_header_read(src);
     if (NULL == wav) {
         fprintf(stderr, "Input file must be WAV format\n");
-        return EXIT_FAILURE;
+        goto Cleanup;
     }
 
     dest = fopen(dest_filename, "w");
     if (NULL == dest) {
         fprintf(stderr, "Cannot open file \"%s\"\n", dest_filename);
-        fclose(src);
-        return EXIT_FAILURE;
+        goto Cleanup;
     }
 
     if (verbose_flag) {
@@ -196,26 +199,40 @@ static int encode(char *src_filename, char *dest_filename) {
         printf("Delta:       %ld\n", dest_size - src_size);
     }
 
-    free(wav);
-    free(input);
+    result = true;
 
-    fclose(src);
-    fclose(dest);
+Cleanup:
+    if (wav) {
+        free(wav);
+    }
 
-    return EXIT_SUCCESS;
+    if (input) {
+        free(input);
+    }
+
+    if (src) {
+        fclose(src);
+    }
+
+    if (dest) {
+        fclose(dest);
+    }
+
+    return result;
 }
 
-static int decode(char *src_filename, char *dest_filename) {
-    FILE *src, *dest;
-    PLAC_header *plac;
-    int16_t *output;
+static bool decode(char *src_filename, char *dest_filename) {
+    FILE *src = NULL, *dest = NULL;
+    PLAC_header *plac = NULL;
+    int16_t *output = NULL;
     int numread, numwritten;
     long int src_size, data_size, dest_size;
+    bool result = false;
 
     output = malloc(PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t));
     if (NULL == output) {
         fprintf(stderr, "Insufficient memory available\n");
-        return EXIT_FAILURE;
+        goto Cleanup;
     }
 
     if (verbose_flag) {
@@ -229,20 +246,19 @@ static int decode(char *src_filename, char *dest_filename) {
     src = fopen(src_filename, "r");
     if (NULL == src) {
         fprintf(stderr, "Cannot open file \"%s\"\n", src_filename);
-        return EXIT_FAILURE;
+        goto Cleanup;
     }
 
     plac = plac_header_read(src);
     if (NULL == plac) {
         fprintf(stderr, "Input file must be PLAC format\n");
-        return EXIT_FAILURE;
+        goto Cleanup;
     }
 
     dest = fopen(dest_filename, "w");
     if (NULL == dest) {
         fprintf(stderr, "Cannot open file \"%s\"\n", dest_filename);
-        fclose(src);
-        return EXIT_FAILURE;
+        goto Cleanup;
     }
 
     if (!pcm_flag) {
@@ -275,15 +291,28 @@ static int decode(char *src_filename, char *dest_filename) {
         printf("Delta:       %ld\n", dest_size - src_size);
     }
 
-    free(output);
-    free(plac);
+    result = true;
 
-    fclose(src);
-    fclose(dest);
+Cleanup:
+    if (output) {
+        free(output);
+    }
+
+    if (plac) {
+        free(plac);
+    }
+
+    if (src) {
+        fclose(src);
+    }
+
+    if (dest) {
+        fclose(dest);
+    }
 
     decoder_deinit();
 
-    return EXIT_SUCCESS;
+    return result;
 }
 
 /* Get file size in bytes. */
