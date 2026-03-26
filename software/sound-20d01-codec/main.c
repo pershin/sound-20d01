@@ -17,8 +17,8 @@
 #include "player.h"
 #include "wav.h"
 
-/* Flag set by ‘--verbose’. */
-int verbose_flag = 0;
+int verbose_flag = 0; /* Flag set by ‘--verbose’. */
+int pcm_flag = 0; /* Flag set by ‘--pcm’. */
 volatile int stop_flag = 0;
 
 static int decode(char *, char *);
@@ -41,6 +41,7 @@ int main(int argc, char** argv) {
         {"verbose", no_argument, &verbose_flag, 1},
         {"encode", required_argument, &encode_flag, 1},
         {"decode", required_argument, &decode_flag, 1},
+        {"pcm", no_argument, &pcm_flag, 1},
         {"play", required_argument, &play_flag, 1},
         {0, 0, 0, 0}
     };
@@ -244,7 +245,9 @@ static int decode(char *src_filename, char *dest_filename) {
         return EXIT_FAILURE;
     }
 
-    fseek(dest, sizeof (WAVE_header), SEEK_SET);
+    if (!pcm_flag) {
+        fseek(dest, sizeof (WAVE_header), SEEK_SET);
+    }
 
     /* Get source size */
     src_size = filesize(src);
@@ -261,7 +264,9 @@ static int decode(char *src_filename, char *dest_filename) {
         dest_size += numwritten * sizeof (int16_t);
     }
 
-    dest_size += wav_header_write(dest, dest_size, PLAC_SAMPLE_RATE, WAV_STEREO, 16);
+    if (!pcm_flag) {
+        dest_size += wav_header_write(dest, dest_size, PLAC_SAMPLE_RATE, WAV_STEREO, 16);
+    }
 
     if (verbose_flag) {
         printf("Input Size:  %ld\n", src_size);
@@ -306,41 +311,8 @@ static void usage(char *argv0) {
     printf("usage: %s"
             " [--encode <path>]"
             " [--decode <path>]"
+            " [--pcm]"
             " [--play <path>]"
             " [-o <path>]"
             " [--verbose]\n", argv0);
 }
-
-/*
-static void test() {
-    int i, j;
-    int buf[] = {
-        0, 1, 2, 3, 4, 5, 6, 7,
-        8, 9, 10, 11, 12, 13, 14, 15,
-        16, 17, 18, 19, 20, 21, 22, 23
-
-    };
-    int n = sizeof (buf) / sizeof (buf[0]);
-
-    for (j = 1; n / 2 > j; j++) {
-        for (i = j; n - 2 > i; i++) {
-            int tmp = buf[i];
-
-            buf[i] = buf[i + 1];
-            buf[i + 1] = tmp;
-        }
-    }
-
-    for (i = 0; n / 2 > i; i++) {
-        printf("%d ", buf[i]);
-    }
-
-    printf("\n");
-
-    for (; n > i; i++) {
-        printf("%d ", buf[i]);
-    }
-
-    printf("\n");
-}
- */
