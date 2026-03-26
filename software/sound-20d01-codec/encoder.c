@@ -8,7 +8,6 @@
 
 static void group_by_channel(int16_t *, int16_t *, int16_t *, int);
 static void interchannel_decorrelation(int16_t *, int16_t *, int, int);
-static int bits_needed_signed(int16_t, int16_t);
 static void prepare_channel(int16_t *, size_t, PLAC_channel *);
 static void write_channel(BitStream *, int16_t *, size_t, PLAC_channel *);
 
@@ -108,17 +107,6 @@ static void interchannel_decorrelation(
         left_buffer[i] = (mixres * l + m2 * r) >> 2;
         right_buffer[i] = l - r;
     }
-}
-
-static int bits_needed_signed(int16_t min_val, int16_t max_val) {
-    int range = max_val - min_val;
-    int bits = 0;
-
-    while ((1 << bits) <= range) {
-        bits++;
-    }
-
-    return bits ? bits : 1;
 }
 
 static void prepare_channel(int16_t *data, size_t n, PLAC_channel *ch) {

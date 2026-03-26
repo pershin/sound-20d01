@@ -17,6 +17,7 @@
 #include "decoder.h"
 #include "player.h"
 #include "wav.h"
+#include "utils.h"
 
 int verbose_flag = 0; /* Flag set by ‘--verbose’. */
 int pcm_flag = 0; /* Flag set by ‘--pcm’. */
@@ -24,7 +25,6 @@ volatile int stop_flag = 0;
 
 static bool decode(char *, char *);
 static bool encode(char *, char *);
-static long int filesize(FILE *);
 static int play(char *);
 static void usage(char *);
 
@@ -313,18 +313,6 @@ Cleanup:
     decoder_deinit();
 
     return result;
-}
-
-/* Get file size in bytes. */
-static long int filesize(FILE *stream) {
-    long int offset, size;
-
-    offset = ftell(stream);
-    fseek(stream, 0, SEEK_END);
-    size = ftell(stream);
-    fseek(stream, offset, SEEK_SET);
-
-    return size;
 }
 
 static int play(char *filename) {

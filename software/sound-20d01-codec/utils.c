@@ -1,35 +1,25 @@
-#include "utils.h"
+#include <stdio.h>
+#include <stdint.h>
 
-int is_empty_buffer(int16_t *input_buffer, int n) {
-    int result, i;
+/* Get file size in bytes. */
+long int filesize(FILE *stream) {
+    long int offset, size;
 
-    result = 1;
+    offset = ftell(stream);
+    fseek(stream, 0, SEEK_END);
+    size = ftell(stream);
+    fseek(stream, offset, SEEK_SET);
 
-    for (i = 0; n > i; i++) {
-        if (0 != input_buffer[i]) {
-            result = 0;
-        }
-    }
-
-    return result;
+    return size;
 }
 
-int is_8bit_buffer_w(int16_t *input_buffer, int n) {
-    int result, i;
+uint8_t bits_needed_signed(int16_t min_val, int16_t max_val) {
+    int range = max_val - min_val;
+    uint8_t bits = 0;
 
-    result = 1;
-
-    for (i = 0; n > i; i++) {
-        if (127 < input_buffer[i]) {
-            result = 0;
-            break;
-        }
-
-        if (-128 > input_buffer[i]) {
-            result = 0;
-            break;
-        }
+    while ((1 << bits) <= range) {
+        bits++;
     }
 
-    return result;
+    return bits ? bits : 1;
 }
