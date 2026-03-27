@@ -11,7 +11,8 @@ static void interchannel_decorrelation(int16_t *, int16_t *, int, int);
 static void prepare_channel(int16_t *, size_t, PLAC_channel *);
 static void write_channel(BitStream *, int16_t *, size_t, PLAC_channel *);
 
-int encoder_encode(int16_t *input_buffer, size_t size, uint8_t mixres, FILE *dest) {
+int encoder_encode(int16_t *input_buffer, size_t size, uint8_t mixres,
+                   FILE *dest) {
     int output_size = 0;
     int16_t *left_buffer, *right_buffer;
     uint8_t *lr_buffer, *output_buffer;
@@ -33,8 +34,8 @@ int encoder_encode(int16_t *input_buffer, size_t size, uint8_t mixres, FILE *des
         return 0;
     }
 
-    left_buffer = (int16_t *) & lr_buffer[0];
-    right_buffer = (int16_t *) & lr_buffer[size];
+    left_buffer = (int16_t *)&lr_buffer[0];
+    right_buffer = (int16_t *)&lr_buffer[size];
 
     group_by_channel(input_buffer, left_buffer, right_buffer, size);
 
@@ -56,11 +57,11 @@ int encoder_encode(int16_t *input_buffer, size_t size, uint8_t mixres, FILE *des
     chunk.Mixres = mixres;
 
     if (NULL != dest) {
-        fwrite(&chunk, sizeof (PLAC_chunk), 1, dest);
-        fwrite(bs.buffer, sizeof (uint8_t), bs.pos, dest);
+        fwrite(&chunk, sizeof(PLAC_chunk), 1, dest);
+        fwrite(bs.buffer, sizeof(uint8_t), bs.pos, dest);
     }
 
-    output_size = sizeof (PLAC_chunk) + bs.pos;
+    output_size = sizeof(PLAC_chunk) + bs.pos;
     bs.pos = 0;
 
     free(output_buffer);
@@ -69,11 +70,8 @@ int encoder_encode(int16_t *input_buffer, size_t size, uint8_t mixres, FILE *des
     return output_size;
 }
 
-static void group_by_channel(
-        int16_t *input_buffer,
-        int16_t *left_buffer,
-        int16_t *right_buffer,
-        int count) {
+static void group_by_channel(int16_t *input_buffer, int16_t *left_buffer,
+                             int16_t *right_buffer, int count) {
     int i, j;
 
     for (i = 0, j = 0; count > i; i += 2, j++) {
@@ -82,11 +80,9 @@ static void group_by_channel(
     }
 }
 
-static void interchannel_decorrelation(
-        int16_t *left_buffer,
-        int16_t *right_buffer,
-        int n,
-        int mixres) {
+static void interchannel_decorrelation(int16_t *left_buffer,
+                                       int16_t *right_buffer, int n,
+                                       int mixres) {
     int i;
     int16_t l, r;
     int32_t m2;
@@ -134,11 +130,11 @@ static void prepare_channel(int16_t *data, size_t n, PLAC_channel *ch) {
 }
 
 static void write_channel(BitStream *bw, int16_t *buffer, size_t n,
-        PLAC_channel *ch) {
+                          PLAC_channel *ch) {
     size_t i;
 
     for (i = 0; i < n; i++) {
-        uint32_t val = (uint32_t) (buffer[i] - ch->Min);
+        uint32_t val = (uint32_t)(buffer[i] - ch->Min);
         bitstream_write(bw, val, ch->Bits);
     }
 }

@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   decoder.h
  * Author: Sergey
  *

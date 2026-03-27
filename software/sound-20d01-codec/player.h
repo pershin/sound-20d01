@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   player.h
  * Author: Sergey
  *

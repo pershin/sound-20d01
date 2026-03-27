@@ -7,12 +7,9 @@
 
 static void decode_channel(BitStream *, int16_t *, uint16_t, PLAC_channel *);
 
-int decoder_init(void) {
-    return 0;
-}
+int decoder_init(void) { return 0; }
 
-void decoder_deinit(void) {
-}
+void decoder_deinit(void) {}
 
 int decoder_decode(int16_t *output_buffer, FILE *src) {
     int i, j;
@@ -25,12 +22,12 @@ int decoder_decode(int16_t *output_buffer, FILE *src) {
     static int16_t right_buffer[PLAC_BUFSIZ];
     static uint8_t chunk_buffer[PLAC_BUFSIZ * 2 * 2];
 
-    numread = fread(&chunk, sizeof (PLAC_chunk), 1, src);
+    numread = fread(&chunk, sizeof(PLAC_chunk), 1, src);
     if (0 == numread) {
         return 0;
     }
 
-    numread = fread(chunk_buffer, sizeof (uint8_t), chunk.Size, src);
+    numread = fread(chunk_buffer, sizeof(uint8_t), chunk.Size, src);
     if (numread != chunk.Size) {
         return 0;
     }
@@ -59,14 +56,15 @@ int decoder_decode(int16_t *output_buffer, FILE *src) {
     return chunk.NumSamples * 2;
 }
 
-static void decode_channel(BitStream *br, int16_t *buffer, uint16_t n, PLAC_channel *ch) {
+static void decode_channel(BitStream *br, int16_t *buffer, uint16_t n,
+                           PLAC_channel *ch) {
     int i;
     int16_t prev = 0;
     uint32_t val;
 
     for (i = 0; i < n; i++) {
         val = bitstream_read(br, ch->Bits);
-        prev = prev + (int16_t) (val + ch->Min);
+        prev = prev + (int16_t)(val + ch->Min);
         buffer[i] = prev;
     }
 }

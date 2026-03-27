@@ -6,7 +6,7 @@ int plac_header_write(FILE *stream) {
     PLAC_header *plac;
     int numwritten;
 
-    plac = malloc(sizeof (PLAC_header));
+    plac = malloc(sizeof(PLAC_header));
     if (NULL == plac) {
         fprintf(stderr, "Insufficient memory available\n");
         return 0;
@@ -16,18 +16,18 @@ int plac_header_write(FILE *stream) {
 
     fseek(stream, 0, SEEK_SET);
 
-    numwritten = fwrite(plac, sizeof (PLAC_header), 1, stream);
+    numwritten = fwrite(plac, sizeof(PLAC_header), 1, stream);
 
     free(plac);
 
-    return numwritten * sizeof (PLAC_header);
+    return numwritten * sizeof(PLAC_header);
 }
 
 PLAC_header *plac_header_read(FILE *stream) {
     PLAC_header *plac;
     int numread;
 
-    plac = malloc(sizeof (PLAC_header));
+    plac = malloc(sizeof(PLAC_header));
     if (NULL == plac) {
         fprintf(stderr, "Insufficient memory available\n");
         return NULL;
@@ -35,7 +35,7 @@ PLAC_header *plac_header_read(FILE *stream) {
 
     fseek(stream, 0, SEEK_SET);
 
-    numread = fread(plac, sizeof (PLAC_header), 1, stream);
+    numread = fread(plac, sizeof(PLAC_header), 1, stream);
     if (1 != numread) {
         free(plac);
         return NULL;

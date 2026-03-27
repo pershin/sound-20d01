@@ -15,7 +15,7 @@ uint32_t bitstream_read(BitStream *br, int bits) {
 
     while (br->bitcount < bits) {
         c = br->buffer[br->pos++];
-        br->bitbuf |= ((uint32_t) c) << br->bitcount;
+        br->bitbuf |= ((uint32_t)c) << br->bitcount;
         br->bitcount += 8;
     }
 

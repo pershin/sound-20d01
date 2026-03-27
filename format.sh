@@ -11,7 +11,7 @@ for pattern in "${paths[@]}"; do
   for filename in $pattern; do
     [ -e "$filename" ] || continue
 
-    clang-format --style=LLVM "$filename" > "$tempfile"
+    clang-format "$filename" > "$tempfile"
 
     if cmp -s "$filename" "$tempfile"; then
       rm "$tempfile"

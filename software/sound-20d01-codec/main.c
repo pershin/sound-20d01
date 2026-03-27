@@ -20,7 +20,7 @@
 #include "utils.h"
 
 int verbose_flag = 0; /* Flag set by ‘--verbose’. */
-int pcm_flag = 0; /* Flag set by ‘--pcm’. */
+int pcm_flag = 0;     /* Flag set by ‘--pcm’. */
 volatile int stop_flag = 0;
 
 static bool decode(char *, char *);
@@ -29,7 +29,7 @@ static int play(char *);
 static void usage(char *);
 static void signal_handler(int);
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     int c, option_index;
     char *src_filename, *dest_filename;
     static int encode_flag, decode_flag, play_flag;
@@ -40,8 +40,7 @@ int main(int argc, char** argv) {
         {"decode", required_argument, &decode_flag, 1},
         {"pcm", no_argument, &pcm_flag, 1},
         {"play", required_argument, &play_flag, 1},
-        {0, 0, 0, 0}
-    };
+        {0, 0, 0, 0}};
 
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
@@ -121,7 +120,7 @@ static bool encode(char *src_filename, char *dest_filename) {
     size_t bytes_left;
     bool result = false;
 
-    input = malloc(PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t));
+    input = malloc(PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof(int16_t));
     if (NULL == input) {
         fprintf(stderr, "Insufficient memory available\n");
         goto Cleanup;
@@ -155,13 +154,13 @@ static bool encode(char *src_filename, char *dest_filename) {
     bytes_left = wav->data.Size;
 
     for (src_size = 0; bytes_left > 0;) {
-        size_t to_read = PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t);
+        size_t to_read = PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof(int16_t);
 
         if (to_read > bytes_left) {
             to_read = bytes_left;
         }
 
-        numread = fread(input, sizeof (uint8_t), to_read, src);
+        numread = fread(input, sizeof(uint8_t), to_read, src);
         if (0 == numread) {
             break;
         }
@@ -226,7 +225,7 @@ static bool decode(char *src_filename, char *dest_filename) {
     long int src_size, data_size, dest_size;
     bool result = false;
 
-    output = malloc(PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t));
+    output = malloc(PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof(int16_t));
     if (NULL == output) {
         fprintf(stderr, "Insufficient memory available\n");
         goto Cleanup;
@@ -259,7 +258,7 @@ static bool decode(char *src_filename, char *dest_filename) {
     }
 
     if (!pcm_flag) {
-        fseek(dest, sizeof (WAVE_header), SEEK_SET);
+        fseek(dest, sizeof(WAVE_header), SEEK_SET);
     }
 
     /* Get source size */
@@ -271,14 +270,15 @@ static bool decode(char *src_filename, char *dest_filename) {
             break;
         }
 
-        numwritten = fwrite(output, sizeof (int16_t), numread, dest);
+        numwritten = fwrite(output, sizeof(int16_t), numread, dest);
 
-        data_size += numread * sizeof (int16_t);
-        dest_size += numwritten * sizeof (int16_t);
+        data_size += numread * sizeof(int16_t);
+        dest_size += numwritten * sizeof(int16_t);
     }
 
     if (!pcm_flag) {
-        dest_size += wav_header_write(dest, dest_size, PLAC_SAMPLE_RATE, WAV_STEREO, 16);
+        dest_size +=
+            wav_header_write(dest, dest_size, PLAC_SAMPLE_RATE, WAV_STEREO, 16);
     }
 
     if (verbose_flag) {
@@ -323,10 +323,11 @@ static int play(char *filename) {
 
 static void usage(char *argv0) {
     printf("usage: %s"
-            " [--encode <path>]"
-            " [--decode <path>]"
-            " [--pcm]"
-            " [--play <path>]"
-            " [-o <path>]"
-            " [--verbose]\n", argv0);
+           " [--encode <path>]"
+           " [--decode <path>]"
+           " [--pcm]"
+           " [--play <path>]"
+           " [-o <path>]"
+           " [--verbose]\n",
+           argv0);
 }

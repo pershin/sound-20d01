@@ -88,7 +88,7 @@ int player_play(char *filename) {
     buffer_size = frames * channels * 2;
 
     if (NULL == wav) {
-        buffer_size = PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof (int16_t);
+        buffer_size = PLAC_BUFSIZ * PLAC_NUM_CHANNELS * sizeof(int16_t);
     }
 
     buffer = malloc(buffer_size);
@@ -99,7 +99,7 @@ int player_play(char *filename) {
 
     for (stop_flag = 0; !stop_flag;) {
         if (NULL != wav) {
-            numread = fread(buffer, sizeof (int8_t), buffer_size, stream);
+            numread = fread(buffer, sizeof(int8_t), buffer_size, stream);
         } else {
             numread = decoder_decode(buffer, stream);
             frames = numread / 2;

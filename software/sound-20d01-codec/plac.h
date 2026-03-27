@@ -13,17 +13,17 @@
 #define PLAC_ID 0x43414c50 /* "PLAC" */
 
 /* MISC */
-#define PLAC_BUFSIZ           256
-#define PLAC_NUM_CHANNELS     2
-#define PLAC_BYTES_PER_SAMPLE sizeof (int16_t)
-#define PLAC_BITS_PER_SAMPLE  16
-#define PLAC_SAMPLE_RATE      48000
+#define PLAC_BUFSIZ 256
+#define PLAC_NUM_CHANNELS 2
+#define PLAC_BYTES_PER_SAMPLE sizeof(int16_t)
+#define PLAC_BITS_PER_SAMPLE 16
+#define PLAC_SAMPLE_RATE 48000
 
 #pragma pack(push, 1)
 
 typedef struct {
     uint32_t FormatID; /* "PLAC" */
-    uint8_t Version; /* 1 */
+    uint8_t Version;   /* 1 */
 } PLAC_header;
 
 typedef struct {

@@ -11,5 +11,5 @@ firmware/Sound-20D01MB_Player/Debug/
 .DS_Store
 *.zip
 software/sound-20d01-fs/list.xml
-/software/sound-20d01-fs/build/
-/software/sound-20d01-fs/dist/
+software/*/build/
+software/*/dist/
