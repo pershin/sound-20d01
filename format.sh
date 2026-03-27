@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 paths=(
   "software/sound-20d01-codec/*.c"
